@@ -1,26 +1,54 @@
 <?php
 
-namespace App\Http\Controllers; 
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+
 class HomeController extends Controller
 {
+    // ==========================
+    // HOME
+    // ==========================
     public function index()
     {
-    // $data = [
-    //	'nama' => 'Budi',
-    // 'pekerjaan' => 'Developer',
-    //];
-    // return view('home')->with($data);
-    $nama = "Fajar";
-    $pekerjaan = "programmer";
-    $umur = "22";
-    $tanggal_lahir = "Trenggalek, 03 Maret 2002";
-    $tempat_tinggal = "Bengkong";
-    $alamat = "Tanjung Buntung";
-    return view('home', compact('nama', 'pekerjaan', 'umur', 'tanggal_lahir', 'tempat_tinggal', 'alamat'));
+        $nama = "Farhan";
+        $pekerjaan = "Programmer";
+        $umur = "19";
+        $tanggal_lahir = "Batam, 21 Desember 2006";
+        $tempat_tinggal = "Bengkong";
+        $alamat = "Sadai";
+
+        return view('home', compact(
+            'nama',
+            'pekerjaan',
+            'umur',
+            'tanggal_lahir',
+            'tempat_tinggal',
+            'alamat'
+        ));
     }
-public function contact()
-{
-return view('contact');
-}
+
+    // ==========================
+    // ABOUT
+    // ==========================
+    public function about()
+    {
+        return view('about');
+    }
+
+    // ==========================
+    // PRODUCT
+    // ==========================
+    public function product()
+    {
+        return view('product');
+    }
+
+    // ==========================
+    // CONTACT
+    // ==========================
+    public function contact()
+    {
+        return view('contact');
+    }
 }
