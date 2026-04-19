@@ -21,7 +21,6 @@
 
     <div class="space-x-3">
         <a href="/login" class="border border-blue-500 text-blue-600 px-4 py-1 rounded hover:bg-blue-50 transition">Login</a>
-        <a href="/register" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded shadow hover:scale-105 transition">Register</a>
     </div>
 </nav>
 

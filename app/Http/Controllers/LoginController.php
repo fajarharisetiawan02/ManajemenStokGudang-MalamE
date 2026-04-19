@@ -1,10 +1,8 @@
 <?php
 
-<<<<<<< HEAD
-=======
 // Nama : Farhan Mansyuri
 // NIM  : 3312511141
->>>>>>> 9e300dc63da50658d462d9cd23494f57b31cbdfc
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -24,10 +22,7 @@ class LoginController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
 
-<<<<<<< HEAD
         // Akun default
-=======
->>>>>>> 9e300dc63da50658d462d9cd23494f57b31cbdfc
         $user = [
             'username' => 'admin',
             'password' => '12345'
