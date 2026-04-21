@@ -1,226 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>StockGudang Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GudangPro | Dashboard</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-100 font-sans">
 
-<div class="flex">
+    <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-slate-900 text-white min-h-screen p-6">
-        <h2 class="text-2xl font-bold mb-10">🚗 StockGudang</h2>
+        <!-- Sidebar -->
+        <aside
+            class="w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-blue-900 text-white p-6 shadow-2xl border-r border-slate-700">
+            <!-- Logo -->
+            <div class="mb-10 text-center border-b border-slate-600 pb-6">
+                <div class="mb-10 border-b border-slate-600 pb-6">
 
-        <nav class="space-y-3 text-sm">
-            <a class="flex gap-3 p-3 bg-slate-800 rounded-lg"><i data-feather="home"></i>Dashboard</a>
-            <a class="flex gap-3 p-3 hover:bg-slate-800 rounded-lg"><i data-feather="box"></i>Sparepart</a>
-            <a class="flex gap-3 p-3 hover:bg-slate-800 rounded-lg"><i data-feather="download"></i>Masuk</a>
-            <a class="flex gap-3 p-3 hover:bg-slate-800 rounded-lg"><i data-feather="upload"></i>Keluar</a>
-        </nav>
-    </aside>
+                    <div class="flex items-center gap-3">
 
-    <!-- MAIN -->
-    <main class="flex-1 p-6">
+                        <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow">
+                            <i class="fas fa-warehouse text-blue-700 text-xl"></i>
+                        </div>
 
-        <!-- TOPBAR -->
-        <div class="flex justify-between items-center mb-6">
-
-            <h1 class="text-2xl font-bold">Dashboard</h1>
-
-            <div class="flex items-center gap-4">
-
-                <!-- FILTER -->
-                <select onchange="setMode(this.value)" class="border px-3 py-2 rounded">
-                    <option value="daily">Harian</option>
-                    <option value="weekly">Mingguan</option>
-                    <option value="monthly">Bulanan</option>
-                </select>
-
-                <!-- PROFILE -->
-                <div class="relative">
-                    <button onclick="toggleDropdown()" class="flex items-center gap-2 bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-50">
-                        <img src="A" class="rounded-full w-8 h-8">
-                        <span class="text-sm font-medium">Admin</span>
-                        <i data-feather="chevron-down"></i>
-                    </button>
-
-                    <!-- DROPDOWN -->
-                    <div id="dropdownProfile" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow">
-
-                        <a href="/profile" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                            <i data-feather="user"></i> Profile
-                        </a>
-
-                        <a href="#" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                            <i data-feather="settings"></i> Settings
-                        </a>
-
-                        <hr>
-
-                        <a href="#" class="flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-gray-100">
-                            <i data-feather="log-out"></i> Logout
-                        </a>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white">GudangPro</h1>
+                        </div>
 
                     </div>
+
+                </div>
+
+                <!-- Menu -->
+                <nav class="space-y-3 text-[15px]">
+
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white text-blue-700 font-semibold shadow">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-800 transition">
+                        <i class="fas fa-box"></i>
+                        Data Barang
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-800 transition">
+                        <i class="fas fa-folder"></i>
+                        Kategori
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-800 transition">
+                        <i class="fas fa-truck"></i>
+                        Supplier
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-800 transition">
+                        <i class="fas fa-arrow-down"></i>
+                        Barang Masuk
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-800 transition">
+                        <i class="fas fa-arrow-up"></i>
+                        Barang Keluar
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-800 transition">
+                        <i class="fas fa-file-alt"></i>
+                        Laporan
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500 transition mt-8">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+
+                </nav>
+
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1">
+
+                @include('components.navbar')
+
+            <!-- Content -->
+            <div class="p-8">
+
+                <!-- Statistik -->
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+
+                    <div class="bg-white p-6 rounded-2xl shadow hover:-translate-y-1 transition">
+                        <div class="flex justify-between items-center">
+                            <p class="text-slate-500">Total Barang</p>
+                            <i class="fas fa-box text-blue-500"></i>
+                        </div>
+                        <h3 class="text-4xl font-bold text-blue-600 mt-3">1,250</h3>
+                        <p class="text-green-500 text-sm mt-1">+12% bulan ini</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow hover:-translate-y-1 transition">
+                        <div class="flex justify-between items-center">
+                            <p class="text-slate-500">Barang Masuk</p>
+                            <i class="fas fa-arrow-down text-green-500"></i>
+                        </div>
+                        <h3 class="text-4xl font-bold text-green-600 mt-3">45</h3>
+                        <p class="text-green-500 text-sm mt-1">Hari ini</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow hover:-translate-y-1 transition">
+                        <div class="flex justify-between items-center">
+                            <p class="text-slate-500">Barang Keluar</p>
+                            <i class="fas fa-arrow-up text-red-500"></i>
+                        </div>
+                        <h3 class="text-4xl font-bold text-red-600 mt-3">20</h3>
+                        <p class="text-red-500 text-sm mt-1">Hari ini</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow hover:-translate-y-1 transition">
+                        <div class="flex justify-between items-center">
+                            <p class="text-slate-500">Supplier</p>
+                            <i class="fas fa-truck text-purple-500"></i>
+                        </div>
+                        <h3 class="text-4xl font-bold text-purple-600 mt-3">18</h3>
+                        <p class="text-slate-400 text-sm mt-1">Aktif</p>
+                    </div>
+
+                </div>
+
+                <!-- Grafik -->
+                <div class="bg-white p-6 rounded-2xl shadow mb-8">
+
+                    <h3 class="font-bold text-xl mb-4">
+                        <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                        Pergerakan Stok
+                    </h3>
+
+                    <canvas id="stokChart" height="95"></canvas>
+
+                </div>
+
+                <!-- Table -->
+                <div class="grid lg:grid-cols-3 gap-6 mb-8">
+
+                    <!-- Transaksi -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow">
+
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-xl">
+                                <i class="fas fa-table text-green-600 mr-2"></i>
+                                Transaksi Terbaru
+                            </h3>
+
+                            <button class="text-sm text-blue-600 hover:underline">
+                                Lihat Semua
+                            </button>
+                        </div>
+
+                        <table class="w-full text-left">
+
+                            <thead>
+                                <tr class="border-b text-slate-500">
+                                    <th class="py-3">Tanggal</th>
+                                    <th>Barang</th>
+                                    <th>Qty</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-3">21 Apr</td>
+                                    <td>Oli Mesin</td>
+                                    <td>20</td>
+                                    <td class="text-green-600 font-semibold">Masuk</td>
+                                </tr>
+
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-3">21 Apr</td>
+                                    <td>Kampas Rem</td>
+                                    <td>5</td>
+                                    <td class="text-red-600 font-semibold">Keluar</td>
+                                </tr>
+
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3">20 Apr</td>
+                                    <td>Aki Mobil</td>
+                                    <td>8</td>
+                                    <td class="text-green-600 font-semibold">Masuk</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- Alert -->
+                    <div class="bg-white p-6 rounded-2xl shadow">
+
+                        <h3 class="font-bold text-xl mb-4">
+                            <i class="fas fa-triangle-exclamation text-red-500 mr-2"></i>
+                            Stok Menipis
+                        </h3>
+
+                        <div class="space-y-3">
+
+                            <div class="bg-red-50 text-red-600 p-3 rounded-xl">
+                                Filter Udara - 2 pcs
+                            </div>
+
+                            <div class="bg-yellow-50 text-yellow-600 p-3 rounded-xl">
+                                Busi - 4 pcs
+                            </div>
+
+                            <div class="bg-red-50 text-red-600 p-3 rounded-xl">
+                                Lampu Depan - 1 pcs
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Quick Action -->
+                <div class="bg-white p-6 rounded-2xl shadow mb-8">
+
+                    <h3 class="font-bold text-xl mb-4">
+                        <i class="fas fa-bolt text-yellow-500 mr-2"></i>
+                        Quick Action
+                    </h3>
+
+                    <div class="flex gap-4 flex-wrap">
+
+                        <button class="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition">
+                            <i class="fas fa-plus mr-2"></i> Barang
+                        </button>
+
+                        <button class="bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition">
+                            <i class="fas fa-arrow-down mr-2"></i> Masuk
+                        </button>
+
+                        <button class="bg-red-600 text-white px-5 py-3 rounded-xl hover:bg-red-700 transition">
+                            <i class="fas fa-arrow-up mr-2"></i> Keluar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center text-sm text-slate-500 pb-6">
+                    © 2026 GudangPro | Sistem Manajemen Stok Gudang
                 </div>
 
             </div>
-        </div>
 
-        <!-- CARDS -->
-        <div class="grid grid-cols-4 gap-6 mb-6">
-            <div class="bg-white p-5 rounded-xl shadow">
-                <p class="text-gray-500 text-sm">Total Sparepart</p>
-                <h2 class="text-3xl font-bold">144</h2>
-            </div>
+        </main>
 
-            <div class="bg-white p-5 rounded-xl shadow">
-                <p class="text-gray-500 text-sm">Masuk</p>
-                <h2 class="text-3xl font-bold text-green-500">80</h2>
-            </div>
-
-            <div class="bg-white p-5 rounded-xl shadow">
-                <p class="text-gray-500 text-sm">Keluar</p>
-                <h2 class="text-3xl font-bold text-red-500">20</h2>
-            </div>
-
-            <div class="bg-white p-5 rounded-xl shadow">
-                <p class="text-gray-500 text-sm">Supplier</p>
-                <h2 class="text-3xl font-bold text-purple-500">15</h2>
-            </div>
-        </div>
-
-        <!-- CHART -->
-        <div class="bg-white p-6 rounded-xl shadow mb-6">
-            <h2 class="font-semibold mb-4">Pergerakan Stok</h2>
-
-            <div class="h-[300px]">
-                <canvas id="chart"></canvas>
-            </div>
-
-            <!-- DETAIL -->
-            <div class="grid grid-cols-2 gap-4 mt-6">
-
-                <div>
-                    <h3 class="text-sm font-semibold text-blue-500 mb-2">Barang Masuk</h3>
-                    <ul id="listMasuk" class="text-sm space-y-1"></ul>
-                </div>
-
-                <div>
-                    <h3 class="text-sm font-semibold text-red-500 mb-2">Barang Keluar</h3>
-                    <ul id="listKeluar" class="text-sm space-y-1"></ul>
-                </div>
-
-            </div>
-        </div>
-
-    </main>
-</div>
+    </div>
 
 <script>
-feather.replace();
+const ctx = document.getElementById('stokChart');
 
-// DROPDOWN
-function toggleDropdown() {
-    document.getElementById('dropdownProfile').classList.toggle('hidden');
-}
-
-window.addEventListener('click', function(e) {
-    if (!e.target.closest('.relative')) {
-        document.getElementById('dropdownProfile').classList.add('hidden');
-    }
-});
-
-// DATA
-const dataSet = {
-    daily: {
-        labels: ['Sen','Sel','Rab','Kam','Jum','Sab','Min'],
-        masuk: [10,15,20,30,25,35,40],
-        keluar: [5,10,12,20,18,22,30],
-        detailMasuk: [['Oli Mesin',30],['Kampas Rem',25],['Filter Udara',10]],
-        detailKeluar: [['Ban Mobil',20],['Aki',10],['Busi',5]]
-    },
-    weekly: {
-        labels: ['M1','M2','M3','M4'],
-        masuk: [80,120,100,150],
-        keluar: [60,90,70,110],
-        detailMasuk: [['Oli Mesin',120],['Rem',80],['Filter',60]],
-        detailKeluar: [['Ban',90],['Aki',70],['Busi',40]]
-    },
-    monthly: {
-        labels: ['Jan','Feb','Mar','Apr','Mei','Jun'],
-        masuk: [300,400,350,500,450,600],
-        keluar: [250,300,280,400,350,500],
-        detailMasuk: [['Oli',500],['Rem',300],['Filter',200]],
-        detailKeluar: [['Ban',400],['Aki',250],['Busi',150]]
-    }
-};
-
-let mode = 'daily';
-
-const chart = new Chart(document.getElementById('chart'), {
+new Chart(ctx, {
     type: 'line',
-    data: getData(),
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
-
-function getData() {
-    let d = dataSet[mode];
-    updateList();
-
-    return {
-        labels: d.labels,
+    data: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
         datasets: [
             {
                 label: 'Masuk',
-                data: d.masuk,
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59,130,246,0.2)',
+                data: [10,15,20,30,25,35,40],
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37,99,235,0.10)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointRadius: 4
             },
             {
                 label: 'Keluar',
-                data: d.keluar,
+                data: [5,10,12,20,18,22,30],
                 borderColor: '#ef4444',
-                backgroundColor: 'rgba(239,68,68,0.2)',
+                backgroundColor: 'rgba(239,68,68,0.08)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointRadius: 4
             }
         ]
-    };
-}
+    },
+    options: {
+        responsive: true,
 
-function setMode(m) {
-    mode = m;
-    chart.data = getData();
-    chart.update();
-}
+        animation: {
+            duration: 2500
+        },
 
-function updateList() {
-    let d = dataSet[mode];
+        animations: {
+            y: {
+                from: 0
+            }
+        },
 
-    document.getElementById('listMasuk').innerHTML = d.detailMasuk.map(i =>
-        `<li class="flex justify-between"><span>${i[0]}</span><span class="text-gray-500">+${i[1]}</span></li>`
-    ).join('');
+        plugins: {
+            legend: {
+                position: 'top'
+            }
+        },
 
-    document.getElementById('listKeluar').innerHTML = d.detailKeluar.map(i =>
-        `<li class="flex justify-between"><span>${i[0]}</span><span class="text-gray-500">-${i[1]}</span></li>`
-    ).join('');
-}
-
-updateList();
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 </script>
 
 </body>
+
 </html>
