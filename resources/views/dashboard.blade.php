@@ -245,7 +245,7 @@
                             <i class="fas fa-plus mr-2"></i> Barang
                         </button>
 
-                        <button class="bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition">
+                        <button class="bg-purple-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition">
                             <i class="fas fa-arrow-down mr-2"></i> Masuk
                         </button>
 
