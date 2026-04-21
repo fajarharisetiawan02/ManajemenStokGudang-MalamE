@@ -51,3 +51,7 @@ Route::get('/dashboard', function () {
 Route::get('/welcome', function () {
     return "Selamat Datang di Sistem Bengkel Mobil";
 });
+
+Route::get('/app', function () {
+return view('app');
+});
