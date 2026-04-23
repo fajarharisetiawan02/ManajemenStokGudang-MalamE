@@ -4,16 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
 // ==========================
 // HALAMAN UTAMA
 // ==========================
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/about', [HomeController::class, 'about'])->name('about');
@@ -23,14 +16,13 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 // ==========================
 // LOGIN
 // ==========================
-
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // ==========================
-// DASHBOARD BENGKEL (NO DB)
+// DASHBOARD
 // ==========================
-
 Route::get('/dashboard', function () {
 
     $sparepart = [
@@ -44,14 +36,6 @@ Route::get('/dashboard', function () {
 
 })->name('dashboard');
 
-// ==========================
-// TAMBAHAN
-// ==========================
-
-Route::get('/welcome', function () {
-    return "Selamat Datang di Sistem Bengkel Mobil";
-});
-
 Route::get('/app', function () {
-return view('app');
+    return view('app');
 });

@@ -1,8 +1,7 @@
 <div class="bg-white shadow px-8 py-4 flex justify-between items-center">
 
     <div>
-        <h2 class="text-2xl font-bold text-slate-800">Dashboard Gudang</h2>
-        <p class="text-sm text-slate-500">Selamat datang kembali, Admin Gudang 👋</p>
+        <h2 class="text-2xl font-bold text-slate-800">Dashboard</h2>
     </div>
 
     <div class="flex items-center gap-4">

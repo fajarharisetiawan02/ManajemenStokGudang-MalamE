@@ -24,14 +24,14 @@
 
             <!-- MENU -->
             <div class="hidden md:flex items-center space-x-8 font-medium text-gray-700 ml-auto mr-10">
-                <a href="/" class="hover:text-blue-700 transition">Home</a>
+                <a href="/" class="hover:text-blue-700 transition">Beranda</a>
                 <a href="/about" class="hover:text-blue-700 transition">Tentang Kami</a>
-                <a href="/contact" class="hover:text-blue-700 transition">Contact</a>
+                <a href="/contact" class="hover:text-blue-700 transition">Kontak</a>
             </div>
 
             <!-- LOGIN -->
             <a href="/login" class="bg-blue-700 text-white px-5 py-2 rounded-lg shadow hover:bg-blue-800 transition">
-                Login
+                Masuk
             </a>
 
         </div>
@@ -296,68 +296,61 @@
             <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
 
                 <!-- LANGUAGE SWITCHER -->
-                <div class="relative inline-block group">
+                <div class="relative inline-block">
 
                     <!-- BUTTON -->
-                    <div
-                        class="flex items-center gap-3 px-4 py-2 rounded-xl bg-white border border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition">
+                    <button onclick="toggleLangMenu()"
+                        class="flex items-center gap-3 px-4 py-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition">
 
-                        <!-- Indonesia Flag -->
                         <div class="w-10 h-7 rounded overflow-hidden border border-gray-300">
                             <div class="h-1/2 bg-red-600"></div>
                             <div class="h-1/2 bg-white"></div>
                         </div>
 
-                        <span class="text-lg font-medium text-gray-800">
+                        <span id="currentLangText" class="text-lg font-medium text-gray-800">
                             Indonesia
                         </span>
 
-                        <span class="text-gray-400 text-sm transition group-hover:rotate-180">
-                            ▼
-                        </span>
+                        <span class="text-gray-400 text-sm">▼</span>
 
-                    </div>
+                    </button>
 
-                    <!-- DROPDOWN -->
-                    <div
-                        class="absolute left-0 bottom-full mb-3 w-60 bg-white rounded-2xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50 overflow-hidden">
+                    <!-- MENU -->
+                    <div id="langMenu"
+                        class="hidden absolute left-0 bottom-full mb-3 w-60 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden">
 
-                        <!-- English -->
-                        <a href="?lang=en" class="flex items-center gap-4 px-5 py-4 hover:bg-blue-50 transition">
+                        <!-- ENGLISH -->
+                        <button onclick="setLanguage('en')"
+                            class="w-full flex items-center gap-4 px-5 py-4 hover:bg-blue-50 transition text-left">
 
-                            <!-- UK Flag -->
-                            <div class="w-12 h-8 rounded overflow-hidden border border-gray-300 shadow-sm">
-                                <img src="https://flagcdn.com/w40/gb.png" alt="English"
-                                    class="w-full h-full object-cover">
-                            </div>
+                            <img src="https://flagcdn.com/w40/gb.png"
+                                class="w-12 h-8 rounded border border-gray-300 object-cover">
 
                             <div>
                                 <p class="text-gray-800 font-medium">English</p>
                                 <p class="text-xs text-gray-400">United Kingdom</p>
                             </div>
 
-                        </a>
+                        </button>
 
-                        <!-- Indonesia -->
-                        <a href="?lang=id"
-                            class="flex items-center gap-4 px-5 py-4 bg-gray-50 hover:bg-red-50 transition border-t">
+                        <!-- INDONESIA -->
+                        <button onclick="setLanguage('id')"
+                            class="w-full flex items-center gap-4 px-5 py-4 hover:bg-red-50 transition border-t text-left">
 
-                            <!-- Indonesia Flag -->
-                            <div class="w-12 h-8 rounded overflow-hidden border border-gray-300 shadow-sm">
-                                <img src="https://flagcdn.com/w40/id.png" alt="Indonesia"
-                                    class="w-full h-full object-cover">
-                            </div>
+                            <img src="https://flagcdn.com/w40/id.png"
+                                class="w-12 h-8 rounded border border-gray-300 object-cover">
 
                             <div>
                                 <p class="text-red-500 font-medium">Indonesia</p>
                                 <p class="text-xs text-gray-400">Bahasa Default</p>
                             </div>
 
-                        </a>
+                        </button>
 
                     </div>
 
                 </div>
+
                 <!-- SOCIAL MEDIA -->
                 <div class="flex gap-4">
 
@@ -406,6 +399,149 @@
         </div>
 
     </footer>
+
+<script>
+function toggleLangMenu() {
+    document.getElementById("langMenu").classList.toggle("hidden");
+}
+
+function setLanguage(lang){
+
+    localStorage.setItem("lang", lang);
+
+    /* NAVBAR */
+    const navLinks = document.querySelectorAll("nav .md\\:flex a");
+    const loginBtn = document.querySelector("nav > div > a:last-child");
+
+    navLinks[0].textContent = lang === "en" ? "Home" : "Beranda";
+    navLinks[1].textContent = lang === "en" ? "About Us" : "Tentang Kami";
+    navLinks[2].textContent = lang === "en" ? "Contact" : "Kontak";
+    loginBtn.textContent   = lang === "en" ? "Login" : "Masuk";
+
+    /* HERO */
+    document.querySelector("section h1").textContent =
+        lang === "en"
+        ? "Manage Warehouse Stock Faster & Easier"
+        : "Kelola Stok Gudang Lebih Mudah & Cepat";
+
+    document.querySelector("section p").textContent =
+        lang === "en"
+        ? "Monitor incoming goods, outgoing goods, spare part stock, suppliers, and warehouse reports in real-time with a modern system."
+        : "Pantau barang masuk, barang keluar, stok spare part, supplier, dan laporan gudang secara real-time dengan sistem modern.";
+
+    const heroBtn = document.querySelectorAll("section .flex a");
+    heroBtn[0].textContent = lang === "en" ? "🚀 Get Started" : "🚀 Mulai Sekarang";
+    heroBtn[1].textContent = lang === "en" ? "📞 Contact Us" : "📞 Hubungi Kami";
+
+    /* STAT */
+    const stat = document.querySelectorAll(".grid.grid-cols-3 p");
+    stat[0].textContent = lang === "en" ? "Spare Parts" : "Spare Part";
+    stat[1].textContent = lang === "en" ? "Suppliers" : "Supplier";
+    stat[2].textContent = lang === "en" ? "Accuracy" : "Akurasi";
+
+    /* FEATURE */
+    const second = document.querySelectorAll("section")[1];
+
+    second.querySelector("span").textContent =
+        lang === "en"
+        ? "Trusted Warehouse Stock Platform"
+        : "Platform Stok Gudang Terpercaya";
+
+    second.querySelector("h2").textContent =
+        lang === "en"
+        ? "GudangPro System Advantages"
+        : "Keunggulan Sistem GudangPro";
+
+    second.querySelector(".text-center p").textContent =
+        lang === "en"
+        ? "Designed to help manage vehicle spare part stock faster, more accurately, efficiently and modernly."
+        : "Dirancang untuk membantu pengelolaan stok spare part kendaraan menjadi lebih cepat, akurat, efisien, dan modern.";
+
+    /* CARD */
+    const cards = second.querySelectorAll(".grid.sm\\:grid-cols-2 > div");
+
+    const titleEn = ["Stock Monitoring","Automatic Alerts","Complete Reports","Multi User"];
+    const descEn = [
+        "Monitor incoming goods, outgoing goods and stock quantities in real-time.",
+        "System sends notifications when spare part stock is running low.",
+        "Sales, stock, supplier and transaction data are automatically organized.",
+        "Can be used simultaneously by Warehouse Admin and Manager."
+    ];
+
+    const titleId = ["Monitoring Stok","Alert Otomatis","Laporan Lengkap","Multi User"];
+    const descId = [
+        "Pantau barang masuk, keluar, dan jumlah stok secara real-time.",
+        "Sistem memberi notifikasi saat stok spare part hampir habis.",
+        "Data penjualan, stok, supplier, dan transaksi tersusun otomatis.",
+        "Bisa digunakan Admin Gudang dan Manajer bersamaan."
+    ];
+
+    cards.forEach((card,i)=>{
+        card.querySelector("h3").textContent = lang === "en" ? titleEn[i] : titleId[i];
+        card.querySelector("p").textContent  = lang === "en" ? descEn[i] : descId[i];
+    });
+
+    /* FOOTER */
+    const footer = document.querySelector("footer");
+    const h4 = footer.querySelectorAll("h4");
+    const li = footer.querySelectorAll("li");
+    const footerBtn = footer.querySelector(".bg-blue-700");
+
+    if(lang === "en"){
+        h4[0].textContent = "About System";
+        h4[1].textContent = "Advantages";
+        h4[2].textContent = "Customer Care";
+
+        const txt = [
+            "Help Center","FAQ","About Us","System Guide","Terms & Conditions",
+            "Warehouse Stock Management","Vehicle Spare Parts","Real-Time Monitoring","Automatic Reports",
+            "Easy to Use","Multi User Access","More Accurate Data","Efficient & Fast"
+        ];
+
+        li.forEach((item,i)=> item.textContent = txt[i]);
+        footerBtn.textContent = "Contact Us";
+
+    }else{
+        h4[0].textContent = "Tentang Sistem";
+        h4[1].textContent = "Keunggulan";
+        h4[2].textContent = "Customer Care";
+
+        const txt = [
+            "Pusat Bantuan","FAQ","Tentang Kami","Panduan Sistem","Syarat & Ketentuan",
+            "Manajemen Stok Gudang","Spare Part Kendaraan","Monitoring Real-Time","Laporan Otomatis",
+            "Mudah Digunakan","Akses Multi User","Data Lebih Akurat","Efisien & Cepat"
+        ];
+
+        li.forEach((item,i)=> item.textContent = txt[i]);
+        footerBtn.textContent = "Hubungi Kami";
+    }
+
+    /* BAHASA TEXT */
+    document.getElementById("currentLangText").textContent =
+        lang === "en" ? "English" : "Indonesia";
+
+    /* BENDERA */
+    const flag = document.querySelector(".relative.inline-block .w-10");
+
+    if(lang === "en"){
+        flag.innerHTML = `
+            <img src="https://flagcdn.com/w40/gb.png"
+            class="w-full h-full object-cover">
+        `;
+    }else{
+        flag.innerHTML = `
+            <div class="h-1/2 bg-red-600"></div>
+            <div class="h-1/2 bg-white"></div>
+        `;
+    }
+
+    document.getElementById("langMenu").classList.add("hidden");
+}
+
+window.onload = function(){
+    setLanguage(localStorage.getItem("lang") || "id");
+}
+</script>
 
 </body>
 
