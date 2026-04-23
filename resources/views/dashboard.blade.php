@@ -295,7 +295,43 @@
 
                 </div>
 
+<<<<<<< HEAD
             </footer>
+=======
+                <!-- Quick Action -->
+                <div class="bg-white p-6 rounded-2xl shadow mb-8">
+
+                    <h3 class="font-bold text-xl mb-4">
+                        <i class="fas fa-bolt text-yellow-500 mr-2"></i>
+                        Quick Action
+                    </h3>
+
+                    <div class="flex gap-4 flex-wrap">
+
+                        <button class="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition">
+                            <i class="fas fa-plus mr-2"></i> Barang
+                        </button>
+
+                        <button class="bg-purple-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition">
+                            <i class="fas fa-arrow-down mr-2"></i> Masuk
+                        </button>
+
+                        <button class="bg-red-600 text-white px-5 py-3 rounded-xl hover:bg-red-700 transition">
+                            <i class="fas fa-arrow-up mr-2"></i> Keluar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center text-sm text-slate-500 pb-6">
+                    © 2026 GudangPro | Sistem Manajemen Stok Gudang
+                </div>
+
+            </div>
+
+>>>>>>> 452ce7f2f6e648a1f69fc8e756be96347468f100
         </main>
     </div>
 
