@@ -29,7 +29,7 @@
 
         <a href="/"
            class="text-blue-600 font-medium hover:underline text-sm">
-            Kembali ke Home
+            Kembali ke Beranda
         </a>
 
     </div>

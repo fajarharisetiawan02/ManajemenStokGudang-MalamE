@@ -39,3 +39,7 @@ Route::get('/dashboard', function () {
 Route::get('/app', function () {
     return view('app');
 });
+
+Route::get('/data-barang', function () {
+    return view('data-barang');
+});

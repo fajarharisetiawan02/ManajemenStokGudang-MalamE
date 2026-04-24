@@ -21,10 +21,9 @@
 
             </a>
 
-
             <!-- MENU -->
             <div class="hidden md:flex items-center space-x-8 font-medium text-gray-700 ml-auto mr-10">
-                <a href="/" class="hover:text-blue-700 transition">Beranda</a>
+                <a href="/home" class="text-blue-700 font-semibold border-b-2 border-blue-700 pb-1">Beranda</a>
                 <a href="/about" class="hover:text-blue-700 transition">Tentang Kami</a>
                 <a href="/contact" class="hover:text-blue-700 transition">Kontak</a>
             </div>

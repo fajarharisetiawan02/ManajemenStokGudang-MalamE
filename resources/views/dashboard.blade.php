@@ -15,67 +15,8 @@
 <body class="bg-slate-100 font-sans">
 
     <div>
-        <!-- SIDEBAR -->
-        <aside class="w-72 bg-slate-900 text-white p-6 shadow-xl
-              fixed top-0 left-0 h-screen overflow-hidden">
-
-            <div class="pb-6 mb-6 border-b border-slate-700/60">
-                <div class="flex items-center gap-4">
-
-                    <!-- LOGO -->
-                    <div class="pb-6 mb-6 border-b border-slate-700/60">
-                        <div class="flex items-center gap-1">
-
-                            <img src="{{ asset('images/LogoG.png') }}" alt="GudangPro"
-                                class="w-16 h-16 object-contain drop-shadow-md">
-
-                            <!-- TEXT -->
-                            <h1 class="text-white text-3xl font-bold leading-none">
-                                GudangPro
-                            </h1>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Menu -->
-                <nav class="space-y-2 text-sm">
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-600 text-white">
-                        <i class="fas fa-chart-line"></i> Dashboard
-                    </a>
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-                        <i class="fas fa-box"></i> Data Barang
-                    </a>
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-                        <i class="fas fa-folder"></i> Kategori
-                    </a>
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-                        <i class="fas fa-truck"></i> Supplier
-                    </a>
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-                        <i class="fas fa-arrow-down"></i> Barang Masuk
-                    </a>
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-                        <i class="fas fa-arrow-up"></i> Barang Keluar
-                    </a>
-
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-                        <i class="fas fa-file-alt"></i> Laporan
-                    </a>
-
-                    <a href="#"
-                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/20 mt-6">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-
-                </nav>
-        </aside>
+       
+    @include('components.sidebar')
 
         <!-- Main -->
         <main class="ml-72 flex flex-col flex-1">
@@ -295,46 +236,8 @@
 
                 </div>
 
-<<<<<<< HEAD
             </footer>
-=======
-                <!-- Quick Action -->
-                <div class="bg-white p-6 rounded-2xl shadow mb-8">
-
-                    <h3 class="font-bold text-xl mb-4">
-                        <i class="fas fa-bolt text-yellow-500 mr-2"></i>
-                        Quick Action
-                    </h3>
-
-                    <div class="flex gap-4 flex-wrap">
-
-                        <button class="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition">
-                            <i class="fas fa-plus mr-2"></i> Barang
-                        </button>
-
-                        <button class="bg-purple-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition">
-                            <i class="fas fa-arrow-down mr-2"></i> Masuk
-                        </button>
-
-                        <button class="bg-red-600 text-white px-5 py-3 rounded-xl hover:bg-red-700 transition">
-                            <i class="fas fa-arrow-up mr-2"></i> Keluar
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <!-- Footer -->
-                <div class="text-center text-sm text-slate-500 pb-6">
-                    © 2026 GudangPro | Sistem Manajemen Stok Gudang
-                </div>
-
-            </div>
-
->>>>>>> 452ce7f2f6e648a1f69fc8e756be96347468f100
-        </main>
-    </div>
-
+                
     <script>
         const ctx = document.getElementById('stokChart');
 
