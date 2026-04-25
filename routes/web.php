@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\KategoriController;
 
 // ==========================
 // HALAMAN UTAMA
@@ -36,6 +37,14 @@ Route::get('/dashboard', function () {
 
 })->name('dashboard');
 
+// ==========================
+// KATEGORI BARANG
+// ==========================
+Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+
+// ==========================
+// HALAMAN APP LAIN
+// ==========================
 Route::get('/app', function () {
     return view('app');
 });
