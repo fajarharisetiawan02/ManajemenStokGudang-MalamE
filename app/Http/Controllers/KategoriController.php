@@ -16,6 +16,6 @@ class KategoriController extends Controller
             (object)['nama' => 'Kampas Rem', 'barang_count' => 12],
         ];
 
-        return view('kategori', compact('kategori'));
+        return view('pages.admin.kategori', compact('kategori'));
     }
 }

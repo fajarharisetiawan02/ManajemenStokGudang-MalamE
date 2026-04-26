@@ -1,0 +1,235 @@
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
+
+@section('icon')
+<i class="fas fa-chart-line text-blue-600"></i>
+@endsection
+
+@section('content')
+
+<!-- HERO -->
+<div class="bg-gradient-to-r from-blue-600 to-blue-400 rounded-3xl p-8 shadow-xl mb-10 flex items-center justify-between relative overflow-hidden">
+
+    <div class="text-white max-w-lg z-20">
+        <h1 class="text-4xl font-bold mb-2">
+            Halo! 👋
+        </h1>
+
+        <h2 class="text-2xl font-semibold text-white/95">
+            {{ Auth::user()->name ?? 'Admin GudangPro' }}
+        </h2>
+
+        <p class="mt-3 text-base text-white/90 leading-relaxed max-w-md">
+            Pantau stok barang, transaksi masuk & keluar, serta aktivitas gudang secara real-time dengan GudangPro.
+        </p>
+    </div>
+
+    <img src="{{ asset('images/LogoDashboard.png') }}"
+        class="hidden md:block absolute right-6 bottom-0 w-60 md:w-72 lg:w-80 object-contain z-10">
+</div>
+
+<!-- STATISTIK -->
+<div class="grid md:grid-cols-4 gap-6 mb-10">
+
+    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="flex justify-between">
+            <p class="text-slate-500">Total Barang</p>
+            <div class="bg-blue-100 p-3 rounded-xl">
+                <i class="fas fa-box text-blue-600"></i>
+            </div>
+        </div>
+        <h3 class="text-3xl font-bold text-blue-600 mt-4">
+            {{ number_format($totalBarang ?? 1250) }}
+        </h3>
+        <p class="text-green-500 text-sm mt-1">+12% bulan ini</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="flex justify-between">
+            <p class="text-slate-500">Barang Masuk</p>
+            <div class="bg-green-100 p-3 rounded-xl">
+                <i class="fas fa-arrow-down text-green-600"></i>
+            </div>
+        </div>
+        <h3 class="text-3xl font-bold text-green-600 mt-4">
+            {{ $barangMasuk ?? 45 }}
+        </h3>
+        <p class="text-green-500 text-sm mt-1">Hari ini</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="flex justify-between">
+            <p class="text-slate-500">Barang Keluar</p>
+            <div class="bg-red-100 p-3 rounded-xl">
+                <i class="fas fa-arrow-up text-red-600"></i>
+            </div>
+        </div>
+        <h3 class="text-3xl font-bold text-red-600 mt-4">
+            {{ $barangKeluar ?? 20 }}
+        </h3>
+        <p class="text-red-500 text-sm mt-1">Hari ini</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="flex justify-between">
+            <p class="text-slate-500">Supplier</p>
+            <div class="bg-purple-100 p-3 rounded-xl">
+                <i class="fas fa-truck text-purple-600"></i>
+            </div>
+        </div>
+        <h3 class="text-3xl font-bold text-purple-600 mt-4">
+            {{ $supplier ?? 18 }}
+        </h3>
+        <p class="text-slate-400 text-sm mt-1">Aktif</p>
+    </div>
+
+</div>
+
+<!-- CHART -->
+<div class="bg-white rounded-2xl shadow p-6 mb-10 h-[350px] w-full">
+    <h3 class="font-bold text-lg mb-4">
+        <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+        Pergerakan Stok
+    </h3>
+    <canvas id="stokChart" class="w-full h-full"></canvas>
+</div>
+
+<!-- TABLE & ALERT -->
+<div class="grid lg:grid-cols-3 gap-6 mb-10">
+
+    <!-- TABLE -->
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
+
+        <div class="flex justify-between mb-4">
+            <h3 class="font-bold text-lg">
+                <i class="fas fa-table text-green-600 mr-2"></i>
+                Transaksi Terbaru
+            </h3>
+            <a href="/transaksi" class="text-blue-600 text-sm hover:underline">Lihat Semua</a>
+        </div>
+
+        <table class="w-full text-sm">
+            <thead class="text-slate-400 uppercase text-xs">
+                <tr>
+                    <th class="py-3">Tanggal</th>
+                    <th>Barang</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            @if(isset($transaksi) && count($transaksi) > 0)
+
+                @foreach($transaksi as $item)
+                <tr class="border-b hover:bg-blue-50 transition">
+                    <td class="py-3">{{ $item->tanggal }}</td>
+                    <td>{{ $item->barang }}</td>
+                    <td>{{ $item->qty }}</td>
+                    <td>
+                        @if($item->status == 'Masuk')
+                            <span class="bg-green-100 text-green-600 px-2 py-1 rounded-lg text-xs font-semibold">Masuk</span>
+                        @else
+                            <span class="bg-red-100 text-red-600 px-2 py-1 rounded-lg text-xs font-semibold">Keluar</span>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+
+            @else
+                <tr>
+                    <td colspan="4" class="text-center py-6 text-slate-400">
+                        Tidak ada transaksi
+                    </td>
+                </tr>
+            @endif
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ALERT -->
+    <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-bold text-lg mb-4">
+            <i class="fas fa-triangle-exclamation text-red-500 mr-2"></i>
+            Stok Menipis
+        </h3>
+
+        @if(isset($stokMenipis) && count($stokMenipis) > 0)
+
+            <div class="space-y-3">
+                @foreach($stokMenipis as $item)
+                <div class="bg-red-50 border border-red-100 text-red-500 p-3 rounded-xl">
+                    ⚠ {{ $item->nama }} - {{ $item->stok }} pcs
+                </div>
+                @endforeach
+            </div>
+
+        @else
+            <div class="text-slate-400 text-sm">
+                Tidak ada stok menipis
+            </div>
+        @endif
+
+    </div>
+
+</div>
+
+@endsection
+
+@section('script')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById('stokChart');
+
+    if (ctx && window.Chart) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                datasets: [
+                    {
+                        label: 'Masuk',
+                        data: [10, 15, 20, 30, 25, 35, 40],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37,99,235,0.08)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Keluar',
+                        data: [5, 10, 12, 20, 18, 22, 30],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239,68,68,0.08)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#475569'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false }
+                    },
+                    y: {
+                        grid: { color: '#e5e7eb' }
+                    }
+                }
+            }
+        });
+    }
+
+});
+</script>
+@endsection

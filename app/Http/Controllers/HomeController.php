@@ -11,7 +11,7 @@ class HomeController extends Controller
     // ==========================
     public function index()
     {
-        return view('home');
+        return view('pages.landing.home');
     }
 
     // ==========================
@@ -19,15 +19,7 @@ class HomeController extends Controller
     // ==========================
     public function about()
     {
-        return view('about');
-    }
-
-    // ==========================
-    // PRODUCT
-    // ==========================
-    public function product()
-    {
-        return view('product');
+        return view('pages.landing.about');
     }
 
     // ==========================
@@ -35,6 +27,6 @@ class HomeController extends Controller
     // ==========================
     public function contact()
     {
-        return view('contact');
+        return view('pages.landing.contact');
     }
 }

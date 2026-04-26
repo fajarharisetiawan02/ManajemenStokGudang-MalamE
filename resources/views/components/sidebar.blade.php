@@ -1,13 +1,11 @@
-<!-- SIDEBAR -->
-<aside class="w-72 bg-slate-900 text-white p-6 shadow-xl
-      fixed top-0 left-0 h-screen overflow-hidden">
+<aside class="w-72 bg-gradient-to-b from-slate-900 to-slate-950 text-white p-6 shadow-xl
+      fixed top-0 left-0 h-screen flex flex-col">
 
     <!-- LOGO -->
     <div class="pb-6 mb-6 border-b border-slate-700/60">
         <div class="flex items-center gap-2">
 
-            <img src="{{ asset('images/LogoG.png') }}" alt="GudangPro"
-                class="w-14 h-14 object-contain">
+            <img src="{{ asset('images/LogoG.png') }}" alt="GudangPro" class="w-14 h-14 object-contain">
 
             <h1 class="text-white text-2xl font-bold">
                 GudangPro
@@ -17,59 +15,65 @@
     </div>
 
     <!-- MENU -->
-    <nav class="space-y-2 text-sm">
+    <nav class="space-y-2 flex-1 text-base">
 
-        <!-- DASHBOARD -->
+        <!-- MAIN -->
+        <p class="text-slate-400 text-sm uppercase mb-2 px-3">Main</p>
+
         <a href="/dashboard"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl
-           {{ request()->is('dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-chart-line"></i> Dashboard
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+           {{ request()->is('dashboard') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            <i class="fas fa-chart-line text-lg w-6"></i> Dashboard
         </a>
 
-        <!-- DATA BARANG -->
         <a href="/data-barang"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl
-           {{ request()->is('data-barang') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-box"></i> Data Barang
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+           {{ request()->is('data-barang') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            <i class="fas fa-box text-lg w-6"></i> Data Barang
         </a>
 
-        <!-- 🔥 KATEGORI (SUDAH FIX) -->
-        <a href="/kategori"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl
-           {{ request()->is('kategori') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-folder"></i> Kategori
+        <!-- MASTER -->
+        <p class="text-slate-400 text-sm uppercase mt-6 mb-2 px-3">Master</p>
+
+        <a href="/kategori" class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+           {{ request()->is('kategori') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            <i class="fas fa-folder text-lg w-6"></i> Kategori
         </a>
 
-        <!-- SUPPLIER -->
-        <a href="#"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-truck"></i> Supplier
+        <a href="/supplier" class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+           {{ request()->is('supplier') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            <i class="fas fa-truck text-lg w-6"></i> Supplier
         </a>
 
-        <!-- BARANG MASUK -->
-        <a href="#"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-arrow-down"></i> Barang Masuk
+        <!-- TRANSAKSI -->
+        <p class="text-slate-400 text-sm uppercase mt-6 mb-2 px-3">Transaksi</p>
+
+        <a href="/barang-masuk"
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
+            <i class="fas fa-arrow-down text-lg w-6"></i> Barang Masuk
         </a>
 
-        <!-- BARANG KELUAR -->
-        <a href="#"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-arrow-up"></i> Barang Keluar
+        <a href="/barang-keluar"
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
+            <i class="fas fa-arrow-up text-lg w-6"></i> Barang Keluar
         </a>
 
         <!-- LAPORAN -->
-        <a href="#"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-file-alt"></i> Laporan
-        </a>
+        <p class="text-slate-400 text-sm uppercase mt-6 mb-2 px-3">Laporan</p>
 
-        <!-- LOGOUT -->
-        <a href="/logout"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/20 mt-6">
-            <i class="fas fa-sign-out-alt"></i> Logout
+        <a href="/laporan"
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
+            <i class="fas fa-file-alt text-lg w-6"></i> Laporan
         </a>
 
     </nav>
+
+    <!-- LOGOUT -->
+    <div class="pt-6 border-t border-slate-700/50">
+        <a href="/logout"
+            class="flex items-center gap-4 px-5 py-3 rounded-xl text-red-400 hover:bg-red-500/20 transition">
+            <i class="fas fa-sign-out-alt text-lg w-6"></i> Logout
+        </a>
+    </div>
 
 </aside>

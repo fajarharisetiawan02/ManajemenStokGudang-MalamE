@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\DashboardController;
 
 // ==========================
 // HALAMAN UTAMA
@@ -22,33 +25,30 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // ==========================
-// DASHBOARD
+// DASHBOARD (FIX)
 // ==========================
-Route::get('/dashboard', function () {
-
-    $sparepart = [
-        ['nama' => 'Oli Mesin', 'stok' => 20, 'jenis' => 'Oli'],
-        ['nama' => 'Ban Mobil', 'stok' => 5, 'jenis' => 'Ban'],
-        ['nama' => 'Aki', 'stok' => 3, 'jenis' => 'Elektrik'],
-        ['nama' => 'Kampas Rem', 'stok' => 12, 'jenis' => 'Rem'],
-    ];
-
-    return view('dashboard', compact('sparepart'));
-
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // ==========================
-// KATEGORI BARANG
+// KATEGORI
 // ==========================
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
 
 // ==========================
-// HALAMAN APP LAIN
+// DATA BARANG (SUDAH DIRAPIKAN)
 // ==========================
-Route::get('/app', function () {
-    return view('app');
+Route::resource('/data-barang', BarangController::class);
+
+// ==========================
+// SUPPLIER
+// ==========================
+Route::get('/supplier', function () {
+    return view('pages.admin.supplier');
 });
 
-Route::get('/data-barang', function () {
-    return view('data-barang');
+// ==========================
+// LAPORAN
+// ==========================
+Route::get('/laporan', function () {
+    return view('pages.admin.laporan');
 });
