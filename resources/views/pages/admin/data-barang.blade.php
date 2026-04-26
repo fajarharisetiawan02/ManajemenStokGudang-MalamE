@@ -102,8 +102,7 @@
 
 <!-- MODAL -->
 <div id="modalTambah"
-    class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-
+    class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm items-center justify-center z-50 px-4">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl min-h-[500px] p-10 animate-scaleIn">
 
         <!-- HEADER -->
@@ -182,15 +181,5 @@
 
     </div>
 </div>
-
-<script>
-function openModal() {
-    document.getElementById('modalTambah').classList.remove('hidden');
-}
-
-function closeModal() {
-    document.getElementById('modalTambah').classList.add('hidden');
-}
-</script>
 
 @endsection

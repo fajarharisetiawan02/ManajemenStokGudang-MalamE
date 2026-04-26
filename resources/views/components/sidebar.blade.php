@@ -23,13 +23,16 @@
         <a href="/dashboard"
             class="flex items-center gap-4 px-5 py-3 rounded-xl transition
            {{ request()->is('dashboard') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-chart-line text-lg w-6"></i> Dashboard
+            <i class="fas fa-chart-line text-lg w-6"></i> 
+                        <span>Dashboard</span>
+
         </a>
 
         <a href="/data-barang"
             class="flex items-center gap-4 px-5 py-3 rounded-xl transition
            {{ request()->is('data-barang') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-box text-lg w-6"></i> Data Barang
+            <i class="fas fa-box text-lg w-6"></i> 
+                        <span>Data Barang</span>
         </a>
 
         <!-- MASTER -->
@@ -37,12 +40,14 @@
 
         <a href="/kategori" class="flex items-center gap-4 px-5 py-3 rounded-xl transition
            {{ request()->is('kategori') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-folder text-lg w-6"></i> Kategori
+            <i class="fas fa-folder text-lg w-6"></i> 
+                        <span>Kategori</span>   
         </a>
 
         <a href="/supplier" class="flex items-center gap-4 px-5 py-3 rounded-xl transition
            {{ request()->is('supplier') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
-            <i class="fas fa-truck text-lg w-6"></i> Supplier
+            <i class="fas fa-truck text-lg w-6"></i> 
+                        <span>Supplier</span>   
         </a>
 
         <!-- TRANSAKSI -->
@@ -50,12 +55,14 @@
 
         <a href="/barang-masuk"
             class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-arrow-down text-lg w-6"></i> Barang Masuk
+            <i class="fas fa-arrow-down text-lg w-6"></i> 
+            <span>Barang Masuk</span>
         </a>
 
         <a href="/barang-keluar"
             class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-arrow-up text-lg w-6"></i> Barang Keluar
+            <i class="fas fa-arrow-up text-lg w-6"></i> 
+            <span>Barang Keluar</span>
         </a>
 
         <!-- LAPORAN -->
@@ -63,7 +70,8 @@
 
         <a href="/laporan"
             class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
-            <i class="fas fa-file-alt text-lg w-6"></i> Laporan
+            <i class="fas fa-file-alt text-lg w-6"></i> 
+            <span>Laporan</span>
         </a>
 
     </nav>
@@ -72,7 +80,8 @@
     <div class="pt-6 border-t border-slate-700/50">
         <a href="/logout"
             class="flex items-center gap-4 px-5 py-3 rounded-xl text-red-400 hover:bg-red-500/20 transition">
-            <i class="fas fa-sign-out-alt text-lg w-6"></i> Logout
+            <i class="fas fa-sign-out-alt text-lg w-6"></i> 
+            <span id="menuLogout">Keluar</span>
         </a>
     </div>
 

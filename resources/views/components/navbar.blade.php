@@ -16,59 +16,50 @@
             </span>
         </button>
 
-<!-- PROFILE DROPDOWN (FLOWBITE) -->
 <div class="relative">
 
     <!-- BUTTON -->
-    <button id="dropdownUserButton" data-dropdown-toggle="dropdownProfile"
-        class="bg-blue-50 px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition">
-        
+<button id="dropdownUserButton"
+    data-dropdown-toggle="dropdownProfile"
+    data-dropdown-placement="bottom-start"
+    class="bg-blue-50 px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition">
+
         <i class="fas fa-user-circle text-blue-600 text-xl"></i>
         <span class="font-medium">Admin</span>
         <i class="fas fa-chevron-down text-sm text-gray-500"></i>
     </button>
 
     <!-- DROPDOWN -->
-    <div id="dropdownProfile"
-        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border z-50">
+<div id="dropdownProfile"
+    class="hidden z-50 w-56 bg-white rounded-xl shadow-lg border mt-2">
+        <ul class="py-2 text-sm text-gray-700">
 
-        <a href="#" class="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 transition">
-            <i class="fas fa-user text-gray-500"></i> Profil
-        </a>
+            <li>
+                <a href="#" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <i class="fas fa-user text-gray-500"></i> Profil
+                </a>
+            </li>
 
-        <a href="#" class="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 transition">
-            <i class="fas fa-cog text-gray-500"></i> Pengaturan
-        </a>
+            <li>
+                <a href="#" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <i class="fas fa-cog text-gray-500"></i> Pengaturan
+                </a>
+            </li>
 
-        <a href="/ubah-password" class="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 transition">
-            <i class="fas fa-key text-yellow-500"></i> Ubah Kata Sandi
-        </a>
+            <li>
+                <a href="/ubah-password" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <i class="fas fa-key text-yellow-500"></i> Ubah Kata Sandi
+                </a>
+            </li>
 
-        <hr>
+        </ul>
 
-        <a href="/logout" class="flex items-center gap-2 px-4 py-3 text-red-500 hover:bg-red-50 transition">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
+        <div class="py-2">
+            <a href="/logout" class="flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </a>
+        </div>
 
     </div>
 
 </div>
-
-    </div>
-
-</div>
-
-<!-- SCRIPT -->
-<script>
-    function toggleDropdown() {
-        document.getElementById("dropdownProfile").classList.toggle("hidden");
-    }
-
-    // Optional: klik luar untuk close
-    window.addEventListener('click', function (e) {
-        const dropdown = document.getElementById("dropdownProfile");
-        if (!e.target.closest('.relative')) {
-            dropdown.classList.add("hidden");
-        }
-    });
-</script>

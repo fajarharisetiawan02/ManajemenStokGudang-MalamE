@@ -1,129 +1,80 @@
-@extends('layouts.auth')
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
 
-@section('title', 'GudangPro | Login')
+        <div class="container mx-auto px-8 py-12">
 
-@section('content')
+            <!-- TOP -->
+            <div class="grid md:grid-cols-4 gap-10 pb-10 border-b border-gray-200">
 
-    <!-- NAVBAR -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200">
-        <div class="container mx-auto px-8 h-20 flex justify-between items-center">
+                <!-- BRAND -->
+                <div>
+                    <h3 class="text-3xl font-bold text-blue-700 mb-5">
+                        GudangPro
+                    </h3>
 
-            <div class="flex items-center">
-                <img src="{{ asset('images/LogoGudangPro.png') }}"
-                    class="h-14 w-auto object-contain brightness-75 contrast-125">
-            </div>
-
-            <a href="/" class="text-blue-600 font-medium hover:underline text-sm">
-                Kembali ke Beranda
-            </a>
-
-        </div>
-    </header>
-
-    <!-- CONTENT -->
-    <section class="flex-1 px-6 py-10 flex items-center">
-        <div
-            class="max-w-7xl mx-auto w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid lg:grid-cols-2 min-h-[650px]">
-
-            <!-- FORM -->
-            <div class="p-8 lg:p-12 flex flex-col justify-center">
-
-                <div class="mb-8">
-                    <h2 class="text-5xl font-extrabold text-slate-800 mb-3">
-                        Selamat Datang 👋
-                    </h2>
-
-                    <p class="text-gray-500 text-lg">
-                        Masuk untuk mengelola stok gudang Anda.
-                    </p>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li><a href="#" class="hover:text-blue-600 transition">Pusat Bantuan</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition">FAQ</a></li>
+                        <li><a href="/about" class="hover:text-blue-600 transition">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition">Panduan Sistem</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition">Syarat & Ketentuan</a></li>
+                    </ul>
                 </div>
 
-                @if(session('error'))
-                <div class="mb-5 bg-red-100 border border-red-200 text-red-600 px-4 py-3 rounded-2xl text-sm">
-                    {{ session('error') }}
+                <!-- ADMIN -->
+
+                <div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-5">
+                        Tentang Sistem
+                    </h4>
+
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li>Manajemen Stok Gudang</li>
+                        <li>Spare Part Kendaraan</li>
+                        <li>Monitoring Real-Time</li>
+                        <li>Laporan Otomatis</li>
+                    </ul>
                 </div>
-                @endif
 
-                <form method="POST" action="/login" class="space-y-5">
-                    @csrf
+                <div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-5">
+                        Keunggulan
+                    </h4>
 
-                    <!-- USERNAME -->
-                    <div>
-                        <label class="text-sm font-semibold text-gray-700 mb-2 block">
-                            Email / Username
-                        </label>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li>Mudah Digunakan</li>
+                        <li>Akses Multi User</li>
+                        <li>Data Lebih Akurat</li>
+                        <li>Efisien & Cepat</li>
+                    </ul>
+                </div>
 
-                        <input type="text" name="username" required placeholder="Masukkan username"
-                            class="w-full border border-gray-200 rounded-2xl px-5 py-4 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                    </div>
+                <!-- CUSTOMER CARE -->
+                <div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-5">
+                        Customer Care
+                    </h4>
 
-                    <!-- PASSWORD -->
-                    <div>
-                        <label class="text-sm font-semibold text-gray-700 mb-2 block">
-                            Kata Sandi
-                        </label>
+                    <div class="space-y-4 text-sm text-gray-600">
 
-                        <div class="relative">
+                        <p><i class="fa-brands fa-whatsapp text-green-500 mr-2"></i>0821-1392-5219</p>
+                        <p><i class="fa-solid fa-envelope text-red-500 mr-2"></i>info@gudangpro.com</p>
 
-                            <input type="password" id="password" name="password" required
-                                placeholder="Masukkan password"
-                                class="w-full border border-gray-200 rounded-2xl px-5 py-4 pr-14 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-
-                            <button type="button" onclick="togglePassword()"
-                                class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition">
-
-                                <i id="eyeIcon" class="fa-solid fa-eye"></i>
-
-                            </button>
-
-                        </div>
-                    </div>
-
-                    <!-- OPTION -->
-                    <div class="flex justify-between items-center text-sm text-gray-500">
-
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rounded text-blue-600">
-                            Remember me
-                        </label>
-
-                        <a id="forgotPassword" href="#" class="text-blue-600 hover:underline">
-                            Lupa Kata Sandi?
+                        <a href="/contact"
+                            class="block text-center bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition">
+                            Hubungi Kami
                         </a>
 
                     </div>
 
-                    <!-- BUTTON -->
-                    <button type="submit"
-                        class="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-semibold hover:scale-[1.02] hover:shadow-xl transition duration-300">
-                        Masuk
-                    </button>
-
-                </form>
+                </div>
 
             </div>
 
-            <!-- IMAGE -->
-            <div
-                class="hidden lg:flex bg-gradient-to-br from-[#eef4ff] to-[#dfeaff] items-center justify-center relative">
+            <!-- BOTTOM -->
+            <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
 
-                <img src="{{ asset('images/logingudang.png') }}" class="w-full h-full object-cover">
-
-                <div class="absolute inset-0 bg-white/10"></div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-gray-200">
-
-        <div class="container mx-auto px-8 py-10">
-
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-
-                <!-- Bahasa -->
+                <!-- LANGUAGE SWITCHER -->
                 <div class="relative inline-block">
 
                     <!-- BUTTON -->
@@ -216,7 +167,7 @@
 
                 </div>
 
-                <!-- Copy -->
+                <!-- COPYRIGHT -->
                 <div class="text-sm text-gray-500 text-center">
                     © 2026 GudangPro Copyright
                 </div>
@@ -226,5 +177,3 @@
         </div>
 
     </footer>
-
-@endsection
