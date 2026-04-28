@@ -52,3 +52,14 @@ Route::get('/supplier', function () {
 Route::get('/laporan', function () {
     return view('pages.admin.laporan');
 });
+
+// ==========================
+// INVENTORY (BARANG MASUK & KELUAR)
+// ==========================
+Route::get('/barang-masuk', function () {
+    return view('pages.admin.barang-masuk');
+});
+
+Route::get('/barang-keluar', function () {
+    return view('pages.admin.barang-keluar');
+});

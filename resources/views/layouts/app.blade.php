@@ -18,17 +18,19 @@
 
 <body class="bg-slate-100 font-sans">
 
-    <div class="flex">
+    <div class="flex min-h-screen">
 
         <!-- SIDEBAR -->
-        @include('components.sidebar')
+        <div class="hidden md:block">
+            @include('components.sidebar')
+        </div>
 
-        <!-- CONTENT -->
-        <div class="ml-72 w-full flex flex-col min-h-screen">
+        <!-- MAIN -->
+        <div class="flex-1 flex flex-col w-full">
 
             <!-- NAVBAR -->
-            <div class="bg-white shadow px-8 py-4 flex justify-between items-center">
-
+            <div class="bg-white shadow px-4 md:px-8 py-4 flex justify-between items-center">
+            
                 <!-- TITLE -->
                 <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
                     @yield('icon')
@@ -90,14 +92,14 @@
             </div>
 
             <!-- CONTENT -->
-            <div class="p-8 flex-1">
+            <div class="p-4 md:p-8 flex-1">
                 @yield('content')
             </div>
 
             <!-- FOOTER -->
             <footer class="bg-white border-t border-gray-200">
 
-                <div class="container mx-auto px-8 py-10">
+                <div class="container mx-auto px-4 md:px-8 py-10">
 
                     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
 
