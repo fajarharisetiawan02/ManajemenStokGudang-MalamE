@@ -9,7 +9,8 @@
 @section('content')
 
 <!-- HERO -->
-<div class="bg-gradient-to-r from-blue-600 to-blue-400 rounded-3xl p-8 shadow-xl mb-10 flex items-center justify-between relative overflow-hidden">
+<div
+    class="bg-gradient-to-r from-blue-600 to-blue-400 rounded-3xl p-8 shadow-xl mb-10 flex items-center justify-between relative overflow-hidden">
 
     <div class="text-white max-w-lg z-20">
         <h1 class="text-4xl font-bold mb-2">
@@ -85,16 +86,107 @@
     </div>
 
 </div>
+<div class="grid lg:grid-cols-2 gap-6 mb-10">
 
-<!-- CHART -->
-<div class="bg-white rounded-2xl shadow p-6 mb-10 h-[350px] w-full">
-    <h3 class="font-bold text-lg mb-4">
-        <i class="fas fa-chart-area text-blue-600 mr-2"></i>
-        Pergerakan Stok
-    </h3>
-    <canvas id="stokChart" class="w-full h-full"></canvas>
+    <!-- LINE CHART -->
+    <div class="bg-white rounded-2xl shadow p-6 h-[400px] flex flex-col">
+
+        <!-- HEADER + FILTER -->
+        <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+
+            <h3 class="font-bold text-lg">
+                <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                Pergerakan Stok
+            </h3>
+
+            <!-- FILTER TANGGAL -->
+            <div class="flex gap-2 items-center">
+
+                <div class="relative">
+                    <input id="rangeTanggal"
+                        class="pl-3 pr-10 py-1.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        placeholder="Pilih tanggal">
+
+                    <button type="button" onclick="document.getElementById('rangeTanggal').focus()"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-600">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10m-13 9h16a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+
+                    </button>
+                </div>
+
+                <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Terapkan
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CHART -->
+        <div class="flex-1">
+    <canvas id="stokChart"></canvas>
+         </div>
+
+    </div>
+
+    <!-- DONUT CHART -->
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <!-- HEADER + FILTER -->
+        <div class="flex flex-wrap justify-between items-center mb-6 gap-3">
+
+            <h3 class="font-bold text-lg">
+                <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                Distribusi Stok per Supplier
+            </h3>
+
+            <!-- FILTER TANGGAL -->
+            <div class="flex gap-2 items-center">
+
+                <div class="relative">
+                    <input id="rangeTanggalDonut"
+                        class="pl-3 pr-10 py-1.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        placeholder="Pilih tanggal">
+
+                    <button type="button" onclick="document.getElementById('rangeTanggalDonut').focus()"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 z-10 cursor-pointer text-slate-400 hover:text-blue-600">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10m-13 9h16a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+
+                    </button>
+                </div>
+
+                <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Terapkan
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="grid grid-cols-2 items-center gap-4">
+
+            <div class="h-[220px]">
+                <canvas id="donutGudang"></canvas>
+            </div>
+
+            <div id="legendSupplier" class="space-y-2 text-sm"></div>
+
+        </div>
+
+    </div>
+
 </div>
-
 <!-- TABLE & ALERT -->
 <div class="grid lg:grid-cols-3 gap-6 mb-10">
 
@@ -120,7 +212,7 @@
             </thead>
             <tbody>
 
-            @if(isset($transaksi) && count($transaksi) > 0)
+                @if(isset($transaksi) && count($transaksi) > 0)
 
                 @foreach($transaksi as $item)
                 <tr class="border-b hover:bg-blue-50 transition">
@@ -129,21 +221,22 @@
                     <td>{{ $item->qty }}</td>
                     <td>
                         @if($item->status == 'Masuk')
-                            <span class="bg-green-100 text-green-600 px-2 py-1 rounded-lg text-xs font-semibold">Masuk</span>
+                        <span
+                            class="bg-green-100 text-green-600 px-2 py-1 rounded-lg text-xs font-semibold">Masuk</span>
                         @else
-                            <span class="bg-red-100 text-red-600 px-2 py-1 rounded-lg text-xs font-semibold">Keluar</span>
+                        <span class="bg-red-100 text-red-600 px-2 py-1 rounded-lg text-xs font-semibold">Keluar</span>
                         @endif
                     </td>
                 </tr>
                 @endforeach
 
-            @else
+                @else
                 <tr>
                     <td colspan="4" class="text-center py-6 text-slate-400">
                         Tidak ada transaksi
                     </td>
                 </tr>
-            @endif
+                @endif
 
             </tbody>
         </table>
@@ -158,18 +251,18 @@
 
         @if(isset($stokMenipis) && count($stokMenipis) > 0)
 
-            <div class="space-y-3">
-                @foreach($stokMenipis as $item)
-                <div class="bg-red-50 border border-red-100 text-red-500 p-3 rounded-xl">
-                    ⚠ {{ $item->nama }} - {{ $item->stok }} pcs
-                </div>
-                @endforeach
+        <div class="space-y-3">
+            @foreach($stokMenipis as $item)
+            <div class="bg-red-50 border border-red-100 text-red-500 p-3 rounded-xl">
+                ⚠ {{ $item->nama }} - {{ $item->stok }} pcs
             </div>
+            @endforeach
+        </div>
 
         @else
-            <div class="text-slate-400 text-sm">
-                Tidak ada stok menipis
-            </div>
+        <div class="text-slate-400 text-sm">
+            Tidak ada stok menipis
+        </div>
         @endif
 
     </div>

@@ -11,55 +11,55 @@ use App\Http\Controllers\DashboardController;
 // ==========================
 // HALAMAN UTAMA
 // ==========================
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index']);
-Route::get('/about', [HomeController::class, 'about'])->name('about');
-Route::get('/product', [HomeController::class, 'product'])->name('product');
-Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/home', 'index');
+    Route::get('/about', 'about')->name('about');
+    Route::get('/product', 'product')->name('product');
+    Route::get('/contact', 'contact')->name('contact');
+});
 
 // ==========================
 // LOGIN
 // ==========================
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'login');
+    Route::get('/logout', 'logout')->name('logout');
+});
 
 // ==========================
-// DASHBOARD (FIX)
+// DASHBOARD
 // ==========================
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
 // ==========================
 // KATEGORI
 // ==========================
-Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+Route::resource('/kategori', KategoriController::class);
+
 
 // ==========================
-// DATA BARANG (SUDAH DIRAPIKAN)
+// DATA BARANG (FULL CRUD)
 // ==========================
 Route::resource('/data-barang', BarangController::class);
 
+
 // ==========================
-// SUPPLIER
+// SUPPLIER (JANGAN PAKAI VIEW LANGSUNG)
 // ==========================
-Route::get('/supplier', function () {
-    return view('pages.admin.supplier');
-});
+Route::resource('/supplier', SupplierController::class);
+
 
 // ==========================
 // LAPORAN
 // ==========================
-Route::get('/laporan', function () {
-    return view('pages.admin.laporan');
-});
+Route::view('/laporan', 'pages.admin.laporan')->name('laporan');
+
 
 // ==========================
-// INVENTORY (BARANG MASUK & KELUAR)
+// INVENTORY
 // ==========================
-Route::get('/barang-masuk', function () {
-    return view('pages.admin.barang-masuk');
-});
-
-Route::get('/barang-keluar', function () {
-    return view('pages.admin.barang-keluar');
-});
+Route::view('/barang-masuk', 'pages.admin.barang-masuk')->name('barang.masuk');
+Route::view('/barang-keluar', 'pages.admin.barang-keluar')->name('barang.keluar');

@@ -1,5 +1,6 @@
-<aside class="w-72 h-screen flex flex-col">
-    
+<aside class="w-72 bg-gradient-to-b from-slate-900 to-slate-950 text-white p-6 shadow-xl
+      fixed top-0 left-0 h-screen flex flex-col">
+
     <!-- LOGO -->
     <div class="pb-6 mb-6 border-b border-slate-700/60">
         <div class="flex items-center gap-2">
@@ -53,15 +54,13 @@
         <p class="text-slate-400 text-sm uppercase mt-6 mb-2 px-3">Transaksi</p>
 
         <a href="/barang-masuk"
-             class="flex items-center gap-4 px-5 py-3 rounded-xl transition
-             {{ request()->is('barang-masuk') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
             <i class="fas fa-arrow-down text-lg w-6"></i> 
             <span>Barang Masuk</span>
         </a>
 
         <a href="/barang-keluar"
-            class="flex items-center gap-4 px-5 py-3 rounded-xl transition
-            {{ request()->is('barang-keluar') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            class="flex items-center gap-4 px-5 py-3 rounded-xl transition hover:bg-slate-800 text-slate-300">
             <i class="fas fa-arrow-up text-lg w-6"></i> 
             <span>Barang Keluar</span>
         </a>

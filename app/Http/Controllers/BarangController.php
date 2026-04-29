@@ -6,63 +6,62 @@ use Illuminate\Http\Request;
 
 class BarangController extends Controller
 {
-    // 🔹 TAMPIL DATA BARANG (DUMMY)
     public function index()
     {
-        $barang = [
-            (object)[
-                'id' => 1,
-                'no_part' => '04465-0D070',
-                'nama_barang' => 'Oli Mesin',
-                'kategori' => (object)['nama_kategori' => 'Oli'],
-                'supplier' => (object)['nama_supplier' => 'PT Astra'],
-                'stok' => 50,
-                'harga' => 150000
-            ],
-            (object)[
-                'id' => 2,
-                'no_part' => '12345-ABC',
-                'nama_barang' => 'Ban Mobil',
-                'kategori' => (object)['nama_kategori' => 'Ban'],
-                'supplier' => (object)['nama_supplier' => 'PT Bridgestone'],
-                'stok' => 20,
-                'harga' => 500000
-            ]
-        ];
+        $barang = session('barang', []);
 
         return view('pages.admin.data-barang', compact('barang'));
     }
 
-    // 🔹 FORM TAMBAH
-    public function create()
-    {
-        return view('tambah-barang'); 
-    }
-
-    // 🔹 SIMPAN (dummy)
     public function store(Request $request)
     {
-        return redirect('/data-barang')
-            ->with('success', 'Data berhasil ditambahkan (dummy)');
+        $barang = session('barang', []);
+
+        $barang[] = (object)[
+            'id' => count($barang) + 1,
+            'no_part' => $request->no_part,
+            'nama_barang' => $request->nama_barang,
+            'kategori' => (object)['nama_kategori' => $request->kategori],
+            'brand' => $request->brand,
+            'supplier' => (object)['nama_supplier' => $request->supplier],
+            'stok' => $request->stok,
+            'harga' => $request->harga
+        ];
+
+        session(['barang' => $barang]);
+
+        return redirect('/data-barang')->with('success', 'tambah');
     }
 
-    // 🔹 EDIT (dummy)
-    public function edit($id)
-    {
-        return view('edit-barang'); 
-    }
-
-    // 🔹 UPDATE (dummy)
     public function update(Request $request, $id)
     {
-        return redirect('/data-barang')
-            ->with('success', 'Data berhasil diupdate (dummy)');
+        $barang = session('barang', []);
+
+        foreach ($barang as $key => $item) {
+            if ($item->id == $id) {
+                $barang[$key]->no_part = $request->no_part;
+                $barang[$key]->nama_barang = $request->nama_barang;
+                $barang[$key]->brand = $request->brand;
+                $barang[$key]->stok = $request->stok;
+                $barang[$key]->harga = $request->harga;
+                $barang[$key]->kategori = (object)['nama_kategori' => $request->kategori];
+                $barang[$key]->supplier = (object)['nama_supplier' => $request->supplier];
+            }
+        }
+
+        session(['barang' => $barang]);
+
+        return redirect('/data-barang')->with('success', 'update');
     }
 
-    // 🔹 HAPUS (dummy)
     public function destroy($id)
     {
-        return redirect('/data-barang')
-            ->with('success', 'Data berhasil dihapus (dummy)');
+        $barang = session('barang', []);
+
+        $barang = array_values(array_filter($barang, fn($item) => $item->id != $id));
+
+        session(['barang' => $barang]);
+
+        return redirect('/data-barang')->with('success', 'delete');
     }
 }

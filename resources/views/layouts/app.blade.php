@@ -13,24 +13,24 @@
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 </head>
 
 
 <body class="bg-slate-100 font-sans">
 
-    <div class="flex min-h-screen">
+    <div class="flex">
 
         <!-- SIDEBAR -->
-        <div class="hidden md:block">
-            @include('components.sidebar')
-        </div>
+        @include('components.sidebar')
 
-        <!-- MAIN -->
-        <div class="flex-1 flex flex-col w-full">
+        <!-- CONTENT -->
+        <div class="ml-72 w-full flex flex-col min-h-screen">
 
             <!-- NAVBAR -->
-            <div class="bg-white shadow px-4 md:px-8 py-4 flex justify-between items-center">
-            
+            <div class="bg-white shadow px-8 py-4 flex justify-between items-center">
+
                 <!-- TITLE -->
                 <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
                     @yield('icon')
@@ -92,14 +92,14 @@
             </div>
 
             <!-- CONTENT -->
-            <div class="p-4 md:p-8 flex-1">
+            <div class="p-8 flex-1">
                 @yield('content')
             </div>
 
             <!-- FOOTER -->
             <footer class="bg-white border-t border-gray-200">
 
-                <div class="container mx-auto px-4 md:px-8 py-10">
+                <div class="container mx-auto px-8 py-10">
 
                     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
 
@@ -169,6 +169,10 @@
             </footer>
 
             <!-- SCRIPT KHUSUS HALAMAN -->
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
             @yield('script')
 </body>
 
