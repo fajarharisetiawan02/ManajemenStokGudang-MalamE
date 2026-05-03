@@ -13,7 +13,6 @@
 
     <div class="flex items-center gap-2 mb-4">
         <div class="w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-600">
-            <i data-lucide="minus" class="w-4 h-4"></i>
         </div>
 
         <h3 class="text-md font-semibold text-gray-700">
@@ -57,8 +56,8 @@
 
             <!-- JUMLAH -->
             <div>
-                <label class="text-sm font-semibold text-gray-600">Jumlah Masuk</label>
-                <input type="number" name="jumlah" placeholder="Masukkan jumlah"
+                <label class="text-sm font-semibold text-gray-600">Jumlah Keluar</label>
+                <input type="number" name="jumlah" placeholder="Kurangkan jumlah"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg mt-1 focus:ring-2 focus:ring-blue-500">
             </div>
 
