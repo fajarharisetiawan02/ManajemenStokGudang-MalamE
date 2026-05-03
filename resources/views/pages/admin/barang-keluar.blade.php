@@ -12,9 +12,6 @@
 <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 mb-6">
 
     <div class="flex items-center gap-2 mb-4">
-        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-600">
-        </div>
-
         <h3 class="text-md font-semibold text-gray-700">
             Form Barang Keluar
         </h3>
