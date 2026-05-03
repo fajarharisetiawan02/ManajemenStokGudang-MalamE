@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function index()
+     public function index()
     {
         return view('pages.auth.login');
     }
@@ -21,22 +21,10 @@ class LoginController extends Controller
 
             session([
                 'login' => true,
-                'role' => 'admin',
                 'username' => $username
             ]);
 
             return redirect('/dashboard');
-        }
-
-        if ($username == 'manager' && $password == 'manager123') {
-
-            session([
-                'login' => true,
-                'role' => 'manager',
-                'username' => $username
-            ]);
-
-            return redirect('/dashboardmanager');
         }
 
         return back()->with('error', 'Username atau Password salah!');

@@ -8,18 +8,7 @@
 
 <body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 font-sans">
 
-<!-- NAVBAR -->
-<nav class="bg-white/80 backdrop-blur shadow-md px-8 py-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-blue-600">📦 StockGudang</h1>
-
-    <div class="space-x-6 font-medium">
-        <a href="/" class="hover:text-blue-600 transition">Home</a>
-        <a href="/about" class="hover:text-purple-600 transition">Tentang Kami</a>
-        <a href="/contact" class="text-pink-600 font-bold border-b-2 border-pink-600 pb-1">
-            Contact
-        </a>
-    </div>
-</nav>
+    <x-landing-navbar />
 
 <!-- CONTACT SECTION -->
 <section class="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] py-20 text-white">

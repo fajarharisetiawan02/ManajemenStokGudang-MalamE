@@ -4,7 +4,6 @@
 
 @section('content')
 
-@include('components.landing-navbar')
     <!-- HERO -->
     <section class="relative overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50">
         <div class="container mx-auto px-8 py-20 grid md:grid-cols-2 gap-10 items-center min-h-[88vh]">
@@ -186,5 +185,4 @@
         </div>
 
     </section>
-    @include('components.landing-footer')
 @endsection

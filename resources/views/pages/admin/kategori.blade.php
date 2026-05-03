@@ -13,12 +13,12 @@
         <input type="text" id="searchInput"
             placeholder="Cari kategori..."
             class="w-full pl-10 pr-3 py-2 rounded-xl border bg-white shadow-sm
-                   focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                   focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
     </div>
 
     <!-- BUTTON -->
     <button onclick="openModalTambah()"
-        class="bg-blue-600 text-white px-6 py-2 rounded-xl shadow-md">
+        class="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-xl shadow-md">
         + Tambah Kategori
     </button>
 
@@ -44,19 +44,24 @@ $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
     : 'https://via.placeholder.com/400x300?text=No+Image';
 @endphp
 
-<div class="kategori-item bg-white rounded-2xl overflow-hidden shadow"
+<div class="kategori-item bg-white rounded-2xl overflow-hidden shadow-md
+            hover:shadow-xl hover:-translate-y-1 transition duration-300"
      data-kategori="{{ strtolower($item->kelompok ?? 'body') }}">
 
     <!-- FOTO -->
     <div class="h-44 bg-gray-100 overflow-hidden">
         <img src="{{ $fotoUrl }}"
-            class="w-full h-full object-cover hover:scale-110 transition">
+            class="w-full h-full object-cover transition duration-300 hover:scale-110">
     </div>
 
     <!-- CONTENT -->
     <div class="p-5">
         <h3 class="font-bold text-lg">{{ $item->nama }}</h3>
-        <p class="text-sm text-gray-500">{{ $item->jumlah }} item</p>
+
+        <!-- jumlah dibuat lebih jelas -->
+        <p class="text-sm text-gray-500 mt-1">
+            <span class="font-semibold text-gray-700">{{ $item->jumlah }}</span> item
+        </p>
 
         <span class="inline-block mt-3 text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-600 uppercase">
             {{ $item->kelompok }}
@@ -72,7 +77,7 @@ $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
                 data-jumlah="{{ $item->jumlah }}"
                 data-status="{{ $item->status }}"
                 data-kelompok="{{ $item->kelompok }}"
-                class="px-3 py-1 text-sm bg-gray-100 rounded-lg">
+                class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition">
                 ✏️ Edit
             </button>
 
@@ -84,7 +89,7 @@ $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
                 @method('DELETE')
 
                 <button type="submit"
-                    class="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-lg">
+                    class="px-3 py-1 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-lg transition">
                     🗑 Hapus
                 </button>
             </form>
@@ -98,88 +103,10 @@ $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
 
 </div>
 
-<!-- EMPTY -->
-<div id="emptyState" class="hidden text-center text-gray-400 mt-10">
-    Tidak ada data ditemukan
-</div>
-
-<!-- MODAL TAMBAH -->
-<div id="modalTambah" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
-    <div class="w-full max-w-md bg-white rounded-2xl">
-
-        <div class="p-5 bg-blue-600 text-white font-bold">
-            Tambah Kategori
-        </div>
-
-        <form method="POST" action="{{ route('kategori.store') }}" enctype="multipart/form-data"
-              class="p-5 space-y-3">
-            @csrf
-
-            <input name="nama" class="w-full border p-2 rounded-xl" placeholder="Nama">
-            <input name="jumlah" type="number" class="w-full border p-2 rounded-xl" placeholder="Jumlah">
-
-            <select name="status" class="w-full border p-2 rounded-xl">
-                <option value="aktif">Aktif</option>
-                <option value="nonaktif">Nonaktif</option>
-            </select>
-
-            <select name="kelompok" class="w-full border p-2 rounded-xl">
-                <option value="engine">Engine</option>
-                <option value="electrical">Electrical</option>
-                <option value="suspension">Suspension</option>
-                <option value="body">Body</option>
-            </select>
-
-            <input type="file" name="foto" class="w-full border p-2 rounded-xl">
-
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModalTambah()" class="px-4 py-2 bg-gray-100 rounded-xl">Batal</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-xl">Simpan</button>
-            </div>
-
-        </form>
-
-    </div>
-</div>
-
-<!-- MODAL EDIT -->
-<div id="modalEdit" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
-    <div class="w-full max-w-md bg-white rounded-2xl">
-
-        <div class="p-5 bg-green-600 text-white font-bold">
-            Edit Kategori
-        </div>
-
-        <form id="editForm" method="POST" enctype="multipart/form-data"
-              class="p-5 space-y-3">
-
-            @csrf @method('PUT')
-
-            <input id="editNama" name="nama" class="w-full border p-2 rounded-xl">
-            <input id="editJumlah" name="jumlah" class="w-full border p-2 rounded-xl">
-
-            <select id="editStatus" name="status" class="w-full border p-2 rounded-xl">
-                <option value="aktif">Aktif</option>
-                <option value="nonaktif">Nonaktif</option>
-            </select>
-
-            <select id="editKelompok" name="kelompok" class="w-full border p-2 rounded-xl">
-                <option value="engine">Engine</option>
-                <option value="electrical">Electrical</option>
-                <option value="suspension">Suspension</option>
-                <option value="body">Body</option>
-            </select>
-
-            <input type="file" name="foto" class="w-full border p-2 rounded-xl">
-
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModalEdit()" class="px-4 py-2 bg-gray-100 rounded-xl">Batal</button>
-                <button class="px-4 py-2 bg-green-600 text-white rounded-xl">Update</button>
-            </div>
-
-        </form>
-
-    </div>
+<!-- EMPTY STATE (lebih proper) -->
+<div id="emptyState" class="hidden text-center text-gray-400 mt-16">
+    <div class="text-5xl mb-3">📭</div>
+    <p>Tidak ada data ditemukan</p>
 </div>
 
 @endsection
@@ -187,7 +114,6 @@ $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
 @section('script')
 <script>
 
-// ambil element
 const modalTambah = document.getElementById('modalTambah');
 const modalEdit = document.getElementById('modalEdit');
 
@@ -272,7 +198,6 @@ function apply(){
         count === 0 ? 'block' : 'none';
 }
 
-// jalan pertama
 apply();
 
 </script>
@@ -283,6 +208,7 @@ apply();
     border-radius:10px;
     background:#f3f4f6;
     cursor:pointer;
+    transition:0.2s;
 }
 .tabBtn:hover{background:#e5e7eb}
 .activeTab{
