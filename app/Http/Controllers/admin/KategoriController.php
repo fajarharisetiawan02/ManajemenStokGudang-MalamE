@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -10,6 +11,7 @@ class KategoriController extends Controller
     {
         $kategori = session('kategori', []);
 
+        // kalau kosong, isi default
         if (count($kategori) == 0) {
             $kategori = [
                 (object)[
@@ -41,10 +43,14 @@ class KategoriController extends Controller
             session(['kategori' => $kategori]);
         }
 
+        // pastikan tetap object
+        $kategori = collect($kategori)
+            ->map(fn($item) => (object) $item)
+            ->toArray();
+
         return view('pages.admin.kategori', compact('kategori'));
     }
 
-    /* ================= STORE ================= */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -57,14 +63,16 @@ class KategoriController extends Controller
 
         $kategori = session('kategori', []);
 
+        $kategori = collect($kategori)
+            ->map(fn($item) => (object) $item)
+            ->toArray();
+
         $fotoPath = null;
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $name = time().'_'.$file->getClientOriginalName();
-
             $file->move(public_path('uploads'), $name);
-
             $fotoPath = 'uploads/'.$name;
         }
 
@@ -82,32 +90,37 @@ class KategoriController extends Controller
         return back();
     }
 
-    /* ================= UPDATE ================= */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama' => 'required',
+            'jumlah' => 'required|integer',
+            'status' => 'required',
+            'kelompok' => 'required',
+            'foto' => 'nullable|image|max:2048'
+        ]);
+
         $kategori = session('kategori', []);
 
-        foreach ($kategori as &$item) {
+        $kategori = collect($kategori)
+            ->map(fn($item) => (object) $item)
+            ->toArray();
+
+        foreach ($kategori as $key => $item) {
 
             if ($item->id == $id) {
 
-                $item->nama = $request->nama;
-                $item->jumlah = $request->jumlah;
-                $item->status = $request->status;
-                $item->kelompok = $request->kelompok;
+                $kategori[$key]->nama = $request->nama;
+                $kategori[$key]->jumlah = $request->jumlah;
+                $kategori[$key]->status = $request->status;
+                $kategori[$key]->kelompok = $request->kelompok;
 
                 if ($request->hasFile('foto')) {
-
                     $file = $request->file('foto');
                     $name = time().'_'.$file->getClientOriginalName();
-
                     $file->move(public_path('uploads'), $name);
 
-                    $item->foto = 'uploads/'.$name;
-                }
-
-                if ($request->has('hapus_foto')) {
-                    $item->foto = null;
+                    $kategori[$key]->foto = 'uploads/'.$name;
                 }
             }
         }
@@ -117,17 +130,19 @@ class KategoriController extends Controller
         return back();
     }
 
-    /* ================= DELETE (FIX 100% WORKING) ================= */
     public function destroy($id)
     {
         $kategori = session('kategori', []);
 
-        $kategori = array_filter($kategori, function ($item) use ($id) {
-            return $item->id != $id;
-        });
+        $kategori = collect($kategori)
+            ->map(fn($item) => (object) $item)
+            ->toArray();
 
-        // 🔥 FIX UTAMA: WAJIB pakai KEY 'kategori'
-        session(['kategori' => array_values($kategori)]);
+        $kategori = array_values(array_filter($kategori, function ($item) use ($id) {
+            return $item->id != $id;
+        }));
+
+        session(['kategori' => $kategori]);
 
         return back();
     }

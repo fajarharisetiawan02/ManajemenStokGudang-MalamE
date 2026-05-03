@@ -13,7 +13,7 @@
         <input type="text" id="searchInput"
             placeholder="Cari kategori..."
             class="w-full pl-10 pr-3 py-2 rounded-xl border bg-white shadow-sm
-                   focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                   focus:ring-2 focus:ring-blue-500 focus:outline-none">
     </div>
 
     <!-- BUTTON -->
@@ -26,13 +26,11 @@
 
 <!-- FILTER -->
 <div class="flex flex-wrap gap-2 mb-6">
-
     <button onclick="setFilter('all',this)" class="tabBtn activeTab">SEMUA</button>
     <button onclick="setFilter('engine',this)" class="tabBtn">ENGINE</button>
     <button onclick="setFilter('electrical',this)" class="tabBtn">ELECTRICAL</button>
     <button onclick="setFilter('suspension',this)" class="tabBtn">SUSPENSION</button>
     <button onclick="setFilter('body',this)" class="tabBtn">BODY</button>
-
 </div>
 
 <!-- GRID -->
@@ -41,28 +39,27 @@
 @foreach($kategori as $item)
 
 @php
-    $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
-        ? asset($item->foto)
-        : 'https://via.placeholder.com/400x300?text=No+Image';
+$fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
+    ? asset($item->foto)
+    : 'https://via.placeholder.com/400x300?text=No+Image';
 @endphp
 
-<div class="kategori-item bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition"
+<div class="kategori-item bg-white rounded-2xl overflow-hidden shadow"
      data-kategori="{{ strtolower($item->kelompok ?? 'body') }}">
 
     <!-- FOTO -->
     <div class="h-44 bg-gray-100 overflow-hidden">
         <img src="{{ $fotoUrl }}"
-            class="w-full h-full object-cover hover:scale-110 transition duration-500">
+            class="w-full h-full object-cover hover:scale-110 transition">
     </div>
 
     <!-- CONTENT -->
     <div class="p-5">
-
         <h3 class="font-bold text-lg">{{ $item->nama }}</h3>
         <p class="text-sm text-gray-500">{{ $item->jumlah }} item</p>
 
         <span class="inline-block mt-3 text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-600 uppercase">
-            {{ $item->kelompok ?? 'body' }}
+            {{ $item->kelompok }}
         </span>
 
         <!-- ACTION -->
@@ -74,13 +71,12 @@
                 data-nama="{{ $item->nama }}"
                 data-jumlah="{{ $item->jumlah }}"
                 data-status="{{ $item->status }}"
-                data-kelompok="{{ strtolower($item->kelompok ?? 'body') }}"
-                data-foto="{{ $item->foto }}"
+                data-kelompok="{{ $item->kelompok }}"
                 class="px-3 py-1 text-sm bg-gray-100 rounded-lg">
                 ✏️ Edit
             </button>
 
-            <!-- DELETE FIX -->
+            <!-- DELETE -->
             <form action="{{ route('kategori.destroy',$item->id) }}"
                   method="POST"
                   onsubmit="return confirmDelete(event)">
@@ -104,14 +100,12 @@
 
 <!-- EMPTY -->
 <div id="emptyState" class="hidden text-center text-gray-400 mt-10">
-    📦 Tidak ada data ditemukan
+    Tidak ada data ditemukan
 </div>
 
-<!-- ================= MODAL TAMBAH ================= -->
-<div id="modalTambah"
-     class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
-
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl">
+<!-- MODAL TAMBAH -->
+<div id="modalTambah" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
+    <div class="w-full max-w-md bg-white rounded-2xl">
 
         <div class="p-5 bg-blue-600 text-white font-bold">
             Tambah Kategori
@@ -148,11 +142,9 @@
     </div>
 </div>
 
-<!-- ================= MODAL EDIT ================= -->
-<div id="modalEdit"
-     class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
-
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl">
+<!-- MODAL EDIT -->
+<div id="modalEdit" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
+    <div class="w-full max-w-md bg-white rounded-2xl">
 
         <div class="p-5 bg-green-600 text-white font-bold">
             Edit Kategori
@@ -195,19 +187,28 @@
 @section('script')
 <script>
 
+// ambil element
+const modalTambah = document.getElementById('modalTambah');
+const modalEdit = document.getElementById('modalEdit');
+
+const editNama = document.getElementById('editNama');
+const editJumlah = document.getElementById('editJumlah');
+const editStatus = document.getElementById('editStatus');
+const editKelompok = document.getElementById('editKelompok');
+const editForm = document.getElementById('editForm');
+
 /* MODAL */
 function openModalTambah(){
     modalTambah.classList.remove('hidden');
     modalTambah.classList.add('flex');
 }
-
 function closeModalTambah(){
     modalTambah.classList.add('hidden');
+    modalTambah.classList.remove('flex');
 }
 
 /* EDIT */
 function openEditModal(btn){
-
     editNama.value = btn.dataset.nama;
     editJumlah.value = btn.dataset.jumlah;
     editStatus.value = btn.dataset.status;
@@ -215,17 +216,17 @@ function openEditModal(btn){
 
     editForm.action = '/kategori/' + btn.dataset.id;
 
-    document.getElementById('modalEdit').classList.remove('hidden');
-    document.getElementById('modalEdit').classList.add('flex');
+    modalEdit.classList.remove('hidden');
+    modalEdit.classList.add('flex');
 }
-
 function closeModalEdit(){
-    document.getElementById('modalEdit').classList.add('hidden');
+    modalEdit.classList.add('hidden');
+    modalEdit.classList.remove('flex');
 }
 
-/* DELETE FIX */
+/* DELETE */
 function confirmDelete(e){
-    if(!confirm('Yakin hapus kategori ini?')){
+    if(!confirm('Yakin hapus?')){
         e.preventDefault();
         return false;
     }
@@ -245,7 +246,6 @@ function setFilter(filter, el){
     });
 
     el.classList.add('activeTab');
-
     apply();
 }
 
@@ -266,12 +266,14 @@ function apply(){
         item.style.display = ok ? 'block' : 'none';
 
         if(ok) count++;
-
     });
 
     document.getElementById('emptyState').style.display =
         count === 0 ? 'block' : 'none';
 }
+
+// jalan pertama
+apply();
 
 </script>
 
@@ -283,7 +285,6 @@ function apply(){
     cursor:pointer;
 }
 .tabBtn:hover{background:#e5e7eb}
-
 .activeTab{
     background:#111827;
     color:white;

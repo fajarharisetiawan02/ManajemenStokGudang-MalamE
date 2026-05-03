@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class BarangMasukController extends Controller
@@ -34,15 +35,20 @@ class BarangMasukController extends Controller
         ];
 
         // ================= EDIT =================
-        if ($request->edit_index !== null && $request->edit_index !== '') {
+        if ($request->filled('edit_index')) {
 
-            $data[$request->edit_index] = $item;
+            $index = $request->edit_index;
 
-            session(['barang_masuk' => $data]);
+            if (isset($data[$index])) {
+                $data[$index] = $item;
+                session(['barang_masuk' => $data]);
+
+                return redirect()->route('barang-masuk.index')
+                    ->with('success', 'Data berhasil diupdate');
+            }
 
             return redirect()->route('barang-masuk.index')
-                ->with('success', 'Data berhasil diupdate');
-
+                ->with('error', 'Data tidak ditemukan');
         }
 
         // ================= TAMBAH =================

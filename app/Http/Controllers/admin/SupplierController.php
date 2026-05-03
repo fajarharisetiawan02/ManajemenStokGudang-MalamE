@@ -1,7 +1,7 @@
 <?php
+namespace App\Http\Controllers\admin;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller; // ⭐ TAMBAHKAN INI
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller

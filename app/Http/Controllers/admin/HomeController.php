@@ -1,30 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    // ==========================
-    // HOME / LANDING PAGE
-    // ==========================
     public function index()
     {
         return view('pages.landing.home');
     }
 
-    // ==========================
-    // ABOUT
-    // ==========================
     public function about()
     {
         return view('pages.landing.about');
     }
 
-    // ==========================
-    // CONTACT
-    // ==========================
     public function contact()
     {
         return view('pages.landing.contact');
