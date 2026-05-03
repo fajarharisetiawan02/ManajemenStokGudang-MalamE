@@ -8,9 +8,8 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BarangMasukController;
-use App\Http\Controllers\BarangKeluarController;    
+use App\Http\Controllers\BarangKeluarController;
 
-Route::get('/supplier', [SupplierController::class, 'index']);
 
 // ==========================
 // HALAMAN UTAMA
@@ -23,6 +22,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/contact', 'contact')->name('contact');
 });
 
+
 // ==========================
 // LOGIN
 // ==========================
@@ -32,6 +32,7 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/logout', 'logout')->name('logout');
 });
 
+
 // ==========================
 // DASHBOARD
 // ==========================
@@ -39,24 +40,21 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 
 // ==========================
-// KATEGORI
+// KATEGORI (FULL CRUD)
 // ==========================
 Route::resource('/kategori', KategoriController::class);
 
 
 // ==========================
-// DATA BARANG (FULL CRUD)
+// DATA BARANG
 // ==========================
 Route::resource('/data-barang', BarangController::class);
 
 
 // ==========================
-// SUPPLIER
+// SUPPLIER (FULL CRUD)
 // ==========================
-Route::get('/supplier', [SupplierController::class, 'index']);
-Route::post('/supplier', [SupplierController::class, 'store']);
-Route::put('/supplier/{id}', [SupplierController::class, 'update']);
-Route::delete('/supplier/{id}', [SupplierController::class, 'destroy']);
+Route::resource('/supplier', SupplierController::class);
 
 
 // ==========================
@@ -71,6 +69,5 @@ Route::view('/laporan', 'pages.admin.laporan')->name('laporan');
 Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
 Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
 
-// 🔥 TAMBAHAN INI
 Route::get('/barang-keluar', [BarangKeluarController::class, 'index'])->name('barang-keluar.index');
 Route::post('/barang-keluar', [BarangKeluarController::class, 'store'])->name('barang-keluar.store');
