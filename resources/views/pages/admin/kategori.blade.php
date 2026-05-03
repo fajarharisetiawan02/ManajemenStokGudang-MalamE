@@ -18,7 +18,7 @@
 
     <!-- BUTTON -->
     <button onclick="openModalTambah()"
-        class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-2 rounded-xl shadow-md">
+        class="bg-blue-600 text-white px-6 py-2 rounded-xl shadow-md">
         + Tambah Kategori
     </button>
 
@@ -41,9 +41,8 @@
 @foreach($kategori as $item)
 
 @php
-    $foto = $item->foto;
-    $fotoUrl = ($foto && file_exists(public_path($foto)))
-        ? asset($foto)
+    $fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
+        ? asset($item->foto)
         : 'https://via.placeholder.com/400x300?text=No+Image';
 @endphp
 
@@ -69,6 +68,7 @@
         <!-- ACTION -->
         <div class="flex justify-end gap-2 mt-5">
 
+            <!-- EDIT -->
             <button onclick="openEditModal(this)"
                 data-id="{{ $item->id }}"
                 data-nama="{{ $item->nama }}"
@@ -80,9 +80,14 @@
                 ✏️ Edit
             </button>
 
-            <form action="{{ route('kategori.destroy',$item->id) }}" method="POST">
-                @csrf @method('DELETE')
-                <button onclick="return confirm('Hapus data ini?')"
+            <!-- DELETE FIX -->
+            <form action="{{ route('kategori.destroy',$item->id) }}"
+                  method="POST"
+                  onsubmit="return confirmDelete(event)">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
                     class="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-lg">
                     🗑 Hapus
                 </button>
@@ -104,7 +109,7 @@
 
 <!-- ================= MODAL TAMBAH ================= -->
 <div id="modalTambah"
-     class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+     class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
 
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl">
 
@@ -116,8 +121,8 @@
               class="p-5 space-y-3">
             @csrf
 
-            <input name="nama" placeholder="Nama" class="w-full border p-2 rounded-xl">
-            <input name="jumlah" type="number" placeholder="Jumlah" class="w-full border p-2 rounded-xl">
+            <input name="nama" class="w-full border p-2 rounded-xl" placeholder="Nama">
+            <input name="jumlah" type="number" class="w-full border p-2 rounded-xl" placeholder="Jumlah">
 
             <select name="status" class="w-full border p-2 rounded-xl">
                 <option value="aktif">Aktif</option>
@@ -143,9 +148,9 @@
     </div>
 </div>
 
-<!-- ================= MODAL EDIT (FIX FOTO FULL) ================= -->
+<!-- ================= MODAL EDIT ================= -->
 <div id="modalEdit"
-     class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+     class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
 
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl">
 
@@ -173,22 +178,7 @@
                 <option value="body">Body</option>
             </select>
 
-            <!-- FOTO EDIT FIX -->
-            <div class="space-y-2">
-
-                <div class="text-sm text-gray-500">Foto saat ini:</div>
-
-                <img id="previewFoto"
-                    class="w-full h-32 object-cover rounded-xl border bg-gray-100">
-
-                <label class="flex items-center gap-2 text-sm">
-                    <input type="checkbox" name="hapus_foto" value="1">
-                    Hapus foto
-                </label>
-
-                <input type="file" name="foto" class="w-full border p-2 rounded-xl">
-
-            </div>
+            <input type="file" name="foto" class="w-full border p-2 rounded-xl">
 
             <div class="flex justify-end gap-2">
                 <button type="button" onclick="closeModalEdit()" class="px-4 py-2 bg-gray-100 rounded-xl">Batal</button>
@@ -205,18 +195,17 @@
 @section('script')
 <script>
 
-let currentFilter = 'all';
-
 /* MODAL */
 function openModalTambah(){
-    document.getElementById('modalTambah').classList.remove('hidden');
-    document.getElementById('modalTambah').classList.add('flex');
+    modalTambah.classList.remove('hidden');
+    modalTambah.classList.add('flex');
 }
 
 function closeModalTambah(){
-    document.getElementById('modalTambah').classList.add('hidden');
+    modalTambah.classList.add('hidden');
 }
 
+/* EDIT */
 function openEditModal(btn){
 
     editNama.value = btn.dataset.nama;
@@ -226,15 +215,6 @@ function openEditModal(btn){
 
     editForm.action = '/kategori/' + btn.dataset.id;
 
-    let foto = btn.dataset.foto;
-    let preview = document.getElementById('previewFoto');
-
-    if(foto && foto !== ""){
-        preview.src = "/" + foto;
-    } else {
-        preview.src = "https://via.placeholder.com/400x300?text=No+Image";
-    }
-
     document.getElementById('modalEdit').classList.remove('hidden');
     document.getElementById('modalEdit').classList.add('flex');
 }
@@ -243,11 +223,21 @@ function closeModalEdit(){
     document.getElementById('modalEdit').classList.add('hidden');
 }
 
+/* DELETE FIX */
+function confirmDelete(e){
+    if(!confirm('Yakin hapus kategori ini?')){
+        e.preventDefault();
+        return false;
+    }
+    return true;
+}
+
 /* SEARCH + FILTER */
+let currentFilter = 'all';
+
 document.getElementById('searchInput').addEventListener('input', apply);
 
 function setFilter(filter, el){
-
     currentFilter = filter;
 
     document.querySelectorAll('.tabBtn').forEach(b=>{

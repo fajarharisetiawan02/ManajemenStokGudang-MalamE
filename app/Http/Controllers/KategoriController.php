@@ -10,7 +10,6 @@ class KategoriController extends Controller
     {
         $kategori = session('kategori', []);
 
-        // seed awal kalau kosong
         if (count($kategori) == 0) {
             $kategori = [
                 (object)[
@@ -58,7 +57,6 @@ class KategoriController extends Controller
 
         $kategori = session('kategori', []);
 
-        // FOTO FIX (PAKAI FILE PATH BUKAN BASE64)
         $fotoPath = null;
 
         if ($request->hasFile('foto')) {
@@ -71,7 +69,7 @@ class KategoriController extends Controller
         }
 
         $kategori[] = (object)[
-            'id' => time(), // ID UNIK FIX
+            'id' => time(),
             'nama' => $data['nama'],
             'jumlah' => $data['jumlah'],
             'status' => $data['status'],
@@ -98,7 +96,6 @@ class KategoriController extends Controller
                 $item->status = $request->status;
                 $item->kelompok = $request->kelompok;
 
-                // UPDATE FOTO
                 if ($request->hasFile('foto')) {
 
                     $file = $request->file('foto');
@@ -109,7 +106,6 @@ class KategoriController extends Controller
                     $item->foto = 'uploads/'.$name;
                 }
 
-                // HAPUS FOTO
                 if ($request->has('hapus_foto')) {
                     $item->foto = null;
                 }
@@ -121,16 +117,17 @@ class KategoriController extends Controller
         return back();
     }
 
-    /* ================= DELETE ================= */
+    /* ================= DELETE (FIX 100% WORKING) ================= */
     public function destroy($id)
     {
         $kategori = session('kategori', []);
 
-        $kategori = array_filter($kategori, function ($k) use ($id) {
-            return $k->id != $id;
+        $kategori = array_filter($kategori, function ($item) use ($id) {
+            return $item->id != $id;
         });
 
-        session(['kategori', array_values($kategori)]);
+        // 🔥 FIX UTAMA: WAJIB pakai KEY 'kategori'
+        session(['kategori' => array_values($kategori)]);
 
         return back();
     }
