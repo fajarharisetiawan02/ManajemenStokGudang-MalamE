@@ -13,9 +13,6 @@
 
     <!-- HEADER -->
     <div class="flex items-center gap-2 mb-4">
-        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-        </div>
         <h3 class="text-md font-semibold text-gray-700">
             Form Barang Masuk
         </h3>
