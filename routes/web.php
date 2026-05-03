@@ -7,6 +7,10 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;    
+
+Route::get('/supplier', [SupplierController::class, 'index']);
 
 // ==========================
 // HALAMAN UTAMA
@@ -47,9 +51,12 @@ Route::resource('/data-barang', BarangController::class);
 
 
 // ==========================
-// SUPPLIER (JANGAN PAKAI VIEW LANGSUNG)
+// SUPPLIER
 // ==========================
-Route::resource('/supplier', SupplierController::class);
+Route::get('/supplier', [SupplierController::class, 'index']);
+Route::post('/supplier', [SupplierController::class, 'store']);
+Route::put('/supplier/{id}', [SupplierController::class, 'update']);
+Route::delete('/supplier/{id}', [SupplierController::class, 'destroy']);
 
 
 // ==========================
@@ -61,5 +68,9 @@ Route::view('/laporan', 'pages.admin.laporan')->name('laporan');
 // ==========================
 // INVENTORY
 // ==========================
-Route::view('/barang-masuk', 'pages.admin.barang-masuk')->name('barang.masuk');
-Route::view('/barang-keluar', 'pages.admin.barang-keluar')->name('barang.keluar');
+Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
+Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
+
+// 🔥 TAMBAHAN INI
+Route::get('/barang-keluar', [BarangKeluarController::class, 'index'])->name('barang-keluar.index');
+Route::post('/barang-keluar', [BarangKeluarController::class, 'store'])->name('barang-keluar.store');
