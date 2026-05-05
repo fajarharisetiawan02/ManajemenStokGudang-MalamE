@@ -2,10 +2,6 @@
 
 @section('title', 'Data Barang')
 
-@section('icon')
-<i class="fas fa-box text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FILTER CARD ================= -->
@@ -44,8 +40,6 @@
 
         </form>
 
-        <!-- ❌ TOMBOL TAMBAH DIHAPUS -->
-
     </div>
 
 </div>
@@ -67,7 +61,7 @@
                     <th class="px-4 py-3 text-center">Stok</th>
                     <th class="px-4 py-3 text-left">Harga</th>
                     <th class="px-4 py-3 text-left">Supplier</th>
-                    <!-- ❌ AKSI DIHAPUS -->
+
                 </tr>
             </thead>
 
@@ -119,8 +113,6 @@
                         {{ $item->supplier->nama_supplier ?? '-' }}
                     </td>
 
-                    <!-- ❌ AKSI DIHAPUS -->
-
                 </tr>
 
                 @empty
@@ -138,7 +130,5 @@
     </div>
 
 </div>
-
-<!-- ❌ MODAL TAMBAH DIHAPUS -->
 
 @endsection

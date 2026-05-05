@@ -2,10 +2,6 @@
 
 @section('title', 'Barang Masuk')
 
-@section('icon')
-<i class="fas fa-arrow-down text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FORM ================= -->
@@ -19,7 +15,7 @@
     </div>
 
     <!-- FORM -->
-    <form action="{{ route('barang-masuk.store') }}" method="POST">
+    <form action="{{ route('admin.barang-masuk.store') }}" method="POST">
         @csrf
         <input type="hidden" name="edit_index" id="edit_index">
         <div class="grid md:grid-cols-2 gap-4">
@@ -143,14 +139,11 @@
 
                     <td class="px-4 py-3 text-center">
                         <div class="flex justify-center gap-2">
-                            <!-- EDIT -->
                             <button type="button" onclick="editData(this, {{ $i }})"
                                 class="bg-yellow-400 hover:bg-yellow-500 px-2 py-1 rounded">
                                 <i class="fas fa-pen text-xs"></i>
-
                             </button>
 
-                            <!-- HAPUS -->
                             <button onclick="hapusData(this)"
                                 class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
                                 <i class="fas fa-trash text-xs"></i>
@@ -186,35 +179,25 @@
             let jumlah = cells[4].innerText.trim();
             let supplier = cells[5].innerText.trim();
 
-            // ambil input (fix null error)
             const tglInput = document.querySelector('[name="tanggal"]');
             const kodeInput = document.querySelector('[name="kode"]');
             const namaInput = document.querySelector('[name="nama"]');
             const jumlahInput = document.querySelector('[name="jumlah"]');
             const supplierInput = document.querySelector('[name="supplier"]');
 
-            if (!tglInput) {
-                console.error('Form tidak ditemukan');
-                return;
-            }
+            if (!tglInput) return;
 
-            // isi form
             tglInput.value = formatTanggal(tanggal);
             kodeInput.value = kode;
             namaInput.value = nama;
             jumlahInput.value = jumlah;
             supplierInput.value = supplier;
 
-            // set edit index
             document.getElementById('edit_index').value = index;
 
-            // ubah tombol
             document.querySelector('button[type="submit"]').innerText = "Update Data";
 
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
     });
@@ -257,9 +240,10 @@
     Swal.fire({
         icon: 'success',
         title: 'Berhasil!',
-text: '{{ session('success') }}',
+        text: '{{ session('success') }}',
         confirmButtonColor: '#2563eb'
     });
 </script>
 @endif
+
 @endsection

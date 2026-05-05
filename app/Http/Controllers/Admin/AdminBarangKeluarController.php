@@ -41,7 +41,7 @@ class AdminBarangKeluarController extends Controller
 
             session(['barang_keluar' => $data]);
 
-            return redirect()->route('barang-keluar.index')
+            return redirect()->route('admin.barang-keluar.index')
                 ->with('success', 'Data berhasil diupdate');
         }
 
@@ -50,7 +50,7 @@ class AdminBarangKeluarController extends Controller
 
         session(['barang_keluar' => $data]);
 
-        return redirect()->route('barang-keluar.index')
+        return redirect()->route('admin.barang-keluar.index')
             ->with('success', 'Data berhasil ditambahkan');
     }
 }

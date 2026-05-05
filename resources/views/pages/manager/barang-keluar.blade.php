@@ -2,13 +2,7 @@
 
 @section('title', 'Barang Keluar')
 
-@section('icon')
-<i class="fas fa-arrow-up text-blue-600"></i>
-@endsection
-
 @section('content')
-
-<!-- ❌ FORM DIHAPUS (READ ONLY) -->
 
 <!-- ================= TABLE ================= -->
 <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
@@ -35,7 +29,7 @@
                     <th class="px-4 py-3 text-left">Nama Barang</th>
                     <th class="px-4 py-3 text-center">Jumlah</th>
                     <th class="px-4 py-3 text-left">Tujuan</th>
-                    <!-- ❌ AKSI DIHAPUS -->
+
                 </tr>
             </thead>
 
@@ -57,8 +51,6 @@
                     <td class="px-4 py-3 font-semibold">{{ $item['nama'] }}</td>
                     <td class="px-4 py-3 text-center text-red-600 font-semibold">{{ $item['jumlah'] }}</td>
                     <td class="px-4 py-3">{{ $item['tujuan'] }}</td>
-
-                    <!-- ❌ AKSI DIHAPUS -->
 
                 </tr>
                 @endforeach

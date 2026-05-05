@@ -2,10 +2,6 @@
 
 @section('title', 'Barang Keluar')
 
-@section('icon')
-<i class="fas fa-arrow-up text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FORM ================= -->
@@ -17,20 +13,18 @@
         </h3>
     </div>
 
-    <form action="{{ route('barang-keluar.store') }}" method="POST">
+    <form action="{{ route('admin.barang-keluar.store') }}" method="POST">
         @csrf
         <input type="hidden" name="edit_index" id="edit_index">
 
         <div class="grid md:grid-cols-2 gap-4">
 
-            <!-- TANGGAL -->
             <div>
                 <label class="text-sm font-semibold text-gray-600">Tanggal Keluar</label>
                 <input type="date" name="tanggal"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg mt-1 focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- KODE -->
             <div>
                 <label class="text-sm font-semibold text-gray-600">Kode Barang</label>
                 <div class="flex gap-2 mt-1">
@@ -44,14 +38,12 @@
                 </div>
             </div>
 
-            <!-- NAMA -->
             <div>
                 <label class="text-sm font-semibold text-gray-600">Nama Barang</label>
                 <input type="text" name="nama" placeholder="Nama barang"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg mt-1 focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- JUMLAH -->
             <div>
                 <label class="text-sm font-semibold text-gray-600">Jumlah Keluar</label>
                 <input type="number" name="jumlah" placeholder="Kurangkan jumlah"
@@ -83,7 +75,6 @@
 <!-- ================= TABLE ================= -->
 <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
 
-    <!-- SEARCH -->
     <div class="flex flex-wrap gap-2 mb-4">
         <input type="text" placeholder="Cari kode atau nama barang..."
             class="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
@@ -128,14 +119,11 @@
                     <td class="px-4 py-3">{{ $item['tujuan'] }}</td>
 
                     <td class="flex gap-2 justify-center p-2">
-                        <!-- EDIT -->
                         <button type="button" onclick="editData(this, {{ $i }})"
                             class="bg-yellow-400 hover:bg-yellow-500 px-2 py-1 rounded">
                             <i class="fas fa-pen text-xs"></i>
-
                         </button>
 
-                        <!-- HAPUS -->
                         <button onclick="hapusData(this)"
                             class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
                             <i class="fas fa-trash text-xs"></i>
@@ -170,50 +158,37 @@
             let kode = cells[2].innerText.trim();
             let nama = cells[3].innerText.trim();
             let jumlah = cells[4].innerText.trim();
-            let tujuan = cells[5].innerText.trim(); // 🔥 ganti supplier → tujuan
+            let tujuan = cells[5].innerText.trim();
 
-            // ambil input
             const tglInput = document.querySelector('[name="tanggal"]');
             const kodeInput = document.querySelector('[name="kode"]');
             const namaInput = document.querySelector('[name="nama"]');
             const jumlahInput = document.querySelector('[name="jumlah"]');
-            const tujuanInput = document.querySelector('[name="tujuan"]'); // 🔥 FIX
+            const tujuanInput = document.querySelector('[name="tujuan"]');
 
-            if (!tglInput) {
-                console.error('Form tidak ditemukan');
-                return;
-            }
+            if (!tglInput) return;
 
-            // isi form
             tglInput.value = formatTanggal(tanggal);
             kodeInput.value = kode;
             namaInput.value = nama;
             jumlahInput.value = jumlah;
             tujuanInput.value = tujuan;
 
-            // set edit index
             document.getElementById('edit_index').value = index;
 
-            // ubah tombol
             document.querySelector('button[type="submit"]').innerText = "Update Data";
 
-            // scroll atas
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
     });
 
-    // FORMAT TANGGAL
     function formatTanggal(tgl) {
         if (tgl.includes('-')) return tgl;
         let p = tgl.split('/');
         return p[2] + '-' + p[1] + '-' + p[0];
     }
 
-    // HAPUS
     function hapusData(button) {
         let row = button.closest('tr');
 
@@ -247,8 +222,7 @@
     Swal.fire({
         icon: 'success',
         title: 'Berhasil!',
-        text: '{{ session('
-        success ') }}',
+        text: '{{ session('success') }}',
         confirmButtonColor: '#2563eb'
     });
 </script>

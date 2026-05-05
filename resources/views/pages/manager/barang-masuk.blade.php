@@ -2,13 +2,7 @@
 
 @section('title', 'Barang Masuk')
 
-@section('icon')
-<i class="fas fa-arrow-down text-blue-600"></i>
-@endsection
-
 @section('content')
-
-<!-- ❌ FORM DIHAPUS (MANAGER READ ONLY) -->
 
 <!-- ================= TABLE ================= -->
 <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
@@ -23,7 +17,6 @@
             <option>PT Denso</option>
         </select>
 
-        <!-- ❌ EXPORT TETAP BOLEH -->
         <button class="bg-green-600 text-white px-4 rounded-lg">
             Export
         </button>
@@ -41,7 +34,7 @@
                     <th class="px-4 py-3 text-left">Nama Barang</th>
                     <th class="px-4 py-3 text-center">Jumlah</th>
                     <th class="px-4 py-3 text-left">Supplier</th>
-                    <!-- ❌ AKSI DIHAPUS -->
+
                 </tr>
             </thead>
 
@@ -64,8 +57,6 @@
                     <td class="px-4 py-3 font-semibold">{{ $item['nama'] }}</td>
                     <td class="px-4 py-3 text-center text-blue-600 font-semibold">{{ $item['jumlah'] }}</td>
                     <td class="px-4 py-3">{{ $item['supplier'] }}</td>
-
-                    <!-- ❌ AKSI DIHAPUS -->
 
                 </tr>
                 @endforeach

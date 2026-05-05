@@ -2,10 +2,6 @@
 
 @section('title', 'Laporan')
 
-@section('icon')
-<i class="fas fa-file-alt text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FILTER CARD ================= -->

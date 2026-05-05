@@ -4,217 +4,88 @@
 
 @section('content')
 
-<!-- HEADER -->
-<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-6">
-
-    <!-- SEARCH -->
-    <div class="relative w-full md:w-1/3">
-        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
-        <input type="text" id="searchInput"
-            placeholder="Cari kategori..."
-            class="w-full pl-10 pr-3 py-2 rounded-xl border bg-white shadow-sm
-                   focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
-    </div>
-
-    <!-- BUTTON -->
-    <button onclick="openModalTambah()"
-        class="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-xl shadow-md">
-        + Tambah Kategori
-    </button>
-
-</div>
-
 <!-- FILTER -->
-<div class="flex flex-wrap gap-2 mb-6">
-    <button onclick="setFilter('all',this)" class="tabBtn activeTab">SEMUA</button>
-    <button onclick="setFilter('engine',this)" class="tabBtn">ENGINE</button>
-    <button onclick="setFilter('electrical',this)" class="tabBtn">ELECTRICAL</button>
-    <button onclick="setFilter('suspension',this)" class="tabBtn">SUSPENSION</button>
-    <button onclick="setFilter('body',this)" class="tabBtn">BODY</button>
-</div>
+<div class="bg-white rounded-2xl shadow-sm border p-4 mb-4 flex justify-between items-center flex-wrap gap-3">
 
-<!-- GRID -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="flex gap-3 items-center flex-wrap">
 
-@foreach($kategori as $item)
-
-@php
-$fotoUrl = ($item->foto && file_exists(public_path($item->foto)))
-    ? asset($item->foto)
-    : 'https://via.placeholder.com/400x300?text=No+Image';
-@endphp
-
-<div class="kategori-item bg-white rounded-2xl overflow-hidden shadow-md
-            hover:shadow-xl hover:-translate-y-1 transition duration-300"
-     data-kategori="{{ strtolower($item->kelompok ?? 'body') }}">
-
-    <!-- FOTO -->
-    <div class="h-44 bg-gray-100 overflow-hidden">
-        <img src="{{ $fotoUrl }}"
-            class="w-full h-full object-cover transition duration-300 hover:scale-110">
-    </div>
-
-    <!-- CONTENT -->
-    <div class="p-5">
-        <h3 class="font-bold text-lg">{{ $item->nama }}</h3>
-
-        <!-- jumlah dibuat lebih jelas -->
-        <p class="text-sm text-gray-500 mt-1">
-            <span class="font-semibold text-gray-700">{{ $item->jumlah }}</span> item
-        </p>
-
-        <span class="inline-block mt-3 text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-600 uppercase">
-            {{ $item->kelompok }}
-        </span>
-
-        <!-- ACTION -->
-        <div class="flex justify-end gap-2 mt-5">
-
-            <!-- EDIT -->
-            <button onclick="openEditModal(this)"
-                data-id="{{ $item->id }}"
-                data-nama="{{ $item->nama }}"
-                data-jumlah="{{ $item->jumlah }}"
-                data-status="{{ $item->status }}"
-                data-kelompok="{{ $item->kelompok }}"
-                class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition">
-                ✏️ Edit
-            </button>
-
-            <!-- DELETE -->
-            <form action="{{ route('kategori.destroy',$item->id) }}"
-                  method="POST"
-                  onsubmit="return confirmDelete(event)">
-                @csrf
-                @method('DELETE')
-
-                <button type="submit"
-                    class="px-3 py-1 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-lg transition">
-                    🗑 Hapus
-                </button>
-            </form>
-
+        <div class="relative">
+            <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-sm"></i>
+            <input type="text" placeholder="Cari kategori..."
+                class="pl-9 pr-4 py-2 border rounded-xl w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
 
     </div>
+
+    <a href="#"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow">
+        <i class="fas fa-plus"></i>
+        Tambah
+    </a>
+
 </div>
 
-@endforeach
+<!-- LIST KATEGORI -->
+<div class="bg-white rounded-2xl shadow-sm border divide-y">
+
+    @forelse($kategori as $item)
+    <a href="/admin/data-barang?kategori={{ $item->nama }}"
+       class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition group">
+
+        <!-- LEFT -->
+        <div class="flex items-center gap-4">
+
+            <!-- ICON -->
+            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+                <i class="fas fa-box"></i>
+            </div>
+
+            <!-- TEXT -->
+            <div>
+                <div class="font-semibold text-gray-800 group-hover:text-blue-600">
+                    {{ $item->nama }}
+                </div>
+
+                <div class="text-xs text-gray-400">
+                    {{ ucfirst($item->kelompok) }}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="flex items-center gap-4">
+
+            <!-- JUMLAH -->
+            <div class="text-right">
+                <div class="font-bold text-gray-700">
+                    {{ $item->jumlah }}
+                </div>
+                <div class="text-xs text-gray-400">
+                    barang
+                </div>
+            </div>
+
+            <!-- STATUS -->
+            <span class="px-2 py-1 text-xs rounded-lg font-semibold
+                {{ $item->status == 'aktif' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                {{ ucfirst($item->status) }}
+            </span>
+
+            <!-- ARROW -->
+            <i class="fas fa-chevron-right text-gray-400 group-hover:text-blue-500"></i>
+
+        </div>
+
+    </a>
+
+    @empty
+    <div class="text-center py-10 text-gray-400">
+        <i class="fas fa-folder-open text-3xl mb-2"></i><br>
+        Belum ada kategori
+    </div>
+    @endforelse
 
 </div>
-
-<!-- EMPTY STATE (lebih proper) -->
-<div id="emptyState" class="hidden text-center text-gray-400 mt-16">
-    <div class="text-5xl mb-3">📭</div>
-    <p>Tidak ada data ditemukan</p>
-</div>
-
-@endsection
-
-@section('script')
-<script>
-
-const modalTambah = document.getElementById('modalTambah');
-const modalEdit = document.getElementById('modalEdit');
-
-const editNama = document.getElementById('editNama');
-const editJumlah = document.getElementById('editJumlah');
-const editStatus = document.getElementById('editStatus');
-const editKelompok = document.getElementById('editKelompok');
-const editForm = document.getElementById('editForm');
-
-/* MODAL */
-function openModalTambah(){
-    modalTambah.classList.remove('hidden');
-    modalTambah.classList.add('flex');
-}
-function closeModalTambah(){
-    modalTambah.classList.add('hidden');
-    modalTambah.classList.remove('flex');
-}
-
-/* EDIT */
-function openEditModal(btn){
-    editNama.value = btn.dataset.nama;
-    editJumlah.value = btn.dataset.jumlah;
-    editStatus.value = btn.dataset.status;
-    editKelompok.value = btn.dataset.kelompok;
-
-    editForm.action = '/kategori/' + btn.dataset.id;
-
-    modalEdit.classList.remove('hidden');
-    modalEdit.classList.add('flex');
-}
-function closeModalEdit(){
-    modalEdit.classList.add('hidden');
-    modalEdit.classList.remove('flex');
-}
-
-/* DELETE */
-function confirmDelete(e){
-    if(!confirm('Yakin hapus?')){
-        e.preventDefault();
-        return false;
-    }
-    return true;
-}
-
-/* SEARCH + FILTER */
-let currentFilter = 'all';
-
-document.getElementById('searchInput').addEventListener('input', apply);
-
-function setFilter(filter, el){
-    currentFilter = filter;
-
-    document.querySelectorAll('.tabBtn').forEach(b=>{
-        b.classList.remove('activeTab');
-    });
-
-    el.classList.add('activeTab');
-    apply();
-}
-
-function apply(){
-
-    let q = document.getElementById('searchInput').value.toLowerCase();
-    let items = document.querySelectorAll('.kategori-item');
-
-    let count = 0;
-
-    items.forEach(item=>{
-
-        let nama = item.querySelector('h3').innerText.toLowerCase();
-        let kat = item.dataset.kategori;
-
-        let ok = nama.includes(q) && (currentFilter === 'all' || kat === currentFilter);
-
-        item.style.display = ok ? 'block' : 'none';
-
-        if(ok) count++;
-    });
-
-    document.getElementById('emptyState').style.display =
-        count === 0 ? 'block' : 'none';
-}
-
-apply();
-
-</script>
-
-<style>
-.tabBtn{
-    padding:6px 12px;
-    border-radius:10px;
-    background:#f3f4f6;
-    cursor:pointer;
-    transition:0.2s;
-}
-.tabBtn:hover{background:#e5e7eb}
-.activeTab{
-    background:#111827;
-    color:white;
-}
-</style>
 
 @endsection

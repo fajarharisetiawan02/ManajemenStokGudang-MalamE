@@ -2,10 +2,6 @@
 
 @section('title', 'Dashboard')
 
-@section('icon')
-<i class="fas fa-chart-line text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- HERO -->

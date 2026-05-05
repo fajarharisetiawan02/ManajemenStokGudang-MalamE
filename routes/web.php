@@ -40,51 +40,56 @@ Route::controller(LoginController::class)->group(function () {
 
 
 /* === ADMIN === */
-Route::prefix('admin')->middleware(['checkLogin'])->group(function () {
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['checkLogin'])
+    ->group(function () {
 
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-        ->name('admin.dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
-    Route::resource('kategori', AdminKategoriController::class);
-    Route::resource('data-barang', AdminBarangController::class);
-    Route::resource('supplier', AdminSupplierController::class);
+        Route::resource('kategori', AdminKategoriController::class);
+        Route::resource('data-barang', AdminBarangController::class);
+        Route::resource('supplier', AdminSupplierController::class);
 
-    Route::get('/barang-masuk', [AdminBarangMasukController::class, 'index'])
-        ->name('barang-masuk.index');
+        Route::get('/barang-masuk', [AdminBarangMasukController::class, 'index'])
+            ->name('barang-masuk.index');
 
-    Route::post('/barang-masuk', [AdminBarangMasukController::class, 'store'])
-        ->name('barang-masuk.store');
+        Route::post('/barang-masuk', [AdminBarangMasukController::class, 'store'])
+            ->name('barang-masuk.store');
 
-    Route::get('/barang-keluar', [AdminBarangKeluarController::class, 'index'])
-        ->name('barang-keluar.index');
+        Route::get('/barang-keluar', [AdminBarangKeluarController::class, 'index'])
+            ->name('barang-keluar.index');
 
-    Route::post('/barang-keluar', [AdminBarangKeluarController::class, 'store'])
-        ->name('barang-keluar.store');
+        Route::post('/barang-keluar', [AdminBarangKeluarController::class, 'store'])
+            ->name('barang-keluar.store');
 
-    Route::get('/laporan', [AdminLaporanController::class, 'index'])
-        ->name('laporan.index');
+        Route::get('/laporan', [AdminLaporanController::class, 'index'])
+            ->name('laporan.index');
 });
 
 
 /* === MANAGER === */
-Route::prefix('manager')->middleware(['checkLogin'])->group(function () {
+Route::prefix('manager')
+    ->name('manager.')
+    ->middleware(['checkLogin'])
+    ->group(function () {
 
-    Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
-        ->name('manager.dashboard');
+        Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
+            ->name('dashboard');
 
-    Route::get('/data-barang', [ManagerBarangController::class, 'index'])
-        ->name('manager.data-barang');
+        Route::get('/data-barang', [ManagerBarangController::class, 'index'])
+            ->name('data-barang.index');
 
-    Route::get('/supplier', [ManagerSupplierController::class, 'index'])
-        ->name('manager.supplier');
+        Route::get('/supplier', [ManagerSupplierController::class, 'index'])
+            ->name('supplier.index');
 
-    Route::get('/barang-masuk', [ManagerBarangMasukController::class, 'index'])
-        ->name('manager.barang-masuk');
+        Route::get('/barang-masuk', [ManagerBarangMasukController::class, 'index'])
+            ->name('barang-masuk.index');
 
-    Route::get('/barang-keluar', [ManagerBarangKeluarController::class, 'index'])
-        ->name('manager.barang-keluar');
+        Route::get('/barang-keluar', [ManagerBarangKeluarController::class, 'index'])
+            ->name('barang-keluar.index');
 
-    Route::get('/laporan', [ManagerLaporanController::class, 'index'])
-        ->name('manager.laporan');
-
+        Route::get('/laporan', [ManagerLaporanController::class, 'index'])
+            ->name('laporan.index');
 });

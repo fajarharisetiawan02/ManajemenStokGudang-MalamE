@@ -2,10 +2,6 @@
 
 @section('title', 'Supplier')
 
-@section('icon')
-<i class="fas fa-truck text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FILTER CARD ================= -->
@@ -37,8 +33,6 @@
 
         </div>
 
-        <!-- ❌ TOMBOL TAMBAH DIHAPUS -->
-
     </div>
 
 </div>
@@ -59,7 +53,7 @@
                     <th class="px-4 py-3 text-left">Telepon</th>
                     <th class="px-4 py-3 text-left">Alamat</th>
                     <th class="px-4 py-3 text-center">Status</th>
-                    <!-- ❌ AKSI DIHAPUS -->
+
                 </tr>
             </thead>
 
@@ -93,8 +87,6 @@
                             Aktif
                         </span>
                     </td>
-
-                    <!-- ❌ AKSI DIHAPUS -->
 
                 </tr>
 

@@ -15,7 +15,6 @@
 
         <h2 class="text-xl md:text-2xl font-bold text-slate-800 flex items-center gap-2 truncate">
             <span class="flex items-center gap-2 truncate">
-                @yield('icon')
                 @yield('title', 'Dashboard')
             </span>
         </h2>

@@ -2,10 +2,6 @@
 
 @section('title', 'Data Barang')
 
-@section('icon')
-<i class="fas fa-box text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FILTER CARD ================= -->
@@ -133,7 +129,7 @@
                                 <i class="fas fa-pen text-xs"></i>
                             </button>
 
-                            <form action="{{ route('data-barang.destroy',$item->id) }}" method="POST">
+                            <form action="{{ route('admin.data-barang.destroy',$item->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" onclick="confirmDelete(this.form)"
@@ -164,103 +160,113 @@
 </div>
 <!-- ================= MODAL TAMBAH ================= -->
 <div id="modalTambah" tabindex="-1"
-class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
-    <div class="bg-white w-full max-w-xl rounded-lg shadow-lg">
+class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+    
+    <div class="bg-white w-full max-w-xl rounded-2xl shadow-xl border border-gray-100">
 
         <!-- HEADER -->
-        <div class="flex justify-between items-center px-5 py-3 border-b bg-gray-50">
-            <h2 class="text-lg font-semibold text-gray-700">
+        <div class="px-6 py-4 border-b">
+            <h2 class="text-xl font-bold text-gray-800">
                 Tambah Barang Baru
             </h2>
-
-            <button data-modal-hide="modalTambah"
-                class="text-gray-400 hover:text-gray-600 text-xl">
-                ×
-            </button>
+            <p class="text-sm text-gray-500 mt-1">
+                Isi data barang dengan lengkap
+            </p>
         </div>
 
         <!-- FORM -->
-        <form method="POST" action="{{ route('data-barang.store') }}" class="p-6 space-y-5">
+        <form method="POST" action="{{ route('admin.data-barang.store') }}" class="p-6">
             @csrf
 
-            <!-- NO PART -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">No Part</label>
-                <input type="text" name="no_part" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
-                    placeholder="Masukkan No Part">
-            </div>
+            <div class="grid md:grid-cols-2 gap-4">
 
-            <!-- NAMA -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">Nama Barang</label>
-                <input type="text" name="nama_barang" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
-                    placeholder="Masukkan Nama Barang">
-            </div>
+                <!-- NO PART -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">No Part</label>
+                    <input type="text" name="no_part" required
+                        placeholder="Contoh: BRG-001"
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl 
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                </div>
 
-            <!-- KATEGORI -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">Kategori</label>
-                <select name="kategori_id" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition">
-                    <option value="">Pilih Kategori</option>
-                    @foreach($kategori as $k)
-                        <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
-                    @endforeach
-                </select>
-            </div>
+                <!-- NAMA -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">Nama Barang</label>
+                    <input type="text" name="nama_barang" required
+                        placeholder="Nama Barang"
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl 
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                </div>
 
-            <!-- BRAND -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">Brand</label>
-                <select name="brand" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition">
-                    <option value="">Pilih Brand</option>
-                    <option>Honda</option>
-                    <option>Toyota</option>
-                    <option>Daihatsu</option>
-                    <option>Suzuki</option>
-                </select>
-            </div>
+                <!-- KATEGORI -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">Kategori</label>
+                    <select name="kategori_id" required
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl bg-white
+                        focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Pilih Kategori</option>
+                        @foreach($kategori as $k)
+                            <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <!-- STOK -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">Stok</label>
-                <input type="number" name="stok" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
-                    placeholder="Masukkan Stok">
-            </div>
+                <!-- BRAND -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">Brand</label>
+                    <select name="brand" required
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl bg-white
+                        focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Pilih Brand</option>
+                        <option>Honda</option>
+                        <option>Toyota</option>
+                        <option>Daihatsu</option>
+                        <option>Suzuki</option>
+                    </select>
+                </div>
 
-            <!-- HARGA -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">Harga</label>
-                <input type="number" name="harga" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
-                    placeholder="Masukkan Harga">
-            </div>
+                <!-- STOK -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">Stok</label>
+                    <input type="number" name="stok" required
+                        placeholder="0"
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl 
+                        focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
 
-            <!-- SUPPLIER -->
-            <div>
-                <label class="text-sm text-gray-600 mb-1 block">Supplier</label>
-                <select name="supplier_id" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition">
-                    <option value="">Pilih Supplier</option>
-                    @foreach($supplier as $s)
-                        <option value="{{ $s->id }}">{{ $s->nama_supplier }}</option>
-                    @endforeach
-                </select>
+                <!-- HARGA -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">Harga</label>
+                    <input type="number" name="harga" required
+                        placeholder="Contoh: 100000"
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl 
+                        focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+
+                <!-- SUPPLIER -->
+                <div class="md:col-span-2">
+                    <label class="text-sm font-medium text-gray-700">Supplier</label>
+                    <select name="supplier_id" required
+                        class="w-full mt-1 px-3 py-2.5 border border-gray-300 rounded-xl bg-white
+                        focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Pilih Supplier</option>
+                        @foreach($supplier as $s)
+                            <option value="{{ $s->id }}">{{ $s->nama_supplier }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
 
             <!-- BUTTON -->
-            <div class="flex justify-end gap-2 pt-4 border-t">
+            <div class="flex justify-end gap-3 pt-5 mt-5 border-t">
                 <button type="button" data-modal-hide="modalTambah"
-                    class="px-4 py-2 bg-gray-200 rounded text-sm hover:bg-gray-300 transition">
+                    class="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 transition">
                     Batal
                 </button>
 
                 <button type="submit"
-                    class="px-5 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 hover:shadow-md transition">
+                    class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm">
                     Simpan
                 </button>
             </div>
@@ -279,7 +285,7 @@ class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
     form.reset();
 
     // SET ACTION KE STORE
-    form.action = "{{ route('data-barang.store') }}";
+    form.action = "{{ route('admin.data-barang.store') }}";
 
     // HAPUS METHOD PUT (kalau ada dari edit)
     let methodInput = form.querySelector('input[name="_method"]');

@@ -2,10 +2,6 @@
 
 @section('title', 'Supplier')
 
-@section('icon')
-<i class="fas fa-truck text-blue-600"></i>
-@endsection
-
 @section('content')
 
 <!-- ================= FILTER CARD ================= -->
