@@ -2,27 +2,27 @@
 
 use Illuminate\Support\Facades\Route;
 
-/* =========================
-   CONTROLLER
-========================= */
-use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\LoginController;
+/* === CONTROLLER === */
+use App\Http\Controllers\Landing\HomeController;
+use App\Http\Controllers\Auth\LoginController;
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\KategoriController;
-use App\Http\Controllers\Admin\SupplierController;
-use App\Http\Controllers\Admin\BarangController;
-use App\Http\Controllers\Admin\BarangMasukController;
-use App\Http\Controllers\Admin\BarangKeluarController;
-use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminKategoriController;
+use App\Http\Controllers\Admin\AdminSupplierController;
+use App\Http\Controllers\Admin\AdminBarangController;
+use App\Http\Controllers\Admin\AdminBarangMasukController;
+use App\Http\Controllers\Admin\AdminBarangKeluarController;
+use App\Http\Controllers\Admin\AdminLaporanController;
 
-// ✅ INI YANG BENAR (BUKAN PATH FILE)
-use App\Http\Controllers\Manager\DashboardManagerController;
+use App\Http\Controllers\Manager\ManagerDashboardController;
+use App\Http\Controllers\Manager\ManagerBarangController;
+use App\Http\Controllers\Manager\ManagerSupplierController;
+use App\Http\Controllers\Manager\ManagerBarangMasukController;
+use App\Http\Controllers\Manager\ManagerBarangKeluarController;
+use App\Http\Controllers\Manager\ManagerLaporanController;
 
 
-/* =========================
-   LANDING
-========================= */
+/* === LANDING ==== */
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/home', 'index');
@@ -31,9 +31,7 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 
-/* =========================
-   AUTH
-========================= */
+/* === AUTH === */
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'index')->name('login');
     Route::post('/login', 'login');
@@ -41,34 +39,52 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 
-/* =========================
-   ADMIN
-========================= */
-Route::prefix('admin')->group(function () {
+/* === ADMIN === */
+Route::prefix('admin')->middleware(['checkLogin'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('admin.dashboard');
 
-    Route::resource('kategori', KategoriController::class);
-    Route::resource('data-barang', BarangController::class);
-    Route::resource('supplier', SupplierController::class);
+    Route::resource('kategori', AdminKategoriController::class);
+    Route::resource('data-barang', AdminBarangController::class);
+    Route::resource('supplier', AdminSupplierController::class);
 
-    Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
-    Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
+    Route::get('/barang-masuk', [AdminBarangMasukController::class, 'index'])
+        ->name('barang-masuk.index');
 
-    Route::get('/barang-keluar', [BarangKeluarController::class, 'index'])->name('barang-keluar.index');
-    Route::post('/barang-keluar', [BarangKeluarController::class, 'store'])->name('barang-keluar.store');
+    Route::post('/barang-masuk', [AdminBarangMasukController::class, 'store'])
+        ->name('barang-masuk.store');
 
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/barang-keluar', [AdminBarangKeluarController::class, 'index'])
+        ->name('barang-keluar.index');
 
+    Route::post('/barang-keluar', [AdminBarangKeluarController::class, 'store'])
+        ->name('barang-keluar.store');
+
+    Route::get('/laporan', [AdminLaporanController::class, 'index'])
+        ->name('laporan.index');
 });
 
 
-/* =========================
-   MANAGER
-========================= */
-Route::prefix('manager')->group(function () {
+/* === MANAGER === */
+Route::prefix('manager')->middleware(['checkLogin'])->group(function () {
 
-    Route::get('/dashboard', [DashboardManagerController::class, 'index'])
+    Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
         ->name('manager.dashboard');
+
+    Route::get('/data-barang', [ManagerBarangController::class, 'index'])
+        ->name('manager.data-barang');
+
+    Route::get('/supplier', [ManagerSupplierController::class, 'index'])
+        ->name('manager.supplier');
+
+    Route::get('/barang-masuk', [ManagerBarangMasukController::class, 'index'])
+        ->name('manager.barang-masuk');
+
+    Route::get('/barang-keluar', [ManagerBarangKeluarController::class, 'index'])
+        ->name('manager.barang-keluar');
+
+    Route::get('/laporan', [ManagerLaporanController::class, 'index'])
+        ->name('manager.laporan');
 
 });

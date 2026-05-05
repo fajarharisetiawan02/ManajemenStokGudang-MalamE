@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class ManagerDashboardController extends Controller
 {
     public function index()
     {
@@ -52,8 +53,8 @@ class DashboardController extends Controller
             ],
         ];
 
-        // 🔹 KIRIM KE VIEW
-        return view('pages.admin.dashboard', compact(
+        // 🔹 VIEW MANAGER (PENTING)
+        return view('pages.manager.dashboard', compact(
             'totalBarang',
             'barangMasuk',
             'barangKeluar',

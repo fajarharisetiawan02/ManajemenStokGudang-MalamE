@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\admin;
-use App\Http\Controllers\Controller; // ⭐ TAMBAHKAN INI
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller; 
 
 use Illuminate\Http\Request;
 
-class BarangController extends Controller
+class AdminBarangController extends Controller
 {
     // =========================
     // TAMPIL DATA
@@ -77,7 +77,7 @@ class BarangController extends Controller
 
         session(['barang' => $barang]);
 
-        return redirect('/data-barang')->with('success', 'Data berhasil ditambahkan');
+        return redirect('admin/data-barang')->with('success', 'Data berhasil ditambahkan');
     }
 
     // =========================
@@ -101,7 +101,7 @@ class BarangController extends Controller
 
         session(['barang' => $barang]);
 
-        return redirect('/data-barang')->with('success', 'Data berhasil diupdate');
+        return redirect('admin/data-barang')->with('success', 'Data berhasil diupdate');
     }
 
     // =========================
@@ -115,6 +115,6 @@ class BarangController extends Controller
 
         session(['barang' => $barang]);
 
-        return redirect('/data-barang')->with('success', 'Data berhasil dihapus');
+        return redirect('admin/data-barang')->with('success', 'Data berhasil dihapus');
     }
 }

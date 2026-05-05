@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller; // ⭐ TAMBAHKAN INI
+use App\Http\Controllers\Controller; 
 use Illuminate\Http\Request;
 
-class BarangKeluarController extends Controller
+class AdminBarangKeluarController extends Controller
 {
     public function index()
     {

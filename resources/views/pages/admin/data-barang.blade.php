@@ -164,8 +164,7 @@
 </div>
 <!-- ================= MODAL TAMBAH ================= -->
 <div id="modalTambah" tabindex="-1"
-    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-
+class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
     <div class="bg-white w-full max-w-xl rounded-lg shadow-lg">
 
         <!-- HEADER -->

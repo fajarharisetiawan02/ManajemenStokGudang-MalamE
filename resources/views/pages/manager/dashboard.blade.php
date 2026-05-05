@@ -10,7 +10,7 @@
 
 <!-- HERO -->
 <div
-    class="bg-gradient-to-r from-blue-600 to-blue-400 rounded-3xl p-8 shadow-xl mb-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+    class="bg-gradient-to-r from-blue-600 to-blue-400 rounded-3xl p-8 shadow-xl mb-10 flex items-center justify-between relative overflow-hidden">
 
     <div class="text-white max-w-lg z-20">
         <h1 class="text-4xl font-bold mb-2">
@@ -18,7 +18,7 @@
         </h1>
 
         <h2 class="text-2xl font-semibold text-white/95">
-            {{ Auth::user()->name ?? 'Admin GudangPro' }}
+            {{ Auth::user()->name ?? 'Manager GudangPro' }}
         </h2>
 
         <p class="mt-3 text-base text-white/90 leading-relaxed max-w-md">
@@ -31,7 +31,7 @@
 </div>
 
 <!-- STATISTIK -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+<div class="grid md:grid-cols-4 gap-6 mb-10">
 
     <div class="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300">
         <div class="flex justify-between">
@@ -87,12 +87,12 @@
 
 </div>
 
-<!-- CHART -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+<div class="grid lg:grid-cols-2 gap-6 mb-10">
 
-    <!-- LINE -->
+    <!-- LINE CHART -->
     <div class="bg-white rounded-2xl shadow p-6 h-[400px] flex flex-col">
 
+        <!-- HEADER + FILTER -->
         <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
 
             <h3 class="font-bold text-lg">
@@ -100,6 +100,7 @@
                 Pergerakan Stok
             </h3>
 
+            <!-- FILTER TANGGAL -->
             <div class="flex gap-2 items-center">
 
                 <div class="relative">
@@ -107,10 +108,15 @@
                         class="pl-3 pr-10 py-1.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="Pilih tanggal">
 
-                    <button type="button"
-                        onclick="document.getElementById('rangeTanggal').focus()"
+                    <button type="button" onclick="document.getElementById('rangeTanggal').focus()"
                         class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-600">
-                        <i class="fas fa-calendar"></i>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10m-13 9h16a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+
                     </button>
                 </div>
 
@@ -122,13 +128,14 @@
 
         </div>
 
+        <!-- CHART -->
         <div class="flex-1">
-            <canvas id="stokChart"></canvas>
-        </div>
+    <canvas id="stokChart"></canvas>
+         </div>
 
     </div>
 
-    <!-- DONUT -->
+    <!-- DONUT CHART -->
     <div class="bg-white rounded-2xl shadow p-6">
 
         <!-- HEADER + FILTER -->
@@ -181,10 +188,10 @@
     </div>
 
 </div>
+<!-- TABLE & ALERT -->
+<div class="grid lg:grid-cols-3 gap-6 mb-10">
 
-<!-- TABLE -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-
+    <!-- TABLE -->
     <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
 
         <div class="flex justify-between mb-4">
@@ -192,21 +199,21 @@
                 <i class="fas fa-table text-green-600 mr-2"></i>
                 Transaksi Terbaru
             </h3>
+            <a href="/transaksi" class="text-blue-600 text-sm hover:underline">Lihat Semua</a>
         </div>
 
-        <!-- 🔥 FIX MOBILE -->
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm min-w-[600px]">
-                <thead class="text-slate-400 uppercase text-xs">
-                    <tr>
-                        <th class="py-3">Tanggal</th>
-                        <th>Barang</th>
-                        <th>Qty</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                   @if(isset($transaksi) && count($transaksi) > 0)
+        <table class="w-full text-sm">
+            <thead class="text-slate-400 uppercase text-xs">
+                <tr>
+                    <th class="py-3">Tanggal</th>
+                    <th>Barang</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if(isset($transaksi) && count($transaksi) > 0)
 
                 @foreach($transaksi as $item)
                 <tr class="border-b hover:bg-blue-50 transition">
@@ -236,15 +243,14 @@
         </table>
     </div>
 
-    </div>
-
+    <!-- ALERT -->
     <div class="bg-white rounded-2xl shadow p-6">
-        <h3 class="font-bold text-lg mb-4 text-red-500">
-            <i class="fas fa-triangle-exclamation mr-2"></i>
+        <h3 class="font-bold text-lg mb-4">
+            <i class="fas fa-triangle-exclamation text-red-500 mr-2"></i>
             Stok Menipis
         </h3>
 
-         @if(isset($stokMenipis) && count($stokMenipis) > 0)
+        @if(isset($stokMenipis) && count($stokMenipis) > 0)
 
         <div class="space-y-3">
             @foreach($stokMenipis as $item)
