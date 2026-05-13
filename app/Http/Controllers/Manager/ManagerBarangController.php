@@ -21,7 +21,7 @@ class ManagerBarangController extends Controller
                     'nama_kategori' => 'Oli'
                 ],
                 'supplier' => (object)[
-                    'nama_supplier' => 'PT Sumber Jaya'
+                    'nama_supplier' => 'PT Polibatam'
                 ],
             ],
             (object)[
@@ -34,7 +34,7 @@ class ManagerBarangController extends Controller
                     'nama_kategori' => 'Filter'
                 ],
                 'supplier' => (object)[
-                    'nama_supplier' => 'PT Maju Jaya'
+                    'nama_supplier' => 'PT Maju Mundur'
                 ],
             ],
         ]);

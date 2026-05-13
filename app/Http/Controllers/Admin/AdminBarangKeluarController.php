@@ -2,16 +2,38 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AdminBarangKeluarController extends Controller
 {
     public function index()
     {
-        return view('pages.admin.barang-keluar', [
-            'data' => session('barang_keluar', [])
+        $data = session('barang_keluar', [
+            [
+                'tanggal' => '2026-05-13',
+                'kode' => 'BK-001',
+                'nama' => 'Oli Mesin 10W40',
+                'jumlah' => 5,
+                'tujuan' => 'Bengkel A',
+            ],
+            [
+                'tanggal' => '2026-05-13',
+                'kode' => 'BK-002',
+                'nama' => 'Filter Udara Avanza',
+                'jumlah' => 2,
+                'tujuan' => 'Service Internal',
+            ],
+            [
+                'tanggal' => '2026-05-13',
+                'kode' => 'BK-003',
+                'nama' => 'Kampas Rem Depan',
+                'jumlah' => 1,
+                'tujuan' => 'Customer',
+            ],
         ]);
+
+        return view('pages.admin.barang-keluar', compact('data'));
     }
 
     public function store(Request $request)
@@ -34,20 +56,22 @@ class AdminBarangKeluarController extends Controller
             'tujuan' => $request->tujuan,
         ];
 
-        // EDIT
-        if ($request->edit_index !== null && $request->edit_index !== '') {
+        if ($request->filled('edit_index')) {
+            $index = $request->edit_index;
 
-            $data[$request->edit_index] = $item;
+            if (isset($data[$index])) {
+                $data[$index] = $item;
+                session(['barang_keluar' => $data]);
 
-            session(['barang_keluar' => $data]);
+                return redirect()->route('admin.barang-keluar.index')
+                    ->with('success', 'Data berhasil diupdate');
+            }
 
             return redirect()->route('admin.barang-keluar.index')
-                ->with('success', 'Data berhasil diupdate');
+                ->with('error', 'Data tidak ditemukan');
         }
 
-        // TAMBAH
         $data[] = $item;
-
         session(['barang_keluar' => $data]);
 
         return redirect()->route('admin.barang-keluar.index')

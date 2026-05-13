@@ -1,108 +1,163 @@
-function openModal() {
-    const modal = document.getElementById('modalTambah');
-    if (!modal) return;
+       // =========================
+    // OPEN MODAL TAMBAH
+    // =========================
+    function openModal() {
+        const modal = document.getElementById('modalTambah');
+        if (!modal) return;
 
-    const form = modal.querySelector('form');
-    if (!form) return;
+        const form = modal.querySelector('form');
+        if (!form) return;
 
-    // mode tambah
-    form.classList.remove('edit-mode');
+        // reset form
+        form.reset();
 
-    // reset form
-    form.reset();
+        // action tambah
+        form.action = "/admin/data-barang";
 
-    // set action
-    form.action = "/data-barang";
+        // hapus method PUT jika ada
+        const method = form.querySelector('input[name="_method"]');
+        if (method) method.remove();
 
-    // hapus method PUT jika ada
-    const method = form.querySelector('input[name="_method"]');
-    if (method) method.remove();
+        // title
+        const title = document.getElementById('modalTitle');
+        if (title) title.innerText = "Tambah Barang Baru";
 
-    // ubah title (AMAN)
-    const title = document.getElementById('modalTitle');
-    if (title) title.innerText = "Tambah Barang";
+        // subtitle
+        const subtitle = document.getElementById('modalSubtitle');
+        if (subtitle) subtitle.innerText = "Lengkapi data barang di bawah ini.";
 
-    const subtitle = document.getElementById('modalSubtitle');
-    if (subtitle) subtitle.innerText = "Isi data barang baru";
+        // tombol submit
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.innerText = "Simpan";
 
-    // tombol
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.innerText = "Simpan";
-
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
-
-function closeModal() {
-    const modal = document.getElementById('modalTambah');
-    if (!modal) return;
-
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-
-function editData(id, no_part, nama, brand, stok, harga) {
-    const modal = document.getElementById('modalTambah');
-    if (!modal) return;
-
-    const form = modal.querySelector('form');
-    if (!form) return;
-
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-
-    form.classList.add('edit-mode');
-
-    // isi data
-    const noPart = form.querySelector('input[name="no_part"]');
-    const namaBarang = form.querySelector('input[name="nama_barang"]');
-    const brandSelect = form.querySelector('select[name="brand"]');
-    const stokInput = form.querySelector('input[name="stok"]');
-    const hargaInput = form.querySelector('input[name="harga"]');
-
-    if (noPart) noPart.value = no_part;
-    if (namaBarang) namaBarang.value = nama;
-    if (brandSelect) brandSelect.value = brand;
-    if (stokInput) stokInput.value = stok;
-    if (hargaInput) hargaInput.value = harga;
-
-    // action update
-    form.action = "/data-barang/" + id;
-
-    // method PUT
-    let method = form.querySelector('input[name="_method"]');
-    if (!method) {
-        method = document.createElement('input');
-        method.type = 'hidden';
-        method.name = '_method';
-        form.appendChild(method);
+        // tampil modal
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
     }
-    method.value = 'PUT';
 
-    // ubah title (AMAN)
-    const title = document.getElementById('modalTitle');
-    if (title) title.innerText = "Edit Barang";
+    // =========================
+    // CLOSE MODAL
+    // =========================
+    function closeModal() {
+        const modal = document.getElementById('modalTambah');
+        if (!modal) return;
 
-    const subtitle = document.getElementById('modalSubtitle');
-    if (subtitle) subtitle.innerText = "Ubah data barang";
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
 
-    // tombol
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.innerText = "Update";
-}
+    // =========================
+    // EDIT DATA
+    // =========================
+    function editData(
+        id,
+        no_part,
+        nama_barang,
+        kategori_id,
+        brand,
+        stok,
+        harga,
+        supplier_id
+    ) {
 
-// UX klik luar modal
-document.addEventListener("click", function (e) {
-    const modal = document.getElementById('modalTambah');
-    if (e.target === modal) closeModal();
-});
+        const modal = document.getElementById('modalTambah');
+        if (!modal) return;
 
-// UX tombol ESC
-document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeModal();
-});
+        const form = modal.querySelector('form');
+        if (!form) return;
 
-// global
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.editData = editData;
+        // tampil modal
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        // isi input
+        const noPartInput = form.querySelector('input[name="no_part"]');
+        const namaBarangInput = form.querySelector('input[name="nama_barang"]');
+        const kategoriSelect = form.querySelector('select[name="kategori_id"]');
+        const brandSelect = form.querySelector('select[name="brand"]');
+        const stokInput = form.querySelector('input[name="stok"]');
+        const hargaInput = form.querySelector('input[name="harga"]');
+        const supplierSelect = form.querySelector('select[name="supplier_id"]');
+
+        if (noPartInput) noPartInput.value = no_part || '';
+        if (namaBarangInput) namaBarangInput.value = nama_barang || '';
+        if (kategoriSelect) kategoriSelect.value = kategori_id || '';
+        if (brandSelect) brandSelect.value = brand || '';
+        if (stokInput) stokInput.value = stok || '';
+        if (hargaInput) hargaInput.value = harga || '';
+        if (supplierSelect) supplierSelect.value = supplier_id || '';
+
+        // action update
+        form.action = "/admin/data-barang/" + id;
+
+        // method PUT
+        let method = form.querySelector('input[name="_method"]');
+
+        if (!method) {
+            method = document.createElement('input');
+            method.type = 'hidden';
+            method.name = '_method';
+            form.appendChild(method);
+        }
+
+        method.value = 'PUT';
+
+        // title edit
+        const title = document.getElementById('modalTitle');
+        if (title) title.innerText = "Edit Barang";
+
+        // subtitle edit
+        const subtitle = document.getElementById('modalSubtitle');
+        if (subtitle) subtitle.innerText = "Perbarui data barang di bawah ini.";
+
+        // tombol update
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.innerText = "Update";
+    }
+
+    // =========================
+    // CLICK OUTSIDE MODAL
+    // =========================
+    document.addEventListener("click", function (e) {
+        const modal = document.getElementById('modalTambah');
+
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // =========================
+    // ESC CLOSE MODAL
+    // =========================
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    });
+
+    // =========================
+    // DELETE CONFIRM
+    // =========================
+    function confirmDelete(form) {
+        Swal.fire({
+            title: 'Yakin hapus data ini?',
+            text: 'Data yang dihapus tidak bisa dikembalikan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+
+    // =========================
+    // GLOBAL FUNCTION
+    // =========================
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.editData = editData;
+    window.confirmDelete = confirmDelete;

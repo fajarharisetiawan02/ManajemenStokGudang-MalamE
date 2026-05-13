@@ -1,29 +1,52 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AdminSupplierController extends Controller
 {
-    // =========================
-    // TAMPIL DATA
-    // =========================
     public function index()
     {
+        if (!session()->has('suppliers')) {
+            session([
+                'suppliers' => [
+                    [
+                        'id' => uniqid(),
+                        'nama' => 'PT Astra',
+                        'telepon' => '0812-3456-7890',
+                        'alamat' => 'Jakarta',
+                        'status' => 1,
+                    ],
+                    [
+                        'id' => uniqid(),
+                        'nama' => 'PT Polibatam',
+                        'telepon' => '0821-9876-5432',
+                        'alamat' => 'Batam',
+                        'status' => 1,
+                    ],
+                    [
+                        'id' => uniqid(),
+                        'nama' => 'CV Sumber Jaya',
+                        'telepon' => '0852-1122-3344',
+                        'alamat' => 'Bandung',
+                        'status' => 0,
+                    ],
+                ]
+            ]);
+        }
+
         $suppliers = session('suppliers', []);
         return view('pages.admin.supplier', compact('suppliers'));
     }
 
-    // =========================
-    // TAMBAH DATA
-    // =========================
     public function store(Request $request)
     {
         $request->validate([
             'nama' => 'required',
             'telepon' => 'required',
-            'alamat' => 'required'
+            'alamat' => 'required',
         ]);
 
         $suppliers = session('suppliers', []);
@@ -33,7 +56,7 @@ class AdminSupplierController extends Controller
             'nama' => $request->nama,
             'telepon' => $request->telepon,
             'alamat' => $request->alamat,
-            'status' => 1
+            'status' => 1,
         ];
 
         session(['suppliers' => $suppliers]);
@@ -41,15 +64,12 @@ class AdminSupplierController extends Controller
         return redirect()->back()->with('success', 'tambah');
     }
 
-    // =========================
-    // UPDATE DATA
-    // =========================
     public function update(Request $request, $id)
     {
         $request->validate([
             'nama' => 'required',
             'telepon' => 'required',
-            'alamat' => 'required'
+            'alamat' => 'required',
         ]);
 
         $suppliers = session('suppliers', []);
@@ -67,16 +87,13 @@ class AdminSupplierController extends Controller
         return redirect()->back()->with('success', 'update');
     }
 
-    // =========================
-    // HAPUS DATA
-    // =========================
     public function destroy($id)
     {
         $suppliers = session('suppliers', []);
 
-        $suppliers = array_filter($suppliers, function ($item) use ($id) {
+        $suppliers = array_values(array_filter($suppliers, function ($item) use ($id) {
             return $item['id'] != $id;
-        });
+        }));
 
         session(['suppliers' => $suppliers]);
 

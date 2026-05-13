@@ -9,13 +9,13 @@ class ManagerDashboardController extends Controller
 {
     public function index()
     {
-        // 🔹 DATA STATISTIK
+        //DATA STATISTIK
         $totalBarang = 1250;
         $barangMasuk = 45;
         $barangKeluar = 20;
         $supplier = 18;
 
-        // 🔹 DATA TRANSAKSI TERBARU
+        //DATA TRANSAKSI TERBARU
         $transaksi = [
             (object)[
                 'tanggal' => '21 Apr',
@@ -37,7 +37,7 @@ class ManagerDashboardController extends Controller
             ],
         ];
 
-        // 🔹 DATA STOK MENIPIS
+        //DATA STOK MENIPIS
         $stokMenipis = [
             (object)[
                 'nama' => 'Filter Udara',
@@ -53,7 +53,7 @@ class ManagerDashboardController extends Controller
             ],
         ];
 
-        // 🔹 VIEW MANAGER (PENTING)
+        //VIEW MANAGER (PENTING)
         return view('pages.manager.dashboard', compact(
             'totalBarang',
             'barangMasuk',

@@ -50,8 +50,56 @@
 <!-- SCRIPT KHUSUS HALAMAN -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: @json(session('success')),
+                confirmButtonColor: '#2563eb'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: @json(session('error')),
+                confirmButtonColor: '#ef4444'
+            });
+        @endif
+
+        @if(session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan!',
+                text: @json(session('warning')),
+                confirmButtonColor: '#f59e0b'
+            });
+        @endif
+    });
+
+    window.confirmDelete = function (form) {
+        Swal.fire({
+            title: 'Yakin hapus data ini?',
+            text: 'Data yang dihapus tidak bisa dikembalikan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+</script>
 
 @yield('script')
 
