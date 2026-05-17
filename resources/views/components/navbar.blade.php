@@ -1,5 +1,6 @@
 @php
-    $role = session('role') ?? 'admin';
+    $user = auth()->user();
+    $role = $user?->role ?? 'admin';
     $nama = $role === 'admin' ? 'Admin' : 'Manager';
 @endphp
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -14,36 +15,60 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $username = $request->username;
-        $password = $request->password;
+        // VALIDASI
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-        // ADMIN
-        if ($username == 'admin' && $password == 'admin123') {
+        // CEK LOGIN
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
 
-            $request->session()->put('login', true);
-            $request->session()->put('role', 'admin');
-            $request->session()->save();
+        // LOGIN BERHASIL
+        if (Auth::attempt($credentials, $request->remember)) {
 
-            return redirect('/admin/dashboard');
+            $request->session()->regenerate();
+
+            // AMBIL DATA USER
+            $user = Auth::user();
+
+            // ROLE ADMIN
+            if ($user->role === 'admin') {
+
+                return redirect()
+                    ->route('admin.dashboard');
+
+            }
+
+            // ROLE MANAGER
+            if ($user->role === 'manager') {
+
+                return redirect()
+                    ->route('manager.dashboard');
+
+            }
+
+            // DEFAULT
+            Auth::logout();
+
+            return redirect('/login')
+                ->with('error', 'Role tidak dikenali!');
         }
 
-        // MANAGER
-        if ($username == 'manager' && $password == 'manager123') {
-
-            $request->session()->put('login', true);
-            $request->session()->put('role', 'manager');
-            $request->session()->save();
-
-            return redirect('/manager/dashboard');
-        }
-
-        return back()->with('error', 'Username atau Password salah!');
+        // LOGIN GAGAL
+        return back()
+            ->with('error', 'Username atau Password salah!');
     }
 
     public function logout(Request $request)
     {
-        // Hapus session
+        Auth::logout();
+
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
         return redirect('/login');

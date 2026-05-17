@@ -24,72 +24,95 @@ use App\Http\Controllers\Manager\ManagerLaporanController;
 
 /* === LANDING ==== */
 Route::controller(HomeController::class)->group(function () {
+
     Route::get('/', 'index');
     Route::get('/home', 'index');
     Route::get('/about', 'about');
     Route::get('/contact', 'contact');
+
 });
 
 
 /* === AUTH === */
 Route::controller(LoginController::class)->group(function () {
+
     Route::get('/login', 'index')->name('login');
-    Route::post('/login', 'login');
-    Route::get('/logout', 'logout')->name('logout');
+
+    Route::post('/login', 'login')
+        ->name('login.post');
+
+    Route::get('/logout', 'logout')
+        ->name('logout');
+
 });
 
 
 /* === ADMIN === */
 Route::prefix('admin')
     ->name('admin.')
-    ->middleware(['checkLogin'])
+    ->middleware(['auth'])
     ->group(function () {
 
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
+        /* === KATEGORI === */
         Route::resource('kategori', AdminKategoriController::class);
+
+        /* === DATA BARANG === */
         Route::resource('data-barang', AdminBarangController::class);
+
+        /* === SUPPLIER === */
         Route::resource('supplier', AdminSupplierController::class);
 
+        /* === BARANG MASUK === */
         Route::get('/barang-masuk', [AdminBarangMasukController::class, 'index'])
             ->name('barang-masuk.index');
 
         Route::post('/barang-masuk', [AdminBarangMasukController::class, 'store'])
             ->name('barang-masuk.store');
 
+        /* === BARANG KELUAR === */
         Route::get('/barang-keluar', [AdminBarangKeluarController::class, 'index'])
             ->name('barang-keluar.index');
 
         Route::post('/barang-keluar', [AdminBarangKeluarController::class, 'store'])
             ->name('barang-keluar.store');
 
+        /* === LAPORAN === */
         Route::get('/laporan', [AdminLaporanController::class, 'index'])
             ->name('laporan.index');
+
 });
 
 
 /* === MANAGER === */
 Route::prefix('manager')
     ->name('manager.')
-    ->middleware(['checkLogin'])
+    ->middleware(['auth'])
     ->group(function () {
 
         Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
             ->name('dashboard');
 
+        /* === DATA BARANG === */
         Route::get('/data-barang', [ManagerBarangController::class, 'index'])
             ->name('data-barang.index');
 
+        /* === SUPPLIER === */
         Route::get('/supplier', [ManagerSupplierController::class, 'index'])
             ->name('supplier.index');
 
+        /* === BARANG MASUK === */
         Route::get('/barang-masuk', [ManagerBarangMasukController::class, 'index'])
             ->name('barang-masuk.index');
 
+        /* === BARANG KELUAR === */
         Route::get('/barang-keluar', [ManagerBarangKeluarController::class, 'index'])
             ->name('barang-keluar.index');
 
+        /* === LAPORAN === */
         Route::get('/laporan', [ManagerLaporanController::class, 'index'])
             ->name('laporan.index');
+
 });

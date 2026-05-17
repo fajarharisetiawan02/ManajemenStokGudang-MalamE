@@ -1,5 +1,6 @@
 @php
-    $role = session('role') ?? 'admin';
+    $user = auth()->user();
+    $role = $user?->role ?? 'admin';
     $prefix = $role === 'admin' ? 'admin' : 'manager';
 @endphp
 
