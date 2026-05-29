@@ -135,7 +135,7 @@
                         Fast Response Specialist
                     </p>
 
-                    <a href="https://wa.me/628213925219?text=Halo Admin 1"
+                    <a href="https://wa.me/6282113925219?text=Halo Admin 1"
                         class="block mt-8 bg-green-500 text-white text-center py-4 rounded-2xl font-bold hover:bg-green-600 transition">
                         Chat WhatsApp
                     </a>
