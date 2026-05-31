@@ -9,16 +9,15 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    // 🔥 WAJIB (karena nama tabel bukan plural)
     protected $table = 'supplier';
 
-    // 🔥 FIELD YANG BOLEH DIISI
     protected $fillable = [
         'nama_supplier',
-        'telepon'
+        'telepon',
+        'alamat',
+        'status',
     ];
 
-    // 🔥 RELASI KE BARANG (opsional tapi bagus)
     public function barang()
     {
         return $this->hasMany(Barang::class);

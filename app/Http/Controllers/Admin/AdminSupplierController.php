@@ -3,41 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class AdminSupplierController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        if (!session()->has('suppliers')) {
-            session([
-                'suppliers' => [
-                    [
-                        'id' => uniqid(),
-                        'nama' => 'PT Astra',
-                        'telepon' => '0812-3456-7890',
-                        'alamat' => 'Jakarta',
-                        'status' => 1,
-                    ],
-                    [
-                        'id' => uniqid(),
-                        'nama' => 'PT Polibatam',
-                        'telepon' => '0821-9876-5432',
-                        'alamat' => 'Batam',
-                        'status' => 1,
-                    ],
-                    [
-                        'id' => uniqid(),
-                        'nama' => 'CV Sumber Jaya',
-                        'telepon' => '0852-1122-3344',
-                        'alamat' => 'Bandung',
-                        'status' => 0,
-                    ],
-                ]
-            ]);
+        $query = Supplier::query();
+
+        if ($request->search) {
+            $query->where('nama_supplier', 'like', '%' . $request->search . '%');
         }
 
-        $suppliers = session('suppliers', []);
+        if ($request->status == 'aktif') {
+            $query->where('status', 1);
+        }
+
+        if ($request->status == 'nonaktif') {
+            $query->where('status', 0);
+        }
+
+        $perPage = $request->per_page ?? 10;
+
+        $suppliers = $query->paginate($perPage);
+
         return view('pages.admin.supplier', compact('suppliers'));
     }
 
@@ -47,19 +37,15 @@ class AdminSupplierController extends Controller
             'nama' => 'required',
             'telepon' => 'required',
             'alamat' => 'required',
+            'status' => 'required',
         ]);
 
-        $suppliers = session('suppliers', []);
-
-        $suppliers[] = [
-            'id' => uniqid(),
-            'nama' => $request->nama,
+        Supplier::create([
+            'nama_supplier' => $request->nama,
             'telepon' => $request->telepon,
             'alamat' => $request->alamat,
-            'status' => 1,
-        ];
-
-        session(['suppliers' => $suppliers]);
+            'status' => $request->status,
+        ]);
 
         return redirect()->back()->with('success', 'tambah');
     }
@@ -70,32 +56,24 @@ class AdminSupplierController extends Controller
             'nama' => 'required',
             'telepon' => 'required',
             'alamat' => 'required',
+            'status' => 'required',
         ]);
 
-        $suppliers = session('suppliers', []);
+        $supplier = Supplier::findOrFail($id);
 
-        foreach ($suppliers as &$item) {
-            if ($item['id'] == $id) {
-                $item['nama'] = $request->nama;
-                $item['telepon'] = $request->telepon;
-                $item['alamat'] = $request->alamat;
-            }
-        }
-
-        session(['suppliers' => $suppliers]);
+        $supplier->update([
+            'nama_supplier' => $request->nama,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'status' => $request->status,
+        ]);
 
         return redirect()->back()->with('success', 'update');
     }
 
     public function destroy($id)
     {
-        $suppliers = session('suppliers', []);
-
-        $suppliers = array_values(array_filter($suppliers, function ($item) use ($id) {
-            return $item['id'] != $id;
-        }));
-
-        session(['suppliers' => $suppliers]);
+        Supplier::findOrFail($id)->delete();
 
         return redirect()->back()->with('success', 'delete');
     }
