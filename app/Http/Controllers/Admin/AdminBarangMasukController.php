@@ -3,80 +3,55 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
+use App\Models\BarangMasuk;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class AdminBarangMasukController extends Controller
 {
     public function index()
     {
-        $data = session('barang_masuk', [
-            [
-                'tanggal' => '2026-05-13',
-                'kode' => 'HD-001',
-                'nama' => 'Oli Mesin 10W40',
-                'jumlah' => 25,
-                'supplier' => 'PT Astra',
-            ],
-            [
-                'tanggal' => '2026-05-13',
-                'kode' => 'TY-002',
-                'nama' => 'Filter Udara Avanza',
-                'jumlah' => 8,
-                'supplier' => 'PT Indoparts',
-            ],
-            [
-                'tanggal' => '2026-05-13',
-                'kode' => 'SZ-003',
-                'nama' => 'Kampas Rem Depan',
-                'jumlah' => 3,
-                'supplier' => 'PT Astra',
-            ],
-        ]);
+        $barangMasuks = BarangMasuk::with(['barang', 'supplier'])->latest()->get();
 
-        return view('pages.admin.barang-masuk', compact('data'));
+        $barangs = Barang::all();
+        $suppliers = Supplier::all();
+
+        return view('pages.admin.barang-masuk', compact(
+            'barangMasuks',
+            'barangs',
+            'suppliers'
+        ));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal' => 'required',
-            'kode' => 'required',
-            'nama' => 'required',
-            'jumlah' => 'required|numeric|min:1',
-            'supplier' => 'required'
+            'barang_id' => 'required',
+            'supplier_id' => 'required',
+            'tanggal' => 'required|date',
+            'jumlah' => 'required|integer|min:1',
+            'harga_beli' => 'required|numeric',
         ]);
 
-        $data = session('barang_masuk', []);
+        $barang = Barang::findOrFail($request->barang_id);
 
-        $item = [
+        $total = $request->jumlah * $request->harga_beli;
+
+        // simpan transaksi masuk
+        BarangMasuk::create([
+            'barang_id' => $request->barang_id,
+            'supplier_id' => $request->supplier_id,
             'tanggal' => $request->tanggal,
-            'kode' => $request->kode,
-            'nama' => $request->nama,
             'jumlah' => $request->jumlah,
-            'supplier' => $request->supplier,
-        ];
+            'harga_beli' => $request->harga_beli,
+            'total' => $total,
+        ]);
 
-        // ================= EDIT =================
-        if ($request->filled('edit_index')) {
-            $index = $request->edit_index;
+        // update stok
+        $barang->stok += $request->jumlah;
+        $barang->save();
 
-            if (isset($data[$index])) {
-                $data[$index] = $item;
-                session(['barang_masuk' => $data]);
-
-                return redirect()->route('admin.barang-masuk.index')
-                    ->with('success', 'Data berhasil diupdate');
-            }
-
-            return redirect()->route('admin.barang-masuk.index')
-                ->with('error', 'Data tidak ditemukan');
-        }
-
-        // ================= TAMBAH =================
-        $data[] = $item;
-        session(['barang_masuk' => $data]);
-
-        return redirect()->route('admin.barang-masuk.index')
-            ->with('success', 'Data berhasil ditambahkan');
+        return back()->with('success', 'Barang masuk berhasil');
     }
 }

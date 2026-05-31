@@ -9,7 +9,7 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    protected $table = 'supplier';
+    protected $table = 'suppliers';
 
     protected $fillable = [
         'nama_supplier',
@@ -20,6 +20,6 @@ class Supplier extends Model
 
     public function barang()
     {
-        return $this->hasMany(Barang::class);
+        return $this->hasMany(BarangMasuk::class);
     }
 }

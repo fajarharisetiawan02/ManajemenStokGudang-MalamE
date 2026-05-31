@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('supplier', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
+            $table->id(); 
+            // PRIMARY KEY
 
-    $table->id();
+            $table->string('nama');
+            $table->string('telepon')->nullable();
+            $table->text('alamat')->nullable();
 
-    $table->string('nama_supplier');
-
-    $table->string('telepon')->nullable();
-
-    $table->text('alamat')->nullable();
-
-    $table->timestamps();
-
-});
+            $table->timestamps();
+        });
     }
 
     /**
@@ -31,6 +28,6 @@ Schema::create('supplier', function (Blueprint $table) {
      */
     public function down(): void
     {
-        Schema::dropIfExists('supplier');
+        Schema::dropIfExists('suppliers');
     }
 };

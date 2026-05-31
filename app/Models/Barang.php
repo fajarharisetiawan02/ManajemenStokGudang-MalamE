@@ -6,17 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Barang extends Model
 {
-    protected $table = 'barang';
+    protected $table = 'barangs';
 
     protected $fillable = [
-        'no_part',
-        'nama_barang',
-        'kategori_id',
-        'brand',
+        'kode',
+        'nama',
         'stok',
-        'harga',
-        'gambar',
-        'supplier_id',
+        'harga_beli',
+        'harga_jual',
     ];
 
     public function kategori()
@@ -27,5 +24,15 @@ class Barang extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function masuk()
+    {
+        return $this->hasMany(BarangMasuk::class);
+    }
+
+    public function keluar()
+    {
+        return $this->hasMany(BarangKeluar::class);
     }
 }

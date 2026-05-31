@@ -60,24 +60,16 @@ Route::prefix('admin')
         Route::resource('kategori', AdminKategoriController::class);
 
         /* === DATA BARANG === */
-        Route::resource('data-barang', AdminBarangController::class);
+        Route::resource('barang', AdminBarangController::class);
 
         /* === SUPPLIER === */
         Route::resource('supplier', AdminSupplierController::class);
 
-        /* === BARANG MASUK === */
-        Route::get('/barang-masuk', [AdminBarangMasukController::class, 'index'])
-            ->name('barang-masuk.index');
-
-        Route::post('/barang-masuk', [AdminBarangMasukController::class, 'store'])
-            ->name('barang-masuk.store');
+         /* === BARANG MASUK === */
+        Route::resource('barang-masuk', AdminBarangMasukController::class);
 
         /* === BARANG KELUAR === */
-        Route::get('/barang-keluar', [AdminBarangKeluarController::class, 'index'])
-            ->name('barang-keluar.index');
-
-        Route::post('/barang-keluar', [AdminBarangKeluarController::class, 'store'])
-            ->name('barang-keluar.store');
+        Route::resource('barang-keluar', AdminBarangKeluarController::class);
 
         /* === LAPORAN === */
         Route::get('/laporan', [AdminLaporanController::class, 'index'])

@@ -34,7 +34,7 @@
             </a>
 
             <!-- DATA BARANG -->
-            <a href="{{ route($prefix.'.data-barang.index') }}"
+            <a href="{{ route($prefix.'.barang.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-xl transition
                 {{ request()->is($prefix.'/data-barang') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-box w-6"></i>

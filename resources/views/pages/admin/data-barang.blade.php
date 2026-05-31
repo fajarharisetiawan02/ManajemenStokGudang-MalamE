@@ -88,7 +88,7 @@ $brandOptions = $brandOptions ?? [];
                             {{ $barang->firstItem() + $loop->index }} </td>
 
                         <td class="px-4 py-4 font-mono text-sm text-gray-700">
-                            {{ $item->no_part }}
+                            {{ $barang->kode }}
                         </td>
 
                         <td class="px-4 py-4">
@@ -105,7 +105,7 @@ $brandOptions = $brandOptions ?? [];
                         </td>
 
                         <td class="px-4 py-4 font-semibold text-gray-800 text-[15px]">
-                            {{ $item->nama_barang }}
+                            {{ $barang->nama }}
                         </td>
 
                         <td class="px-4 py-4 text-gray-600 text-[15px]">
