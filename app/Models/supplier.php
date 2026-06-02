@@ -14,8 +14,8 @@ class Supplier extends Model
     protected $fillable = [
         'nama_supplier',
         'telepon',
+        'email',
         'alamat',
-        'status',
     ];
 
     public function barang()

@@ -60,7 +60,7 @@ Route::prefix('admin')
         Route::resource('kategori', AdminKategoriController::class);
 
         /* === DATA BARANG === */
-        Route::resource('barang', AdminBarangController::class);
+        Route::resource('data-barang', AdminBarangController::class);
 
         /* === SUPPLIER === */
         Route::resource('supplier', AdminSupplierController::class);

@@ -46,12 +46,12 @@ function editData(button) {
 
     form.action = "/admin/data-barang/" + button.dataset.id;
 
-    const noPart = form.querySelector('input[name="no_part"]');
+    const noPart = form.querySelector('input[name="kode"]');
     const namaBarang = form.querySelector('input[name="nama_barang"]');
     const kategori = form.querySelector('select[name="kategori_id"]');
-    const brand = form.querySelector('select[name="brand"]');
+    const brand = form.querySelector('select[name="brand_id"]');
     const stok = form.querySelector('input[name="stok"]');
-    const harga = form.querySelector('input[name="harga"]');
+    const harga = form.querySelector('input[name="harga_jual"]');
     const supplier = form.querySelector('select[name="supplier_id"]');
 
     if (noPart) noPart.value = button.dataset.noPart || '';
