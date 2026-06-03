@@ -4,146 +4,78 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Kategori;
+use Illuminate\Support\Facades\File;
 
 class AdminKategoriController extends Controller
 {
     public function index()
     {
-        $kategori = session('kategori', []);
-
-        // kalau kosong, isi default
-        if (count($kategori) == 0) {
-            $kategori = [
-                (object)[
-                    'id' => 1,
-                    'nama' => 'Oli Mesin',
-                    'jumlah' => 20,
-                    'status' => 'aktif',
-                    'kelompok' => 'engine',
-                    'foto' => null
-                ],
-                (object)[
-                    'id' => 2,
-                    'nama' => 'Ban Mobil',
-                    'jumlah' => 10,
-                    'status' => 'aktif',
-                    'kelompok' => 'suspension',
-                    'foto' => null
-                ],
-                (object)[
-                    'id' => 3,
-                    'nama' => 'Aki',
-                    'jumlah' => 5,
-                    'status' => 'nonaktif',
-                    'kelompok' => 'electrical',
-                    'foto' => null
-                ],
-            ];
-
-            session(['kategori' => $kategori]);
-        }
-
-        // pastikan tetap object
-        $kategori = collect($kategori)
-            ->map(fn($item) => (object) $item)
-            ->toArray();
+        $kategori = Kategori::whereNull('parent_id')
+            ->with('children.barang')
+            ->orderBy('nama_kategori', 'ASC')
+            ->get();
 
         return view('pages.admin.kategori', compact('kategori'));
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nama' => 'required',
-            'jumlah' => 'required|integer',
-            'status' => 'required',
-            'kelompok' => 'required',
-            'foto' => 'nullable|image|max:2048'
+        $request->validate([
+            'nama_kategori' => 'required|max:100',
+            'parent_id' => 'nullable|exists:kategori,id',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp'
         ]);
 
-        $kategori = session('kategori', []);
-
-        $kategori = collect($kategori)
-            ->map(fn($item) => (object) $item)
-            ->toArray();
-
-        $fotoPath = null;
+        $foto = null;
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $name = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path('uploads'), $name);
-            $fotoPath = 'uploads/'.$name;
+            $namaFile = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('uploads/kategori'), $namaFile);
+            $foto = 'uploads/kategori/'.$namaFile;
         }
 
-        $kategori[] = (object)[
-            'id' => time(),
-            'nama' => $data['nama'],
-            'jumlah' => $data['jumlah'],
-            'status' => $data['status'],
-            'kelompok' => $data['kelompok'],
-            'foto' => $fotoPath
-        ];
+        Kategori::create([
+            'nama_kategori' => $request->nama_kategori,
+            'parent_id' => $request->parent_id,
+            'foto' => $foto
+        ]);
 
-        session(['kategori' => $kategori]);
-
-        return back();
+        return back()->with('success', 'Kategori berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
     {
+        $kategori = Kategori::findOrFail($id);
+
         $request->validate([
-            'nama' => 'required',
-            'jumlah' => 'required|integer',
-            'status' => 'required',
-            'kelompok' => 'required',
-            'foto' => 'nullable|image|max:2048'
+            'nama_kategori' => 'required|max:100',
+            'parent_id' => 'nullable|exists:kategori,id',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp'
         ]);
 
-        $kategori = session('kategori', []);
+        $data = [
+            'nama_kategori' => $request->nama_kategori,
+            'parent_id' => $request->parent_id
+        ];
 
-        $kategori = collect($kategori)
-            ->map(fn($item) => (object) $item)
-            ->toArray();
-
-        foreach ($kategori as $key => $item) {
-
-            if ($item->id == $id) {
-
-                $kategori[$key]->nama = $request->nama;
-                $kategori[$key]->jumlah = $request->jumlah;
-                $kategori[$key]->status = $request->status;
-                $kategori[$key]->kelompok = $request->kelompok;
-
-                if ($request->hasFile('foto')) {
-                    $file = $request->file('foto');
-                    $name = time().'_'.$file->getClientOriginalName();
-                    $file->move(public_path('uploads'), $name);
-
-                    $kategori[$key]->foto = 'uploads/'.$name;
-                }
-            }
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $namaFile = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('uploads/kategori'), $namaFile);
+            $data['foto'] = 'uploads/kategori/'.$namaFile;
         }
 
-        session(['kategori' => $kategori]);
+        $kategori->update($data);
 
-        return back();
+        return back()->with('success', 'Kategori berhasil diupdate');
     }
 
     public function destroy($id)
     {
-        $kategori = session('kategori', []);
+        Kategori::findOrFail($id)->delete();
 
-        $kategori = collect($kategori)
-            ->map(fn($item) => (object) $item)
-            ->toArray();
-
-        $kategori = array_values(array_filter($kategori, function ($item) use ($id) {
-            return $item->id != $id;
-        }));
-
-        session(['kategori' => $kategori]);
-
-        return back();
+        return back()->with('success', 'Kategori berhasil dihapus');
     }
 }
