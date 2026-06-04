@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminBarangKeluarController;
 use App\Http\Controllers\Admin\AdminLaporanController;
 
 use App\Http\Controllers\Manager\ManagerDashboardController;
+use App\Http\Controllers\Manager\ManagerKategoriController;
 use App\Http\Controllers\Manager\ManagerBarangController;
 use App\Http\Controllers\Manager\ManagerSupplierController;
 use App\Http\Controllers\Manager\ManagerBarangMasukController;
@@ -78,7 +79,6 @@ Route::prefix('admin')
 });
 
 
-/* === MANAGER === */
 Route::prefix('manager')
     ->name('manager.')
     ->middleware(['auth'])
@@ -87,9 +87,16 @@ Route::prefix('manager')
         Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
             ->name('dashboard');
 
+        /* === KATEGORI === */
+        Route::get('/kategori', [ManagerKategoriController::class, 'index'])
+            ->name('kategori.index');
+
         /* === DATA BARANG === */
         Route::get('/data-barang', [ManagerBarangController::class, 'index'])
             ->name('data-barang.index');
+
+        Route::get('/data-barang/{id}', [ManagerBarangController::class, 'show'])
+            ->name('data-barang.show');
 
         /* === SUPPLIER === */
         Route::get('/supplier', [ManagerSupplierController::class, 'index'])
@@ -107,4 +114,4 @@ Route::prefix('manager')
         Route::get('/laporan', [ManagerLaporanController::class, 'index'])
             ->name('laporan.index');
 
-});
+    });

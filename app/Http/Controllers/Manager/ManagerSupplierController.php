@@ -3,28 +3,43 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Models\Supplier;
+use Illuminate\Http\Request;
 
 class ManagerSupplierController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = [
-            [
-                'id' => 1,
-                'nama' => 'PT Polibatam',
-                'telepon' => '0812-3456-7890',
-                'alamat' => 'Jakarta',
-                'status' => 1,
-            ],
-            [
-                'id' => 2,
-                'nama' => 'PT Maju Mundur',
-                'telepon' => '0821-9876-5432',
-                'alamat' => 'Batam',
-                'status' => 0,
-            ],
-        ];
+        $query = Supplier::latest();
 
-        return view('pages.manager.supplier', compact('suppliers'));
+        if ($request->filled('search')) {
+
+            $query->where(function ($q) use ($request) {
+
+                $q->where(
+                    'nama_supplier',
+                    'like',
+                    '%' . $request->search . '%'
+                )
+                ->orWhere(
+                    'telepon',
+                    'like',
+                    '%' . $request->search . '%'
+                );
+
+            });
+
+        }
+
+        $perPage = (int) $request->input('per_page', 10);
+
+        $suppliers = $query
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view(
+            'pages.manager.supplier',
+            compact('suppliers')
+        );
     }
 }

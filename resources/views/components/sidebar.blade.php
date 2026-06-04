@@ -1,11 +1,10 @@
 @php
-    $user = auth()->user();
-    $role = $user?->role ?? 'admin';
-    $prefix = $role === 'admin' ? 'admin' : 'manager';
+$user = auth()->user();
+$role = $user?->role ?? 'admin';
+$prefix = $role === 'admin' ? 'admin' : 'manager';
 @endphp
 
-<aside id="sidebar"
-    class="w-72 bg-gradient-to-b from-slate-900 to-slate-950 text-white p-6 shadow-xl
+<aside id="sidebar" class="w-72 bg-gradient-to-b from-slate-900 to-slate-950 text-white p-6 shadow-xl
     fixed top-0 left-0 h-screen flex flex-col justify-between z-50
     transform -translate-x-full md:translate-x-0
     transition-transform duration-300">
@@ -34,9 +33,10 @@
             </a>
 
             <!-- DATA BARANG -->
-            <a href="{{ route($prefix.'.data-barang.index') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
-                {{ request()->is($prefix.'/data-barang') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+            <a href="{{ route($prefix.'.data-barang.index') }}" class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+                {{ request()->is($prefix.'/data-barang*')
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-box w-6"></i>
                 <span>Data Barang</span>
             </a>
@@ -44,14 +44,14 @@
             <!-- MASTER -->
             <p class="text-slate-400 text-sm uppercase mt-6 px-3">Master</p>
 
-            @if($role === 'admin')
-            <a href="{{ route('admin.kategori.index') }}"
+            <a href="{{ route($prefix.'.kategori.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-xl transition
-                {{ request()->is('admin/kategori') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($prefix.'/kategori*') 
+                 ? 'bg-blue-600 text-white shadow-md' 
+                 : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-folder w-6"></i>
                 <span>Kategori</span>
             </a>
-            @endif
 
             <!-- SUPPLIER -->
             <a href="{{ route($prefix.'.supplier.index') }}"

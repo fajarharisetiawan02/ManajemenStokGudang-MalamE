@@ -38,56 +38,67 @@ function closeModal() {
     modal.classList.add('hidden');
 }
 
-// ==== EDIT DATA ==== //
 function editData(button) {
+
     const modal = document.getElementById('modalBarang');
     const form = document.getElementById('formBarang');
-    if (!modal || !form) return;
 
     form.action = "/admin/data-barang/" + button.dataset.id;
 
-    const noPart = form.querySelector('input[name="kode"]');
-    const namaBarang = form.querySelector('input[name="nama_barang"]');
+    form.querySelector('input[name="kode"]').value =
+        button.dataset.noPart || '';
+
+    form.querySelector('input[name="nama_barang"]').value =
+        button.dataset.namaBarang || '';
+
+    form.querySelector('input[name="stok"]').value =
+        button.dataset.stok || '';
+
+    form.querySelector('input[name="harga_jual"]').value =
+        button.dataset.harga || '';
+
+    form.querySelector('textarea[name="deskripsi"]').value =
+        button.dataset.deskripsi || '';
+
+    // KATEGORI
     const kategori = form.querySelector('select[name="kategori_id"]');
+    if (kategori) {
+        kategori.value = button.dataset.kategoriId || '';
+    }
+
+    // BRAND
     const brand = form.querySelector('select[name="brand_id"]');
-    const stok = form.querySelector('input[name="stok"]');
-    const harga = form.querySelector('input[name="harga_jual"]');
-    const supplier = form.querySelector('select[name="supplier_id"]');
-
-    if (noPart) noPart.value = button.dataset.noPart || '';
-    if (namaBarang) namaBarang.value = button.dataset.namaBarang || '';
-    if (kategori) kategori.value = button.dataset.kategoriId || '';
-    if (stok) stok.value = button.dataset.stok || '';
-    if (harga) harga.value = button.dataset.harga || '';
-    if (supplier) supplier.value = button.dataset.supplierId || '';
-
     if (brand) {
-        const target = String(button.dataset.brand || '').trim().toLowerCase();
-        const match = Array.from(brand.options).find(option => {
-            const val = String(option.value || '').trim().toLowerCase();
-            const txt = String(option.textContent || '').trim().toLowerCase();
-            return val === target || txt === target;
-        });
-        brand.value = match ? match.value : '';
+        brand.value = button.dataset.brandId || '';
     }
 
-    const methodContainer = document.getElementById('methodContainer');
-    if (methodContainer) {
-        methodContainer.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+    // SUPPLIER
+    const supplier = form.querySelector('select[name="supplier_id"]');
+    if (supplier) {
+        supplier.value = button.dataset.supplierId || '';
     }
 
-    const title = document.getElementById('modalTitle');
-    if (title) title.innerText = 'Edit Barang';
+    document.getElementById('methodContainer').innerHTML =
+        '<input type="hidden" name="_method" value="PUT">';
 
-    const subtitle = document.getElementById('modalSubtitle');
-    if (subtitle) subtitle.innerText = 'Perbarui data barang di bawah ini.';
+    document.getElementById('modalTitle').innerText =
+        'Edit Barang';
 
-    const submitBtn = document.getElementById('submitBtn');
-    if (submitBtn) {
-        submitBtn.innerText = 'Update';
-        submitBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-        submitBtn.classList.add('bg-amber-500', 'hover:bg-amber-600');
-    }
+    document.getElementById('modalSubtitle').innerText =
+        'Perbarui data barang di bawah ini.';
+
+    document.getElementById('submitBtn').innerText =
+        'Update';
+
+    document.getElementById('submitBtn').classList.remove(
+        'bg-blue-600',
+        'hover:bg-blue-700'
+    );
+
+    document.getElementById('submitBtn').classList.add(
+        'bg-amber-500',
+        'hover:bg-amber-600'
+    );
 
     modal.classList.remove('hidden');
     modal.classList.add('flex');

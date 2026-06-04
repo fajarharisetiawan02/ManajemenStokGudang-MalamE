@@ -32,18 +32,27 @@ class AdminBarangController extends Controller
             });
         }
 
-        if ($request->filled('brand')) {
+if ($request->filled('brand')) {
 
-            $query->whereHas('brand', function ($q) use ($request) {
+    $query->whereHas('brand', function ($q) use ($request) {
 
-                $q->where(
-                    'nama_brand',
-                    $request->brand
-                );
+        $q->where(
+            'nama_brand',
+            $request->brand
+        );
 
-            });
-        }
+    });
+}
 
+/* FILTER KATEGORI */
+if ($request->filled('kategori_id')) {
+
+    $query->where(
+        'kategori_id',
+        $request->kategori_id
+    );
+
+}
         $perPage = (int) $request->input('per_page', 10);
 
         $barangs = $query

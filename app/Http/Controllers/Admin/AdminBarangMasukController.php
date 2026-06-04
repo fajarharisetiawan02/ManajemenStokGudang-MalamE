@@ -10,19 +10,27 @@ use Illuminate\Http\Request;
 
 class AdminBarangMasukController extends Controller
 {
-    public function index()
-    {
-        $barangMasuks = BarangMasuk::with(['barang', 'supplier'])->latest()->get();
+public function index()
+{
+    $barangMasuks = BarangMasuk::with([
+        'barang',
+        'supplier'
+    ])
+    ->latest()
+    ->paginate(10);
 
-        $barangs = Barang::all();
-        $suppliers = Supplier::all();
+    $barangs = Barang::all();
+    $suppliers = Supplier::all();
 
-        return view('pages.admin.barang-masuk', compact(
+    return view(
+        'pages.admin.barang-masuk',
+        compact(
             'barangMasuks',
             'barangs',
             'suppliers'
-        ));
-    }
+        )
+    );
+}
 
     public function store(Request $request)
     {

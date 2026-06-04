@@ -8,7 +8,7 @@
 
     <!-- ACTION -->
     <div class="p-4 border-b border-slate-200 bg-white">
-        <a href="{{ route('admin.data-barang.index') }}"
+<a href="{{ route('manager.data-barang.index') }}"
             class="inline-flex items-center px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition">
             <i class="fas fa-arrow-left mr-2"></i>
             Kembali

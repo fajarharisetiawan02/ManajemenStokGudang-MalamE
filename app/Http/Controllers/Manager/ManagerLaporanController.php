@@ -3,86 +3,95 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Models\BarangMasuk;
+use App\Models\BarangKeluar;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ManagerLaporanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil data dari session, kalau kosong pakai data contoh
-        $barangMasuk = session('barang_masuk', [
-            [
-                'tanggal' => '26-04-2026',
-                'kode' => 'BM-001',
-                'nama' => 'Oli Mesin',
-                'jumlah' => 50,
-                'supplier' => 'PT Astra',
-                'keterangan' => 'Pembelian',
-            ],
-        ]);
+        $laporan = [];
 
-        $barangKeluar = session('barang_keluar', [
-            [
-                'tanggal' => '26-04-2026',
-                'kode' => 'BK-001',
-                'nama' => 'Ban Mobil',
-                'jumlah' => 20,
-                'supplier' => 'PT Indoparts',
-                'keterangan' => 'Penjualan',
-            ],
-        ]);
+        // BARANG MASUK
+        foreach (BarangMasuk::with(['barang', 'supplier'])->get() as $item) {
 
-        $laporanMasuk = collect($barangMasuk)->map(function ($item, $index) {
-            $jumlah = (int) ($item['jumlah'] ?? 0);
-
-            return (object) [
-                'tanggal' => $item['tanggal'] ?? now()->format('d-m-Y'),
-                'no' => $item['kode'] ?? 'BM-' . str_pad($index + 1, 3, '0', STR_PAD_LEFT),
-                'barang' => $item['nama'] ?? '-',
-                'jenis' => 'Masuk',
-                'jumlah' => '+' . $jumlah,
-                'keterangan' => $item['keterangan'] ?? 'Pembelian',
-                'sort_tanggal' => strtotime($item['tanggal'] ?? now()->format('Y-m-d')),
+            $laporan[] = (object) [
+                'tanggal'    => $item->tanggal,
+                'no'         => 'BM-' . str_pad($item->id, 4, '0', STR_PAD_LEFT),
+                'kode'       => $item->barang?->kode ?? '-',
+                'barang'     => $item->barang?->nama_barang ?? '-',
+                'jenis'      => 'Masuk',
+                'jumlah'     => '+' . $item->jumlah,
+                'supplier'   => $item->supplier?->nama_supplier ?? '-',
+                'keterangan' => 'Barang Masuk',
             ];
-        });
+        }
 
-        $laporanKeluar = collect($barangKeluar)->map(function ($item, $index) {
-            $jumlah = (int) ($item['jumlah'] ?? 0);
+        // BARANG KELUAR
+        foreach (BarangKeluar::with('barang')->get() as $item) {
 
-            return (object) [
-                'tanggal' => $item['tanggal'] ?? now()->format('d-m-Y'),
-                'no' => $item['kode'] ?? 'BK-' . str_pad($index + 1, 3, '0', STR_PAD_LEFT),
-                'barang' => $item['nama'] ?? '-',
-                'jenis' => 'Keluar',
-                'jumlah' => '-' . $jumlah,
-                'keterangan' => $item['keterangan'] ?? 'Penjualan',
-                'sort_tanggal' => strtotime($item['tanggal'] ?? now()->format('Y-m-d')),
+            $laporan[] = (object) [
+                'tanggal'    => $item->tanggal,
+                'no'         => 'BK-' . str_pad($item->id, 4, '0', STR_PAD_LEFT),
+                'kode'       => $item->barang?->kode ?? '-',
+                'barang'     => $item->barang?->nama_barang ?? '-',
+                'jenis'      => 'Keluar',
+                'jumlah'     => '-' . $item->jumlah,
+                'supplier'   => '-',
+                'keterangan' => 'Barang Keluar',
             ];
-        });
+        }
 
-        $laporan = $laporanMasuk
-            ->concat($laporanKeluar)
-            ->sortByDesc('sort_tanggal')
-            ->values()
-            ->map(function ($item) {
-                unset($item->sort_tanggal);
-                return $item;
+        // FILTER JENIS TRANSAKSI
+        if ($request->filled('jenis')) {
+
+            $laporan = array_filter($laporan, function ($item) use ($request) {
+
+                return $item->jenis === $request->jenis;
+
             });
 
-        $totalMasuk = collect($barangMasuk)->sum(function ($item) {
-            return (int) ($item['jumlah'] ?? 0);
+        }
+
+        // URUTKAN BERDASARKAN TANGGAL TERBARU
+        usort($laporan, function ($a, $b) {
+
+            return strtotime($b->tanggal) <=> strtotime($a->tanggal);
+
         });
 
-        $totalKeluar = collect($barangKeluar)->sum(function ($item) {
-            return (int) ($item['jumlah'] ?? 0);
-        });
-
+        // SUMMARY
+        $totalMasuk = BarangMasuk::sum('jumlah');
+        $totalKeluar = BarangKeluar::sum('jumlah');
         $stokAkhir = $totalMasuk - $totalKeluar;
 
-        return view('pages.manager.laporan', compact(
-            'laporan',
-            'totalMasuk',
-            'totalKeluar',
-            'stokAkhir'
-        ));
+        // PAGINATION
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+
+        $items = collect($laporan);
+
+        $laporan = new LengthAwarePaginator(
+            $items->forPage($currentPage, $perPage),
+            $items->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
+        );
+
+        return view(
+            'pages.manager.laporan',
+            compact(
+                'laporan',
+                'totalMasuk',
+                'totalKeluar',
+                'stokAkhir'
+            )
+        );
     }
 }

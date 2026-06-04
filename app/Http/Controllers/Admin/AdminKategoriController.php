@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\File;
 
 class AdminKategoriController extends Controller
 {
-    public function index()
-    {
-        $kategori = Kategori::whereNull('parent_id')
-            ->with('children.barang')
-            ->orderBy('nama_kategori', 'ASC')
-            ->get();
+public function index()
+{
+    $kategori = Kategori::withCount('barang')
+        ->orderBy('nama_kategori', 'ASC')
+        ->get();
 
-        return view('pages.admin.kategori', compact('kategori'));
-    }
+    return view(
+        'pages.admin.kategori',
+        compact('kategori')
+    );
+}
 
     public function store(Request $request)
     {

@@ -5,210 +5,215 @@
 @section('content')
 
 @php
-$brandOptions = $brandOptions ?? [];
+$kategori = $kategori ?? collect();
+$supplier = $supplier ?? collect();
+$brandOptions = $brandOptions ?? collect();
 @endphp
 
 <div class="w-full space-y-4">
 
-    <!-- FILTER CARD -->
-    <div class="w-full bg-white border border-gray-200 rounded-none shadow-sm">
-        <div class="p-4 flex flex-wrap items-center gap-3 w-full">
-            <form method="GET" action="{{ route('manager.data-barang.index') }}"
-                class="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-                <div class="relative">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
-                        class="pl-9 pr-4 py-2.5 w-64 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-
-                <select name="brand"
-                    class="px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Brand</option>
-                    @foreach($brandOptions as $brand)
-                    <option value="{{ $brand->nama_brand }}"
-                        {{ request('brand') === $brand->nama_brand ? 'selected' : '' }}>
-
-                        {{ $brand->nama_brand }}
-
-                    </option>
-                    @endforeach
-                </select>
-
-                <button type="submit"
-                    class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm flex items-center gap-2 transition">
-                    <i class="fas fa-filter"></i> Filter
-                </button>
-
-                <a href="{{ route('manager.data-barang.index') }}"
-                    class="px-4 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50 transition">
-                    Reset
-                </a>
-            </form>
-        </div>
-    </div>
-
     <!-- TABLE CARD -->
-    <div class="w-full bg-white border border-gray-200 rounded-none shadow-sm overflow-hidden">
-        <div class="overflow-x-auto w-full">
-            <table class="w-full min-w-[1100px] text-[15px]">
-                <thead class="bg-gray-100 text-gray-700 text-[13px] uppercase tracking-wide border-b border-gray-300">
-                    <tr>
-                        <th class="px-4 py-4 text-left font-semibold">No</th>
-                        <th class="px-4 py-4 text-left font-semibold">No Part</th>
-                        <th class="px-4 py-4 text-left font-semibold">Gambar</th>
-                        <th class="px-4 py-4 text-left font-semibold">Nama</th>
-                        <th class="px-4 py-4 text-left font-semibold">Kategori</th>
-                        <th class="px-4 py-4 text-left font-semibold">Brand</th>
-                        <th class="px-4 py-4 text-center font-semibold">Stok</th>
-                        <th class="px-4 py-4 text-left font-semibold">Harga</th>
-                        <th class="px-4 py-4 text-left font-semibold">Supplier</th>
-                    </tr>
-                </thead>
+    <div class="w-full bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="p-4">
+            <!-- FILTER -->
+            <form method="GET" action="{{ route('manager.data-barang.index') }}">
 
-                <tbody class="divide-y divide-gray-100 bg-white">
-                    @forelse($barang as $item)
-                    @php
-                    $stok = (int) $item->stok;
+                <div class="px-4 pb-4 flex flex-wrap items-center gap-3">
 
-                    if ($stok <= 0) { $stokClass='text-red-600 bg-red-50 border-red-100' ; $stokText='Habis' ; } elseif
-                        ($stok <=5) { $stokClass='text-amber-700 bg-amber-50 border-amber-100' ; $stokText='Menipis' ; }
-                        else { $stokClass='text-emerald-700 bg-emerald-50 border-emerald-100' ; $stokText='Aman' ; }
-                        @endphp <tr class="hover:bg-gray-50 transition">
-                        <td class="px-4 py-4 text-gray-500 text-[15px]">
-                            {{ $barang->firstItem() + $loop->index }}
-                        </td>
+                    <!-- SEARCH -->
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
+                        class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 
-                        <td class="px-4 py-4 font-mono text-sm text-gray-700">
-                            {{ $item->no_part }}
-                        </td>
-                        <td class="px-4 py-4">
-                            @if($item->gambar)
-                            <img src="{{ asset('uploads/barang/' . $item->gambar) }}"
-                                onclick="showImage('{{ asset('uploads/barang/' . $item->gambar) }}')"
-                                class="w-14 h-14 rounded-none object-cover border border-gray-200 cursor-pointer hover:scale-105 hover:shadow-lg transition duration-200">
-                            @else
-                            <div class="w-14 h-14 rounded-none bg-gray-100 flex items-center justify-center">
-                                <i class="fas fa-box text-gray-400"></i>
-                            </div>
-                            @endif
-                        </td>
+                    <!-- BRAND -->
+                    <select name="brand"
+                        class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
 
-                        <td class="px-4 py-4 font-semibold text-gray-800 text-[15px]">
-                            {{ $item->nama_barang }}
-                        </td>
+                        <option value="">
+                            Semua Brand
+                        </option>
 
-                        <td class="px-4 py-4 text-gray-600 text-[15px]">
-                            {{ $item->kategori->nama_kategori ?? '-' }}
-                        </td>
+                        @foreach($brandOptions as $brand)
+                        <option value="{{ $brand->nama_brand }}"
+                            {{ request('brand') === $brand->nama_brand ? 'selected' : '' }}>
 
-                        <td class="px-4 py-4 text-gray-600 text-[15px]">
-                            {{ $item->brand }}
-                        </td>
+                            {{ $brand->nama_brand }}
 
-                        <td class="px-4 py-4 text-center">
-                            <span
-                                class="inline-flex flex-col items-center px-3 py-2 rounded-lg border {{ $stokClass }}">
-                                <span class="font-semibold text-[15px] leading-none">
-                                    {{ $item->stok }}
-                                </span>
-                                <span class="text-[12px] leading-none mt-1">
-                                    {{ $stokText }}
-                                </span>
-                            </span>
-                        </td>
+                        </option>
+                        @endforeach
 
-                        <td class="px-4 py-4 text-gray-800 text-[15px]">
-                            Rp {{ number_format($item->harga, 0, ',', '.') }}
-                        </td>
-
-                        <td class="px-4 py-4 text-gray-600 text-[15px]">
-                            {{ $item->supplier->nama_supplier ?? '-' }}
-                        </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="8" class="py-14">
-                                <div class="flex flex-col items-center text-center text-gray-500">
-                                    <div
-                                        class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                                        <i class="fas fa-box-open text-2xl text-gray-400"></i>
-                                    </div>
-
-                                    <p class="font-medium text-gray-700 text-[15px]">
-                                        Belum ada data barang
-                                    </p>
-
-                                    <p class="text-sm text-gray-500 mt-1">
-                                        Klik “Tambah Barang” untuk mulai input data.
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <div
-            class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-gray-200 bg-white rounded-none">
-
-            <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-
-                <div class="flex items-center gap-2">
-                    <span>Page</span>
-
-                    <a href="{{ $barang->onFirstPage() ? '#' : $barang->previousPageUrl() }}"
-                        class="w-8 h-8 border border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 transition flex items-center justify-center {{ $barang->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
-                        <i class="fas fa-chevron-left text-xs"></i>
-                    </a>
-
-                    <div
-                        class="w-12 h-8 border border-gray-300 flex items-center justify-center bg-white text-gray-700">
-                        {{ $barang->currentPage() }}
-                    </div>
-
-                    <a href="{{ $barang->hasMorePages() ? $barang->nextPageUrl() : '#' }}"
-                        class="w-8 h-8 border border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 transition flex items-center justify-center {{ $barang->hasMorePages() ? '' : 'pointer-events-none opacity-50' }}">
-                        <i class="fas fa-chevron-right text-xs"></i>
-                    </a>
-                </div>
-
-                <span>of {{ $barang->lastPage() }}</span>
-
-                <form method="GET" action="{{ route('manager.data-barang.index') }}" class="flex items-center gap-2">
-
-                    <input type="hidden" name="search" value="{{ request('search') }}">
-                    <input type="hidden" name="brand" value="{{ request('brand') }}">
-
-                    <span>View</span>
-
-                    <select name="per_page" onchange="this.form.submit()"
-                        class="h-9 w-[90px] px-3 pr-8 border border-gray-300 bg-white text-sm focus:outline-none rounded-none">
-
-                        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
-
-                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-
-                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                     </select>
 
-                    <span>records</span>
-                </form>
+                    <!-- FILTER -->
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+
+                        <i class="fas fa-filter mr-1"></i>
+                        Filter
+
+                    </button>
+
+                    <!-- RESET -->
+                    <a href="{{ route('manager.data-barang.index') }}"
+                        class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+
+                        Reset
+
+                    </a>
+
+                </div>
+
+            </form>
+
+            <div class="flex justify-between items-center px-4 py-3 border-b bg-white">
+
+                <div class="flex items-center gap-2 text-sm">
+
+                    <span>Show</span>
+
+                    <select onchange="window.location='?per_page='+this.value"
+                        class="h-10 min-w-[75px] border border-gray-300 rounded-md px-3 pr-8 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                        <option value="10" {{ request('per_page',10)==10 ? 'selected' : '' }}>
+                            10
+                        </option>
+
+                        <option value="25" {{ request('per_page')==25 ? 'selected' : '' }}>
+                            25
+                        </option>
+
+                        <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                            50
+                        </option>
+
+                    </select>
+
+                    <span>entries</span>
+
+                </div>
+
+            </div>
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-sm border-collapse">
+
+                    <thead class="bg-slate-50 text-slate-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold border">No</th>
+                            <th class="px-4 py-3 text-left font-semibold border">Kode Part</th>
+                            <th class="px-4 py-3 text-left font-semibold border">Nama Barang</th>
+                            <th class="px-4 py-3 text-left font-semibold border">Kategori</th>
+                            <th class="px-4 py-3 text-left font-semibold border">Stok</th>
+                            <th class="px-4 py-3 text-left font-semibold border">Harga</th>
+                            <th class="px-4 py-3 text-center font-semibold border">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="bg-white">
+
+                        @forelse($barangs as $item)
+
+                        @php
+                        $stok = (int) $item->stok;
+
+                        if ($stok <= 0) { $stokClass='bg-red-100 text-red-700' ; } elseif ($stok <=5) {
+                            $stokClass='bg-yellow-100 text-yellow-700' ; } else {
+                            $stokClass='bg-green-100 text-green-700' ; } @endphp <tr class="hover:bg-gray-50">
+
+                            <td class="px-4 py-4 border">
+                                {{ $barangs->firstItem() + $loop->index }}
+                            </td>
+
+                            <td class="px-4 py-4 border">
+                                {{ $item->kode }}
+                            </td>
+
+                            <td class="px-4 py-4 border font-medium">
+                                {{ $item->nama_barang }}
+                            </td>
+
+                            <td class="px-4 py-4 border">
+                                <span
+                                    class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                                    {{ $item->kategori->nama_kategori ?? '-' }}
+                                </span>
+                            </td>
+
+                            <td class="px-4 py-4 border">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
+                                    {{ $item->stok }}
+                                </span>
+                            </td>
+
+                            <td class="px-4 py-4 border">
+                                Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
+                            </td>
+
+                            <td class="px-4 py-4 border">
+
+                                <div class="flex justify-center">
+
+                                    <a href="{{ route('manager.data-barang.show', $item->id) }}"
+                                        class="px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg shadow-sm transition">
+
+                                        <i class="fas fa-eye mr-1"></i>
+                                        Detail
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+                            </tr>
+
+                            @empty
+
+                            <tr>
+                                <td colspan="6" class="py-10 text-center text-gray-500">
+                                    Belum ada data barang
+                                </td>
+                            </tr>
+
+                            @endforelse
+
+                    </tbody>
+
+                </table>
             </div>
 
-            <div class="text-sm text-gray-600">
-                Found total {{ $barang->total() }} records
+            <div class="flex justify-between items-center px-4 py-3 border-t bg-white">
+
+                <div class="text-sm text-gray-600">
+                    Showing
+                    {{ $barangs->firstItem() ?? 0 }}
+                    to
+                    {{ $barangs->lastItem() ?? 0 }}
+                    of
+                    {{ $barangs->total() }}
+                    entries
+                </div>
+
+                <div class="flex items-center gap-2">
+
+                    <a href="{{ $barangs->previousPageUrl() }}"
+                        class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ !$barangs->onFirstPage() ? '' : 'pointer-events-none opacity-50' }}">
+                        Previous
+                    </a>
+
+                    <span class="border px-4 py-2 rounded bg-gray-100 font-medium">
+                        {{ $barangs->currentPage() }}
+                    </span>
+
+                    <a href="{{ $barangs->nextPageUrl() }}"
+                        class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ $barangs->hasMorePages() ? '' : 'pointer-events-none opacity-50' }}">
+                        Next
+                    </a>
+
+                </div>
+
             </div>
+
         </div>
     </div>
-</div>
-<div id="imageModal" class="fixed inset-0 bg-black/80 z-[9999] hidden items-center justify-center p-5">
-    <button onclick="closeImage()" class="absolute top-5 right-6 text-white text-5xl font-light hover:text-gray-300">
-        &times;
-    </button>
-
-    <img id="previewImage" src=""
-        class="max-w-[420px] w-full max-h-[70vh] object-contain rounded-none shadow-2xl border-4 border-white">
 </div>
 
 @endsection

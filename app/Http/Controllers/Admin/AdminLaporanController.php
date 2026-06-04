@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminLaporanController extends Controller
 {
@@ -39,7 +40,6 @@ class AdminLaporanController extends Controller
             ];
         }
 
-        // isi contoh kalau masih kosong
         if (empty($laporan)) {
             $laporan = [
                 (object) [
@@ -66,8 +66,25 @@ class AdminLaporanController extends Controller
         }
 
         usort($laporan, function ($a, $b) {
-            return strtotime($a->tanggal) <=> strtotime($b->tanggal);
+            return strtotime($b->tanggal) <=> strtotime($a->tanggal);
         });
+
+        // PAGINATION
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+
+        $items = collect($laporan);
+
+        $laporan = new LengthAwarePaginator(
+            $items->forPage($currentPage, $perPage),
+            $items->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
+        );
 
         return view('pages.admin.laporan', compact(
             'laporan',

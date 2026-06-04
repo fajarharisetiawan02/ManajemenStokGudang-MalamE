@@ -1,243 +1,232 @@
-blade
 @extends('layouts.app')
 
-@section('title','Kategori Sparepart')
+@section('title','Kategori')
 
 @section('content')
 
-<div class="flex justify-between items-center mb-6">
+<div class="w-full space-y-4">
 
-    <div>
-        <div>
-    <h1 class="text-2xl font-semibold text-black-500">
-         Kelola kategori dan kelompokkan barang dengan lebih mudah
-    </h1>
-  
-</div>
-    </div>
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm mb-6">
 
-   <button
-    onclick="openTambah()"
-    class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-5 py-3 rounded-xl shadow-lg transition">
+        <!-- Tombol -->
+        <div class="p-4">
 
-    <i class="fas fa-plus"></i>
-    Tambah Kategori
+            <button onclick="openTambah()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm">
 
-</button>
-
-</div>
-
-@if(session('success'))
-
-<div class="bg-green-100 text-green-700 p-3 rounded-xl mb-4">
-    {{ session('success') }}
-</div>
-
-@endif
-
-<div class="bg-white border rounded-xl p-4 mb-5 shadow-sm">
-
-    <div class="flex justify-start">
-
-        <div class="flex items-center gap-2">
-
-            <select
-                id="filterKategori"
-                class="border border-gray-300 px-4 py-3 rounded-xl min-w-[250px]">
-
-                <option value="all">
-                    Semua Kategori
-                </option>
-
-                @foreach($kategori as $k)
-
-                <option value="{{ $k->id }}">
-                    {{ $k->nama_kategori }}
-                </option>
-
-                @endforeach
-
-            </select>
-
-            <button
-                id="resetFilter"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl shadow">
-
-                <i class="fas fa-filter"></i>
+                <i class="fas fa-plus mr-1"></i>
+                Tambah Kategori
 
             </button>
 
         </div>
 
+        <!-- FILTER -->
+        <div class="px-4 pb-4">
+
+            <div class="flex flex-wrap items-center gap-3">
+
+                <!-- KATEGORI -->
+                <select id="filterKategori"
+                    class="border border-slate-300 rounded-lg px-4 py-2 min-w-[250px] focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+                    <option value="">
+                        Semua Kategori
+                    </option>
+
+                    @foreach($kategori as $k)
+
+                    <option value="{{ $k->id }}">
+                        {{ $k->nama_kategori }}
+                    </option>
+
+                    @endforeach
+
+                </select>
+
+                <!-- FILTER -->
+                <button id="btnFilter" type="button"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+
+                    <i class="fas fa-filter mr-1"></i>
+                    Filter
+
+                </button>
+
+                <!-- RESET -->
+                <button id="resetFilter" type="button"
+                    class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+
+                    Reset
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- LIST KATEGORI -->
+        <div class="p-5">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                @foreach($kategori as $item)
+
+                <div class="card bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-lg transition"
+                    data-id="{{ $item->id }}">
+
+                    <div class="flex justify-between items-start mb-3">
+
+                        <h2 class="text-xl font-bold text-slate-800">
+                            {{ $item->nama_kategori }}
+                        </h2>
+
+                        <span
+                            class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-semibold border border-slate-200">
+                            {{ $item->barang_count }} barang
+                        </span>
+
+                    </div>
+
+                    @if($item->foto)
+
+                    <img src="{{ asset($item->foto) }}" class="w-full h-44 object-cover rounded-xl">
+
+                    @else
+
+                    <div class="w-full h-44 bg-slate-100 rounded-xl flex flex-col items-center justify-center">
+
+                        <i class="fas fa-box-open text-5xl text-slate-400"></i>
+
+                        <span class="text-sm text-slate-500 mt-3">
+                            Belum ada gambar
+                        </span>
+
+                    </div>
+
+                    @endif
+
+                    <div class="grid grid-cols-3 gap-2 mt-4">
+
+                        <a href="{{ route('admin.data-barang.index',['kategori_id'=>$item->id]) }}"
+                            class="h-10 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-lg text-sm font-medium transition">
+                            Barang
+                        </a>
+
+                        <button type="button" onclick="openEdit('{{ $item->id }}','{{ $item->nama_kategori }}')"
+                            class="h-10 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm font-medium transition">
+                            Edit
+                        </button>
+
+                        <form method="POST" action="{{ route('admin.kategori.destroy',$item->id) }}"
+                            onsubmit="return confirm('Yakin hapus kategori ini?')">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                class="w-full h-10 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition">
+                                Hapus
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                @endforeach
+
+            </div>
+
+        </div>
     </div>
-
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-full">
-@foreach($kategori as $item)
-
-<div
-    class="card w-full bg-white border border-gray-100 rounded-2xl p-5 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
-    data-id="{{ $item->id }}">
-
-    <div class="flex justify-between items-start">
-        <h2 class="nama text-xl font-bold">
-            {{ $item->nama_kategori }}
-        </h2>
-
-       <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold">
-            {{ $item->barang_count ?? 0 }} barang
-        </span>
-    </div>
-
-    @if($item->foto)
-
-        <img
-            src="{{ asset($item->foto) }}"
-            class="w-full h-40 object-cover rounded-xl mt-3">
-
-    @else
-
-       <div class="w-full h-44 bg-gradient-to-br from-gray-50 to-gray-200 rounded-2xl mt-3 flex flex-col items-center justify-center">
-    <i class="fas fa-box-open text-5xl text-gray-400"></i>
-    <span class="text-sm text-gray-500 mt-2">
-        Belum ada gambar
-    </span>
-</div>
-    @endif
-
-   <div class="grid grid-cols-3 gap-2 mt-4">
-
-    <a
-        href="{{ route('admin.data-barang.index',['kategori_id'=>$item->id]) }}"
-        class="w-full h-12 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-lg font-semibold">
-        Barang
-    </a>
-
-    <button
-        type="button"
-        onclick="openEdit('{{ $item->id }}','{{ $item->nama_kategori }}')"
-        class="w-full h-12 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold">
-        Edit
-    </button>
-
-    <form
-        method="POST"
-        action="{{ route('admin.kategori.destroy',$item->id) }}"
-        onsubmit="return confirm('Yakin hapus kategori ini?')"
-        class="w-full">
-
-        @csrf
-        @method('DELETE')
-
-        <button
-            type="submit"
-            class="w-full h-12 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold">
-            Hapus
-        </button>
-
-    </form>
-
-</div>
-</div> {{-- PENUTUP CARD YANG HILANG --}}
-
-@endforeach
-
 </div>
 
-<div
-    id="modalTambah"
-    onclick="if(event.target==this) closeTambah()"
-    class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+<!-- MODAL KATEGORI -->
+<div id="modalKategori" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
 
-    <div class="bg-white p-5 rounded-xl w-96 relative">
+    <div class="relative bg-white w-full max-w-2xl rounded-xl border border-slate-200 shadow-2xl overflow-hidden">
 
-        <button
-            type="button"
-            onclick="closeTambah()"
-            class="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl font-bold">
+        <!-- HEADER -->
+        <div class="bg-slate-50 border-b border-slate-200 px-6 py-5 flex items-center justify-between">
 
-            ✕
+            <div>
 
-        </button>
+                <h2 id="modalTitleKategori" class="text-xl font-bold text-slate-800">
 
-        <form
-            method="POST"
-            action="{{ route('admin.kategori.store') }}"
-            enctype="multipart/form-data">
+                    Tambah Kategori
 
-            @csrf
+                </h2>
 
-            <h2 class="font-bold text-xl mb-4">
-                Tambah Kategori
-            </h2>
+                <p id="modalSubtitleKategori" class="text-sm text-slate-500 mt-1">
 
-            <input
-                name="nama_kategori"
-                class="w-full border p-3 rounded mb-3"
-                placeholder="Nama kategori">
+                    Lengkapi data kategori baru di bawah ini.
 
-            <input
-                type="file"
-                name="foto"
-                class="w-full border p-2 rounded mb-3">
+                </p>
 
-            <button
-                class="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded">
+            </div>
 
-                Simpan
+            <button type="button" onclick="closeKategoriModal()"
+                class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-500 transition">
+
+                <i class="fas fa-times"></i>
 
             </button>
 
-        </form>
+        </div>
 
-    </div>
-
-</div>
-
-<div
-    id="modalEdit"
-    onclick="if(event.target==this) closeEdit()"
-    class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-
-    <div class="bg-white p-5 rounded-xl w-96 relative">
-
-        <button
-            type="button"
-            onclick="closeEdit()"
-            class="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl font-bold">
-
-            ✕
-
-        </button>
-
-        <form
-            id="formEdit"
-            method="POST"
-            enctype="multipart/form-data">
+        <!-- FORM -->
+        <form id="formKategori" method="POST" enctype="multipart/form-data" action="{{ route('admin.kategori.store') }}"
+            class="p-6">
 
             @csrf
-            @method('PUT')
 
-            <h2 class="font-bold text-xl mb-4">
-                Edit Kategori
-            </h2>
+            <div id="methodContainerKategori"></div>
 
-            <input
-                id="editNama"
-                name="nama_kategori"
-                class="w-full border p-3 rounded mb-3">
+            <div class="space-y-4">
 
-            <input
-                type="file"
-                name="foto"
-                class="w-full border p-2 rounded mb-3">
+                <div>
 
-            <button
-                class="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded">
+                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                        Nama Kategori
+                    </label>
 
-                Update
+                    <input type="text" name="nama_kategori" id="kategoriNama" placeholder="Contoh: Mazda" required
+                        class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
 
-            </button>
+                </div>
+
+                <div>
+
+                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                        Foto Kategori
+                    </label>
+
+                    <input type="file" name="foto" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="flex justify-end gap-2 mt-6 pt-4 border-t">
+
+                <button type="button" onclick="closeKategoriModal()"
+                    class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg">
+
+                    Batal
+
+                </button>
+
+                <button id="submitKategoriBtn" type="submit"
+                    class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm">
+
+                    Simpan Kategori
+
+                </button>
+
+            </div>
 
         </form>
 
@@ -246,75 +235,123 @@ blade
 </div>
 
 <script>
+    function openTambah() {
 
-function openTambah()
-{
-    document.getElementById('modalTambah').classList.remove('hidden');
-}
+        document.getElementById('modalKategori').classList.remove('hidden');
+        document.getElementById('modalKategori').classList.add('flex');
 
-function closeTambah()
-{
-    document.getElementById('modalTambah').classList.add('hidden');
-}
+        document.getElementById('modalTitleKategori').innerText =
+            'Tambah Kategori';
 
-function openEdit(id,nama)
-{
-    document.getElementById('modalEdit').classList.remove('hidden');
+        document.getElementById('modalSubtitleKategori').innerText =
+            'Lengkapi data kategori baru di bawah ini.';
 
-    document.getElementById('editNama').value = nama;
+        document.getElementById('submitKategoriBtn').innerText =
+            'Simpan Kategori';
 
-    document.getElementById('formEdit').action =
-    '/admin/kategori/' + id;
-}
+        document.getElementById('submitKategoriBtn').classList.remove(
+            'bg-amber-500',
+            'hover:bg-amber-600'
+        );
 
-function closeEdit()
-{
-    document.getElementById('modalEdit').classList.add('hidden');
-}
+        document.getElementById('submitKategoriBtn').classList.add(
+            'bg-blue-600',
+            'hover:bg-blue-700'
+        );
 
+        document.getElementById('formKategori').action =
+            "{{ route('admin.kategori.store') }}";
 
-document.getElementById('filterKategori')
-.addEventListener('change', function(){
+        document.getElementById('methodContainerKategori').innerHTML = '';
 
-    let kategori = this.value;
+        document.getElementById('kategoriNama').value = '';
+    }
 
-    document.querySelectorAll('.card')
-    .forEach(card => {
+    function openEdit(id, nama) {
 
-        if(kategori === 'all')
-        {
-            card.style.display = 'block';
-            return;
-        }
+        document.getElementById('modalKategori').classList.remove('hidden');
+        document.getElementById('modalKategori').classList.add('flex');
 
-        if(card.dataset.id === kategori)
-        {
-            card.style.display = 'block';
-        }
-        else
-        {
-            card.style.display = 'none';
-        }
+        document.getElementById('modalTitleKategori').innerText =
+            'Edit Kategori';
 
-    });
+        document.getElementById('modalSubtitleKategori').innerText =
+            'Perbarui data kategori di bawah ini.';
 
-});
+        document.getElementById('submitKategoriBtn').innerText =
+            'Update Kategori';
 
-document.getElementById('resetFilter')
-.addEventListener('click', function(){
+        document.getElementById('submitKategoriBtn').classList.remove(
+            'bg-blue-600',
+            'hover:bg-blue-700'
+        );
 
-    document.getElementById('filterKategori').value = 'all';
+        document.getElementById('submitKategoriBtn').classList.add(
+            'bg-amber-500',
+            'hover:bg-amber-600'
+        );
 
-    document.querySelectorAll('.card')
-    .forEach(card => {
+        document.getElementById('kategoriNama').value = nama;
 
-        card.style.display = 'block';
+        document.getElementById('formKategori').action =
+            '/admin/kategori/' + id;
 
-    });
+        document.getElementById('methodContainerKategori').innerHTML =
+            '<input type="hidden" name="_method" value="PUT">';
+    }
 
-});
+    function closeKategoriModal() {
 
+        document.getElementById('modalKategori').classList.add('hidden');
+        document.getElementById('modalKategori').classList.remove('flex');
+
+    }
+
+    /* FILTER */
+    document.getElementById('btnFilter')
+        .addEventListener('click', function () {
+
+            let kategori =
+                document.getElementById('filterKategori').value;
+
+            document.querySelectorAll('.card')
+                .forEach(card => {
+
+                    if (kategori === '') {
+
+                        card.style.display = 'block';
+                        return;
+
+                    }
+
+                    if (card.dataset.id == kategori) {
+
+                        card.style.display = 'block';
+
+                    } else {
+
+                        card.style.display = 'none';
+
+                    }
+
+                });
+
+        });
+
+    /* RESET */
+    document.getElementById('resetFilter')
+        .addEventListener('click', function () {
+
+            document.getElementById('filterKategori').value = '';
+
+            document.querySelectorAll('.card')
+                .forEach(card => {
+
+                    card.style.display = 'block';
+
+                });
+
+        });
 </script>
 
 @endsection
-```
