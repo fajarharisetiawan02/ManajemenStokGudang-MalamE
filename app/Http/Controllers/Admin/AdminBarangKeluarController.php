@@ -79,4 +79,50 @@ class AdminBarangKeluarController extends Controller
                 'Barang keluar berhasil ditambahkan'
             );
     }
+
+    public function update(Request $request, BarangKeluar $barang_keluar)
+    {
+    $request->validate([
+        'barang_id'  => 'required|exists:barangs,id',
+        'tanggal'    => 'required|date',
+        'jumlah'     => 'required|integer|min:1',
+        'harga_jual' => 'required|numeric|min:0',
+    ]);
+
+    $barang = Barang::findOrFail($barang_keluar->barang_id);
+
+    // rollback stok lama
+    $barang->stok += $barang_keluar->jumlah;
+
+    // cek stok baru
+    if ($barang->stok < $request->jumlah) {
+        return back()->with('error', 'Stok tidak cukup');
+    }
+
+    // apply stok baru
+    $barang->stok -= $request->jumlah;
+    $barang->save();
+
+    $barang_keluar->update([
+        'barang_id'  => $request->barang_id,
+        'tanggal'    => $request->tanggal,
+        'jumlah'     => $request->jumlah,
+        'harga_jual' => $request->harga_jual,
+        'total'      => $request->jumlah * $request->harga_jual,
+    ]);
+
+    return back()->with('success', 'Data berhasil diupdate');
+    }
+
+    public function destroy(BarangKeluar $barang_keluar)
+    {
+    $barang = Barang::findOrFail($barang_keluar->barang_id);
+
+    $barang->stok += $barang_keluar->jumlah;
+    $barang->save();
+
+    $barang_keluar->delete();
+
+    return back()->with('success', 'Data berhasil dihapus');
+    }
 }

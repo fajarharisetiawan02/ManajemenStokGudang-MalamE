@@ -194,18 +194,88 @@
 
                             <div class="flex justify-center gap-2">
 
-                                <button
-                                    class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg shadow-sm transition">
-                                    <i class="fas fa-pen mr-1"></i>
+                                <button type="button"
+                                        onclick="document.getElementById('editModalKeluar{{ $item->id }}').classList.remove('hidden')"
+                                        class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg">
+                                        <i class="fas fa-pen mr-1"></i>
                                     Edit
+
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm transition">
-                                    <i class="fas fa-trash mr-1"></i>
-                                    Hapus
-                                </button>
+                                @foreach($barangKeluars as $item)
 
+                                <div id="editModalKeluar{{ $item->id }}"
+                                    class="hidden fixed inset-0 z-50 bg-black/50">
+
+                                    <div class="bg-white w-full max-w-xl mx-auto mt-20 p-6 rounded-lg">
+
+                                        <h2 class="text-lg font-bold mb-4">Edit Barang Keluar</h2>
+
+                                        <form action="{{ route('admin.barang-keluar.update', $item) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <label class="text-sm">Tanggal</label>
+                                            <input type="date" name="tanggal"
+                                                value="{{ $item->tanggal }}"
+                                                class="w-full border p-2 mb-3">
+
+                                            <label class="text-sm">Barang</label>
+                                            <select name="barang_id" class="w-full border p-2 mb-3">
+
+                                                @foreach($barangs as $b)
+                                                    <option value="{{ $b->id }}"
+                                                        {{ $item->barang_id == $b->id ? 'selected' : '' }}>
+                                                        {{ $b->kode }} - {{ $b->nama_barang }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+
+                                            <label class="text-sm">Jumlah</label>
+                                            <input type="number" name="jumlah"
+                                                value="{{ $item->jumlah }}"
+                                                class="w-full border p-2 mb-3">
+
+                                            <label class="text-sm">Harga Jual</label>
+                                            <input type="number" name="harga_jual"
+                                                value="{{ $item->harga_jual }}"
+                                                class="w-full border p-2 mb-3">
+
+                                            <div class="flex justify-end gap-2">
+
+                                                <button type="button"
+                                                        onclick="document.getElementById('editModalKeluar{{ $item->id }}').classList.add('hidden')"
+                                                        class="px-4 py-2 bg-gray-400 text-white rounded">
+                                                    Batal
+                                                </button>
+
+                                                <button class="px-4 py-2 bg-blue-600 text-white rounded">
+                                                    Update
+                                                </button>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                                @endforeach
+
+                                <form action="{{ route('admin.barang-keluar.destroy', $item) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Yakin hapus data ini?')">
+
+                                      @csrf
+                                      @method('DELETE')
+
+                                    <button class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg">
+                                        <i class="fas fa-trash mr-1"></i>
+                                        Hapus
+                                    </button>
+
+                                </form>
                             </div>
 
                         </td>
