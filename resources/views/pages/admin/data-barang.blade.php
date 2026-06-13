@@ -79,7 +79,7 @@ $brandOptions = $brandOptions ?? collect();
 
             <div class="flex items-center gap-2 text-sm">
 
-                <span>Show</span>
+                <span>Tampilkan</span>
 
                 <select onchange="window.location='?per_page='+this.value"
                     class="h-10 min-w-[75px] border border-gray-300 rounded-md px-3 pr-8 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -98,7 +98,7 @@ $brandOptions = $brandOptions ?? collect();
 
                 </select>
 
-                <span>entries</span>
+                <span>data</span>
 
             </div>
 
@@ -107,15 +107,33 @@ $brandOptions = $brandOptions ?? collect();
 
             <table class="w-full text-sm border-collapse">
 
-                <thead class="bg-slate-50 text-slate-700">
+                <thead class="bg-slate-100 text-slate-800">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold border">No</th>
-                        <th class="px-4 py-3 text-left font-semibold border">Kode Part</th>
-                        <th class="px-4 py-3 text-left font-semibold border">Nama Barang</th>
-                        <th class="px-4 py-3 text-left font-semibold border">Kategori</th>
-                        <th class="px-4 py-3 text-left font-semibold border">Stok</th>
-                        <th class="px-4 py-3 text-left font-semibold border">Harga</th>
-                        <th class="px-4 py-3 text-center font-semibold border">Aksi</th>
+                        <th class="px-4 py-4 text-center text-sm font-bold border w-16">No</th>
+
+                        <th class="px-4 py-4 text-left text-sm font-bold border">
+                            Kode Part
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-sm font-bold border">
+                            Nama Barang
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-sm font-bold border w-48">
+                            Kategori
+                        </th>
+
+                        <th class="px-4 py-4 text-center text-sm font-bold border w-36">
+                            Stok
+                        </th>
+
+                        <th class="px-4 py-4 text-right text-sm font-bold border w-44">
+                            Harga Jual
+                        </th>
+
+                        <th class="px-4 py-4 text-center text-sm font-bold border w-72">
+                            Aksi
+                        </th>
                     </tr>
                 </thead>
 
@@ -124,13 +142,15 @@ $brandOptions = $brandOptions ?? collect();
                     @forelse($barangs as $item)
 
                     @php
+
                     $stok = (int) $item->stok;
 
-                    if ($stok <= 0) { $stokClass='bg-red-100 text-red-700' ; } elseif ($stok <=5) {
-                        $stokClass='bg-yellow-100 text-yellow-700' ; } else { $stokClass='bg-green-100 text-green-700' ;
-                        } @endphp <tr class="hover:bg-gray-50">
+                    if ($stok <= 0) { $stokClass='bg-red-100 text-red-700' ; $stokText='Habis' ; } elseif ($stok <=10) {
+                        $stokClass='bg-yellow-100 text-yellow-700' ; $stokText='Menipis' ; } else {
+                        $stokClass='bg-green-100 text-green-700' ; $stokText='Aman' ; } @endphp <tr
+                        class="hover:bg-slate-50 transition-colors duration-150">
 
-                        <td class="px-4 py-4 border">
+                        <td class="px-4 py-4 border text-center">
                             {{ $barangs->firstItem() + $loop->index }}
                         </td>
 
@@ -138,7 +158,7 @@ $brandOptions = $brandOptions ?? collect();
                             {{ $item->kode }}
                         </td>
 
-                        <td class="px-4 py-4 border font-medium">
+                        <td class="px-4 py-4 border font-medium text-slate-800">
                             {{ $item->nama_barang }}
                         </td>
 
@@ -149,13 +169,22 @@ $brandOptions = $brandOptions ?? collect();
                             </span>
                         </td>
 
-                        <td class="px-4 py-4 border">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
-                                {{ $item->stok }}
+                        <td class="px-4 py-4 border text-center">
+
+                            <span
+                                class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
+
+                                <span>{{ $item->stok }}</span>
+
+                                <span>|</span>
+
+                                <span>{{ $stokText }}</span>
+
                             </span>
+
                         </td>
 
-                        <td class="px-4 py-4 border">
+                        <td class="px-4 py-4 border text-right font-semibold text-slate-700">
                             Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
                         </td>
 
@@ -170,7 +199,7 @@ $brandOptions = $brandOptions ?? collect();
                                     Detail
 
                                 </a>
-                                <!-- EDIT -->
+
                                 <button type="button" data-id="{{ $item->id }}" data-no-part="{{ $item->kode }}"
                                     data-nama-barang="{{ $item->nama_barang }}"
                                     data-kategori-id="{{ $item->kategori_id }}" data-brand-id="{{ $item->brand_id }}"
@@ -181,9 +210,9 @@ $brandOptions = $brandOptions ?? collect();
 
                                     <i class="fas fa-pen mr-1"></i>
                                     Edit
+
                                 </button>
 
-                                <!-- DELETE -->
                                 <form action="{{ route('admin.data-barang.destroy', $item->id) }}" method="POST">
 
                                     @csrf
@@ -191,8 +220,9 @@ $brandOptions = $brandOptions ?? collect();
 
                                     <button type="button" onclick="confirmDelete(this.form)"
                                         class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm transition">
+
                                         <i class="fas fa-trash mr-1"></i>
-                                        Delete
+                                        Hapus
 
                                     </button>
 
@@ -201,55 +231,77 @@ $brandOptions = $brandOptions ?? collect();
                             </div>
 
                         </td>
+
                         </tr>
 
                         @empty
 
                         <tr>
-                            <td colspan="6" class="py-10 text-center text-gray-500">
+
+                            <td colspan="7" class="py-10 text-center text-gray-500">
                                 Belum ada data barang
                             </td>
+
                         </tr>
 
                         @endforelse
 
                 </tbody>
-
             </table>
         </div>
 
-        <div class="flex justify-between items-center px-4 py-3 border-t bg-white">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 px-5 py-4 border-t bg-slate-50">
 
-            <div class="text-sm text-gray-600">
-                Showing
-                {{ $barangs->firstItem() ?? 0 }}
-                to
-                {{ $barangs->lastItem() ?? 0 }}
-                of
-                {{ $barangs->total() }}
-                entries
+            <div class="text-sm text-slate-600">
+
+                Menampilkan
+
+                <span class="font-semibold text-slate-800">
+                    {{ $barangs->firstItem() ?? 0 }}
+                </span>
+
+                -
+
+                <span class="font-semibold text-slate-800">
+                    {{ $barangs->lastItem() ?? 0 }}
+                </span>
+
+                dari
+
+                <span class="font-semibold text-blue-600">
+                    {{ $barangs->total() }}
+                </span>
+
+                data barang
+
             </div>
 
             <div class="flex items-center gap-2">
 
-                <a href="{{ $barangs->previousPageUrl() }}"
-                    class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ !$barangs->onFirstPage() ? '' : 'pointer-events-none opacity-50' }}">
-                    Previous
+                <a href="{{ $barangs->previousPageUrl() }}" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+            {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
+
+                    Sebelumnya
+
                 </a>
 
-                <span class="border px-4 py-2 rounded bg-gray-100 font-medium">
+                <span
+                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold">
+
                     {{ $barangs->currentPage() }}
+
                 </span>
 
-                <a href="{{ $barangs->nextPageUrl() }}"
-                    class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ $barangs->hasMorePages() ? '' : 'pointer-events-none opacity-50' }}">
-                    Next
+                <a href="{{ $barangs->nextPageUrl() }}" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+            {{ !$barangs->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
+
+                    Berikutnya
+
                 </a>
 
             </div>
 
         </div>
-
     </div>
 
     <!-- MODAL BARANG -->
@@ -285,7 +337,7 @@ $brandOptions = $brandOptions ?? collect();
                     <!-- No Part -->
                     <div>
                         <label class="block text-sm font-medium text-slate-700">
-                            No Part
+                            Kode Part
                         </label>
                         <input type="text" name="kode" required placeholder="Contoh: BRG-001"
                             class="w-full mt-2 px-4 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -411,19 +463,19 @@ $brandOptions = $brandOptions ?? collect();
 
         </div>
     </div>
+</div>
 
-    <!-- MODAL PREVIEW GAMBAR -->
-    <div id="imageModal" class="fixed inset-0 bg-black/80 z-[9999] hidden items-center justify-center p-5">
+<!-- MODAL PREVIEW GAMBAR -->
+<div id="imageModal" class="fixed inset-0 bg-black/80 z-[9999] hidden items-center justify-center p-5">
 
-        <button onclick="closeImage()" class="absolute top-5 right-6 text-white text-5xl">
+    <button onclick="closeImage()" class="absolute top-5 right-6 text-white text-5xl">
 
-            &times;
+        &times;
 
-        </button>
+    </button>
 
-        <img id="previewImage" src="" class="max-w-[420px] w-full max-h-[70vh] object-contain border-4 border-white">
+    <img id="previewImage" src="" class="max-w-[420px] w-full max-h-[70vh] object-contain border-4 border-white">
 
-    </div>
+</div>
 
-
-    @endsection
+@endsection

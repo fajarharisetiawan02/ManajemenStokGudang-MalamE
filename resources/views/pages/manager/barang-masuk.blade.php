@@ -4,181 +4,96 @@
 
 @section('content')
 
-<div class="space-y-5">
+<div class="w-full space-y-4">
 
-    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-
-        <div class="px-5 py-4 border-b border-slate-200 bg-slate-50">
-            <h3 class="text-lg font-semibold text-slate-800">
-                Data Barang Masuk
-            </h3>
-
-            <p class="text-sm text-slate-500 mt-1">
-                Daftar seluruh transaksi barang masuk.
-            </p>
-        </div>
+    {{-- TABLE CARD --}}
+    <div class="w-full bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
 
         {{-- FILTER --}}
-        <div class="px-5 py-4 border-b border-slate-200 bg-slate-50">
-
-            <form method="GET" class="flex flex-wrap gap-3">
-
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Cari barang..."
-                    class="border border-slate-300 rounded-lg px-4 py-2 min-w-[250px]">
-
-                <button
-                    type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-
-                    <i class="fas fa-filter mr-1"></i>
-                    Filter
-
+        <div class="px-4 py-4 border-b border-slate-200">
+            <form method="GET" class="flex flex-wrap items-center gap-3">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
+                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 text-sm
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-lg shadow-sm transition">
+                    <i class="fas fa-filter mr-1"></i> Filter
                 </button>
-
-                <a
-                    href="{{ route('manager.barang-masuk.index') }}"
-                    class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50">
-
+                <a href="{{ route('manager.barang-masuk.index') }}"
+                    class="border border-slate-300 px-4 py-2 text-sm rounded-lg hover:bg-slate-50 transition">
                     Reset
-
                 </a>
-
             </form>
-
         </div>
 
         {{-- TABLE --}}
         <div class="overflow-x-auto">
-
             <table class="w-full text-sm border-collapse">
-
-                <thead class="bg-slate-50 text-slate-700">
-
+                <thead class="bg-slate-100 text-slate-800">
                     <tr>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            No
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Tanggal
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Kode Part
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Nama Barang
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Jumlah
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Harga Beli
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Supplier
-                        </th>
-
+                        <th class="px-4 py-4 text-center font-bold border w-16">No</th>
+                        <th class="px-4 py-4 text-left font-bold border w-28">Tanggal</th>
+                        <th class="px-4 py-4 text-left font-bold border w-28">Kode Part</th>
+                        <th class="px-4 py-4 text-left font-bold border">Nama Barang</th>
+                        <th class="px-4 py-4 text-left font-bold border w-44">Supplier</th>
+                        <th class="px-4 py-4 text-center font-bold border w-28">Jumlah Masuk</th>
+                        <th class="px-4 py-4 text-right font-bold border w-32">Harga Beli</th>
+                        <th class="px-4 py-4 text-right font-bold border w-36">Total</th>
                     </tr>
-
                 </thead>
-
                 <tbody class="bg-white">
-
                     @forelse($barangMasuks as $item)
-
-                    <tr class="hover:bg-slate-50">
-
-                        <td class="px-4 py-4 border">
-                            {{ $barangMasuks->firstItem() + $loop->index }}
+                    <tr class="hover:bg-slate-50 transition-colors duration-150">
+                        <td class="px-4 py-4 border text-center">{{ $barangMasuks->firstItem() + $loop->index }}</td>
+                        <td class="px-4 py-4 border">{{ $item->tanggal }}</td>
+                        <td class="px-4 py-4 border">{{ $item->barang?->kode ?? '-' }}</td>
+                        <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang?->nama_barang ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-slate-700 whitespace-nowrap">{{ $item->supplier->nama_supplier ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-center">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                +{{ $item->jumlah }}
+                            </span>
                         </td>
-
-                        <td class="px-4 py-4 border">
-                            {{ $item->tanggal }}
-                        </td>
-
-                        <td class="px-4 py-4 border font-mono">
-                            {{ $item->barang?->kode ?? '-' }}
-                        </td>
-
-                        <td class="px-4 py-4 border font-medium">
-                            {{ $item->barang?->nama_barang ?? '-' }}
-                        </td>
-
-                        <td class="px-4 py-4 border">
-                            {{ $item->jumlah }}
-                        </td>
-
-                        <td class="px-4 py-4 border">
-                            Rp {{ number_format($item->harga_beli, 0, ',', '.') }}
-                        </td>
-
-                        <td class="px-4 py-4 border">
-                            {{ $item->supplier?->nama_supplier ?? '-' }}
-                        </td>
-
+                        <td class="px-4 py-4 border text-right">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                        <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                     </tr>
-
                     @empty
-
                     <tr>
-
-                        <td colspan="7" class="text-center py-10 text-slate-500">
-
-                            Tidak ada data barang masuk
-
-                        </td>
-
+                        <td colspan="8" class="py-10 text-center text-gray-500">Belum ada data barang masuk</td>
                     </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
 
         {{-- PAGINATION --}}
-        <div class="flex justify-between items-center px-4 py-3 border-t bg-white">
-
-            <div class="text-sm text-gray-600">
-                Showing
-                {{ $barangMasuks->firstItem() ?? 0 }}
-                to
-                {{ $barangMasuks->lastItem() ?? 0 }}
-                of
-                {{ $barangMasuks->total() }}
-                entries
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 px-5 py-4 border-t bg-slate-50">
+            <div class="text-sm text-slate-600">
+                Menampilkan
+                <span class="font-semibold text-slate-800">{{ $barangMasuks->firstItem() ?? 0 }}</span>
+                -
+                <span class="font-semibold text-slate-800">{{ $barangMasuks->lastItem() ?? 0 }}</span>
+                dari
+                <span class="font-semibold text-blue-600">{{ $barangMasuks->total() }}</span>
+                data barang masuk
             </div>
-
             <div class="flex items-center gap-2">
-
                 <a href="{{ $barangMasuks->previousPageUrl() }}"
-                    class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ !$barangMasuks->onFirstPage() ? '' : 'pointer-events-none opacity-50' }}">
-                    Previous
+                    class="flex items-center px-4 py-2 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
+                    {{ $barangMasuks->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
+                    Sebelumnya
                 </a>
-
-                <span class="border px-4 py-2 rounded bg-gray-100 font-medium">
+                <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-sm">
                     {{ $barangMasuks->currentPage() }}
                 </span>
-
                 <a href="{{ $barangMasuks->nextPageUrl() }}"
-                    class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ $barangMasuks->hasMorePages() ? '' : 'pointer-events-none opacity-50' }}">
-                    Next
+                    class="flex items-center px-4 py-2 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
+                    {{ !$barangMasuks->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
+                    Berikutnya
                 </a>
-
             </div>
-
         </div>
 
     </div>

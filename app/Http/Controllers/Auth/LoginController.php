@@ -15,61 +15,56 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // VALIDASI
         $request->validate([
             'username' => 'required',
             'password' => 'required',
         ]);
 
-        // CEK LOGIN
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,
         ];
 
-        // LOGIN BERHASIL
         if (Auth::attempt($credentials, $request->remember)) {
+
+            // Simpan locale sebelum regenerate
+            $locale = $request->session()->get('locale', 'id');
 
             $request->session()->regenerate();
 
-            // AMBIL DATA USER
+            // Restore locale setelah regenerate
+            $request->session()->put('locale', $locale);
+
             $user = Auth::user();
 
-            // ROLE ADMIN
             if ($user->role === 'admin') {
-
-                return redirect()
-                    ->route('admin.dashboard');
-
+                return redirect()->route('admin.dashboard');
             }
 
-            // ROLE MANAGER
             if ($user->role === 'manager') {
-
-                return redirect()
-                    ->route('manager.dashboard');
-
+                return redirect()->route('manager.dashboard');
             }
 
-            // DEFAULT
             Auth::logout();
-
-            return redirect('/login')
-                ->with('error', 'Role tidak dikenali!');
+            return redirect('/login')->with('error', 'Role tidak dikenali!');
         }
 
-        // LOGIN GAGAL
-        return back()
-            ->with('error', 'Username atau Password salah!');
+        return back()->with('error', 'Username atau Password salah!');
     }
 
     public function logout(Request $request)
     {
+        // Simpan locale sebelum session di-clear
+        $locale = $request->session()->get('locale', 'id');
+
         Auth::logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        // Restore locale setelah session baru dibuat
+        $request->session()->put('locale', $locale);
 
         return redirect('/login');
     }

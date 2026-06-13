@@ -7,7 +7,7 @@
         </div>
 
         <a href="/" class="text-blue-600 font-medium hover:underline text-sm">
-            Kembali ke Beranda
+            {{ __('app.kembali_beranda') }}
         </a>
 
     </div>

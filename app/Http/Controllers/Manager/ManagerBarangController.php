@@ -17,73 +17,49 @@ class ManagerBarangController extends Controller
             'kategori',
             'supplier',
             'brand'
-        ]);
+        ])->latest();
 
-        // SEARCH
         if ($request->filled('search')) {
-
             $search = $request->search;
-
             $query->where(function ($q) use ($search) {
-
-                $q->where('nama_barang', 'like', "%{$search}%")
-                  ->orWhere('kode', 'like', "%{$search}%");
-
+                $q->where('kode', 'like', "%{$search}%")
+                  ->orWhere('nama_barang', 'like', "%{$search}%");
             });
         }
 
-        // FILTER KATEGORI
-        if ($request->filled('kategori_id')) {
-
-            $query->where(
-                'kategori_id',
-                $request->kategori_id
-            );
-
-        }
-
-        // FILTER BRAND
         if ($request->filled('brand')) {
-
             $query->whereHas('brand', function ($q) use ($request) {
-
-                $q->where(
-                    'nama_brand',
-                    $request->brand
-                );
-
+                $q->where('nama_brand', $request->brand);
             });
         }
 
-        // SHOW ENTRIES
-        $perPage = (int) $request->get('per_page', 10);
-
-        $allowedPerPage = [10, 25, 50];
-
-        if (!in_array($perPage, $allowedPerPage, true)) {
-            $perPage = 10;
+        if ($request->filled('kategori_id')) {
+            $query->where('kategori_id', $request->kategori_id);
         }
 
-        $barangs = $query
-            ->latest()
-            ->paginate($perPage)
-            ->withQueryString();
+        if ($request->filled('stok')) {
+            if ($request->stok === 'menipis') {
+                $query->where('stok', '>', 0)->where('stok', '<=', 10);
+            } elseif ($request->stok === 'habis') {
+                $query->where('stok', '<=', 0);
+            } elseif ($request->stok === 'kritis') {
+                $query->where('stok', '>', 0)->where('stok', '<=', 5);
+            }
+        }
 
-        $kategori = Kategori::orderBy('nama_kategori')->get();
+        $perPage = (int) $request->input('per_page', 10);
+        $barangs = $query->paginate($perPage)->withQueryString();
 
-        $supplier = Supplier::orderBy('nama_supplier')->get();
+        $kategori     = Kategori::all();
+        $supplier     = Supplier::all();
+        $brandOptions = Brand::all();
 
-        $brandOptions = Brand::orderBy('nama_brand')->get();
-
-        return view(
-            'pages.manager.data-barang',
-            compact(
-                'barangs',
-                'kategori',
-                'supplier',
-                'brandOptions'
-            )
-        );
+        return view('pages.manager.data-barang', compact(
+            'barangs',
+            'kategori',
+            'supplier',
+            'brandOptions'
+        ));
     }
 
     public function show($id)
@@ -95,9 +71,6 @@ class ManagerBarangController extends Controller
             'gambarBarang'
         ])->findOrFail($id);
 
-        return view(
-            'pages.manager.detail-barang',
-            compact('barang')
-        );
+        return view('pages.manager.detail-barang', compact('barang'));
     }
 }

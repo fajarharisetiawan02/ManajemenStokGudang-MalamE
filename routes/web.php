@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 /* === CONTROLLER === */
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\LanguageController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminKategoriController;
@@ -23,28 +26,34 @@ use App\Http\Controllers\Manager\ManagerBarangKeluarController;
 use App\Http\Controllers\Manager\ManagerLaporanController;
 
 
-/* === LANDING ==== */
+/* === LANDING === */
 Route::controller(HomeController::class)->group(function () {
-
     Route::get('/', 'index');
     Route::get('/home', 'index');
     Route::get('/about', 'about');
     Route::get('/contact', 'contact');
-
 });
 
 
 /* === AUTH === */
 Route::controller(LoginController::class)->group(function () {
-
     Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'login')->name('login.post');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
-    Route::post('/login', 'login')
-        ->name('login.post');
 
-    Route::get('/logout', 'logout')
-        ->name('logout');
+/* === LANGUAGE === */
+Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 
+
+/* === PROFIL & NOTIFIKASI (Admin & Manager) === */
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profil/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    Route::post('/notifikasi/read', [NotifikasiController::class, 'markRead'])->name('notifikasi.read');
 });
 
 
@@ -66,7 +75,10 @@ Route::prefix('admin')
         /* === SUPPLIER === */
         Route::resource('supplier', AdminSupplierController::class);
 
-         /* === BARANG MASUK === */
+        /* === BARANG MASUK === */
+        Route::get('/barang-masuk/cek-barang/{kode}', [AdminBarangMasukController::class, 'cekBarang'])
+            ->name('barang-masuk.cek');
+
         Route::resource('barang-masuk', AdminBarangMasukController::class);
 
         /* === BARANG KELUAR === */
@@ -76,9 +88,16 @@ Route::prefix('admin')
         Route::get('/laporan', [AdminLaporanController::class, 'index'])
             ->name('laporan.index');
 
-});
+        Route::get('/laporan/export-excel', [AdminLaporanController::class, 'exportExcel'])
+            ->name('laporan.export-excel');
+
+        Route::get('/laporan/export-pdf', [AdminLaporanController::class, 'exportPdf'])
+            ->name('laporan.export-pdf');
+
+    });
 
 
+/* === MANAGER === */
 Route::prefix('manager')
     ->name('manager.')
     ->middleware(['auth'])
@@ -113,5 +132,11 @@ Route::prefix('manager')
         /* === LAPORAN === */
         Route::get('/laporan', [ManagerLaporanController::class, 'index'])
             ->name('laporan.index');
+
+        Route::get('/laporan/export-excel', [ManagerLaporanController::class, 'exportExcel'])
+            ->name('laporan.export-excel');
+
+        Route::get('/laporan/export-pdf', [ManagerLaporanController::class, 'exportPdf'])
+            ->name('laporan.export-pdf');
 
     });

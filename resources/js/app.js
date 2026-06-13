@@ -2,11 +2,15 @@ import './bootstrap';
 import '../css/app.css';
 import 'flowbite';
 import './dashboard';
-import './modal';
+import './data-barang';
+import './detail-barang';
 import './kategori';
-import './lang';
 import './auth';
-import './lang-landing';
+import './barang-masuk';
+import './barang-keluar';
+import './supplier';
+import './kategori';
+import './layout';
 
 import Chart from 'chart.js/auto';
 window.Chart = Chart;

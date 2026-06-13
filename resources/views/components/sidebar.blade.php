@@ -20,72 +20,63 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
         </div>
 
         <!-- MENU -->
-        <nav class="space-y-2 text-base flex-1">
+        <nav class="space-y-2 text-base flex-1 overflow-y-auto">
 
-            <p class="text-slate-400 text-sm uppercase px-3">Main</p>
+            <p class="text-slate-500 text-xs uppercase font-semibold tracking-widest px-3 mb-2">{{ __('app.main') }}</p>
 
-            <!-- DASHBOARD -->
             <a href="{{ route($prefix.'.dashboard') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
                 {{ request()->is($prefix.'/dashboard') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-home w-6"></i>
-                <span>Dashboard</span>
+                <span>{{ __('app.dashboard') }}</span>
             </a>
 
-            <!-- DATA BARANG -->
-            <a href="{{ route($prefix.'.data-barang.index') }}" class="flex items-center gap-4 px-5 py-3 rounded-xl transition
-                {{ request()->is($prefix.'/data-barang*')
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'hover:bg-slate-800 text-slate-300' }}">
+            <a href="{{ route($prefix.'.data-barang.index') }}"
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
+                {{ request()->is($prefix.'/data-barang*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-box w-6"></i>
-                <span>Data Barang</span>
+                <span>{{ __('app.data_barang') }}</span>
             </a>
 
-            <!-- MASTER -->
-            <p class="text-slate-400 text-sm uppercase mt-6 px-3">Master</p>
+            <p class="text-slate-500 text-xs uppercase font-semibold tracking-widest px-3 pt-4 mb-2">{{ __('app.master') }}</p>
 
             <a href="{{ route($prefix.'.kategori.index') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
-                {{ request()->is($prefix.'/kategori*') 
-                 ? 'bg-blue-600 text-white shadow-md' 
-                 : 'hover:bg-slate-800 text-slate-300' }}">
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
+                {{ request()->is($prefix.'/kategori*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-folder w-6"></i>
-                <span>Kategori</span>
+                <span>{{ __('app.kategori') }}</span>
             </a>
 
-            <!-- SUPPLIER -->
             <a href="{{ route($prefix.'.supplier.index') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
                 {{ request()->is($prefix.'/supplier') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-truck w-6"></i>
-                <span>Supplier</span>
+                <span>{{ __('app.supplier') }}</span>
             </a>
 
-            <!-- TRANSAKSI -->
-            <p class="text-slate-400 text-sm uppercase mt-6 px-3">Transaksi</p>
+            <p class="text-slate-500 text-xs uppercase font-semibold tracking-widest px-3 pt-4 mb-2">{{ __('app.transaksi') }}</p>
 
             <a href="{{ route($prefix.'.barang-masuk.index') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
                 {{ request()->is($prefix.'/barang-masuk') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-arrow-down w-6"></i>
-                <span>Barang Masuk</span>
+                <span>{{ __('app.barang_masuk') }}</span>
             </a>
 
             <a href="{{ route($prefix.'.barang-keluar.index') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
                 {{ request()->is($prefix.'/barang-keluar') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-arrow-up w-6"></i>
-                <span>Barang Keluar</span>
+                <span>{{ __('app.barang_keluar') }}</span>
             </a>
 
-            <!-- LAPORAN -->
-            <p class="text-slate-400 text-sm uppercase mt-6 px-3">Laporan</p>
+            <p class="text-slate-500 text-xs uppercase font-semibold tracking-widest px-3 pt-4 mb-2">{{ __('app.laporan') }}</p>
 
             <a href="{{ route($prefix.'.laporan.index') }}"
-                class="flex items-center gap-4 px-5 py-3 rounded-xl transition
+                class="flex items-center gap-4 px-5 py-3 rounded-lg transition
                 {{ request()->is($prefix.'/laporan') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-file-alt w-6"></i>
-                <span>Laporan</span>
+                <span>{{ __('app.laporan') }}</span>
             </a>
 
         </nav>
@@ -93,12 +84,12 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
     </div>
 
     <!-- LOGOUT -->
-    <div class="pt-6 border-t border-slate-700/50">
-        <a href="{{ route('logout') }}"
-            class="flex items-center gap-4 px-5 py-3 rounded-xl text-red-400 hover:bg-red-500/20 transition">
+    <div class="pt-5 mt-4 border-t border-slate-700/50">
+        <button type="button" onclick="confirmLogout()"
+            class="w-full flex items-center gap-4 px-5 py-3 rounded-lg text-red-400 hover:bg-red-500/20 transition">
             <i class="fas fa-sign-out-alt w-6"></i>
-            <span>Keluar</span>
-        </a>
+            <span>{{ __('app.keluar') }}</span>
+        </button>
     </div>
 
 </aside>

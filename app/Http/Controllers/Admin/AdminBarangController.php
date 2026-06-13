@@ -21,57 +21,47 @@ class AdminBarangController extends Controller
         ])->latest();
 
         if ($request->filled('search')) {
-
             $search = $request->search;
-
             $query->where(function ($q) use ($search) {
-
                 $q->where('kode', 'like', "%{$search}%")
                   ->orWhere('nama_barang', 'like', "%{$search}%");
-
             });
         }
 
-if ($request->filled('brand')) {
+        if ($request->filled('brand')) {
+            $query->whereHas('brand', function ($q) use ($request) {
+                $q->where('nama_brand', $request->brand);
+            });
+        }
 
-    $query->whereHas('brand', function ($q) use ($request) {
+        if ($request->filled('kategori_id')) {
+            $query->where('kategori_id', $request->kategori_id);
+        }
 
-        $q->where(
-            'nama_brand',
-            $request->brand
-        );
+        // FILTER STOK — dari dashboard "Lihat Semua Produk"
+        if ($request->filled('stok')) {
+            if ($request->stok === 'menipis') {
+                $query->where('stok', '>', 0)->where('stok', '<=', 10);
+            } elseif ($request->stok === 'habis') {
+                $query->where('stok', '<=', 0);
+            } elseif ($request->stok === 'kritis') {
+                $query->where('stok', '>', 0)->where('stok', '<=', 5);
+            }
+        }
 
-    });
-}
-
-/* FILTER KATEGORI */
-if ($request->filled('kategori_id')) {
-
-    $query->where(
-        'kategori_id',
-        $request->kategori_id
-    );
-
-}
         $perPage = (int) $request->input('per_page', 10);
+        $barangs = $query->paginate($perPage)->withQueryString();
 
-        $barangs = $query
-            ->paginate($perPage)
-            ->withQueryString();
-
-        $kategori = Kategori::all();
-        $supplier = Supplier::all();
+        $kategori     = Kategori::all();
+        $supplier     = Supplier::all();
         $brandOptions = Brand::all();
 
-        return view(
-            'pages.admin.data-barang',
-            compact(
-                'barangs',
-                'kategori',
-                'supplier',
-                'brandOptions'
-            )
-        );
+        return view('pages.admin.data-barang', compact(
+            'barangs',
+            'kategori',
+            'supplier',
+            'brandOptions'
+        ));
     }
 
     public function show($id)
@@ -83,17 +73,12 @@ if ($request->filled('kategori_id')) {
             'gambarBarang'
         ])->findOrFail($id);
 
-        return view(
-            'pages.admin.detail-barang',
-            compact('barang')
-        );
+        return view('pages.admin.detail-barang', compact('barang'));
     }
 
     public function create()
     {
-        return redirect()->route(
-            'admin.data-barang.index'
-        );
+        return redirect()->route('admin.data-barang.index');
     }
 
     public function store(Request $request)
@@ -107,31 +92,21 @@ if ($request->filled('kategori_id')) {
         ]);
 
         $barang = Barang::create([
-            'kode'         => $request->kode,
-            'nama_barang'  => $request->nama_barang,
-            'stok'         => $request->stok,
-            'harga_beli'   => $request->harga_beli,
-            'harga_jual'   => $request->harga_jual,
-            'kategori_id'  => $request->kategori_id,
-            'supplier_id'  => $request->supplier_id,
-            'brand_id'     => $request->brand_id,
-            'deskripsi'    => $request->deskripsi,
+            'kode'        => $request->kode,
+            'nama_barang' => $request->nama_barang,
+            'stok'        => $request->stok,
+            'harga_beli'  => $request->harga_beli,
+            'harga_jual'  => $request->harga_jual,
+            'kategori_id' => $request->kategori_id,
+            'supplier_id' => $request->supplier_id,
+            'brand_id'    => $request->brand_id,
+            'deskripsi'   => $request->deskripsi,
         ]);
 
         if ($request->hasFile('gambar')) {
-
             foreach ($request->file('gambar') as $file) {
-
-                $namaFile =
-                    time() . '_' .
-                    uniqid() . '_' .
-                    $file->getClientOriginalName();
-
-                $file->move(
-                    public_path('uploads/barang'),
-                    $namaFile
-                );
-
+                $namaFile = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/barang'), $namaFile);
                 BarangGambar::create([
                     'barang_id' => $barang->id,
                     'gambar'    => $namaFile,
@@ -139,12 +114,8 @@ if ($request->filled('kategori_id')) {
             }
         }
 
-        return redirect()
-            ->route('admin.data-barang.index')
-            ->with(
-                'success',
-                'Barang berhasil ditambahkan'
-            );
+        return redirect()->route('admin.data-barang.index')
+            ->with('success', 'Barang berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -160,52 +131,27 @@ if ($request->filled('kategori_id')) {
         ]);
 
         $barang->update([
-            'kode'         => $request->kode,
-            'nama_barang'  => $request->nama_barang,
-            'stok'         => $request->stok,
-            'harga_beli'   => $request->harga_beli,
-            'harga_jual'   => $request->harga_jual,
-            'kategori_id'  => $request->kategori_id,
-            'supplier_id'  => $request->supplier_id,
-            'brand_id'     => $request->brand_id,
-            'deskripsi'    => $request->deskripsi,
+            'kode'        => $request->kode,
+            'nama_barang' => $request->nama_barang,
+            'stok'        => $request->stok,
+            'harga_beli'  => $request->harga_beli,
+            'harga_jual'  => $request->harga_jual,
+            'kategori_id' => $request->kategori_id,
+            'supplier_id' => $request->supplier_id,
+            'brand_id'    => $request->brand_id,
+            'deskripsi'   => $request->deskripsi,
         ]);
 
         if ($request->hasFile('gambar')) {
-
             foreach ($barang->gambarBarang as $gambar) {
-
-                if (
-                    file_exists(
-                        public_path(
-                            'uploads/barang/' .
-                            $gambar->gambar
-                        )
-                    )
-                ) {
-                    unlink(
-                        public_path(
-                            'uploads/barang/' .
-                            $gambar->gambar
-                        )
-                    );
+                if (file_exists(public_path('uploads/barang/' . $gambar->gambar))) {
+                    unlink(public_path('uploads/barang/' . $gambar->gambar));
                 }
-
                 $gambar->delete();
             }
-
             foreach ($request->file('gambar') as $file) {
-
-                $namaFile =
-                    time() . '_' .
-                    uniqid() . '_' .
-                    $file->getClientOriginalName();
-
-                $file->move(
-                    public_path('uploads/barang'),
-                    $namaFile
-                );
-
+                $namaFile = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/barang'), $namaFile);
                 BarangGambar::create([
                     'barang_id' => $barang->id,
                     'gambar'    => $namaFile,
@@ -213,45 +159,23 @@ if ($request->filled('kategori_id')) {
             }
         }
 
-        return redirect()
-            ->route('admin.data-barang.index')
-            ->with(
-                'success',
-                'Barang berhasil diperbarui'
-            );
+        return redirect()->route('admin.data-barang.index')
+            ->with('success', 'Barang berhasil diperbarui');
     }
 
     public function destroy($id)
     {
-        $barang = Barang::with('gambarBarang')
-            ->findOrFail($id);
+        $barang = Barang::with('gambarBarang')->findOrFail($id);
 
         foreach ($barang->gambarBarang as $gambar) {
-
-            if (
-                file_exists(
-                    public_path(
-                        'uploads/barang/' .
-                        $gambar->gambar
-                    )
-                )
-            ) {
-                unlink(
-                    public_path(
-                        'uploads/barang/' .
-                        $gambar->gambar
-                    )
-                );
+            if (file_exists(public_path('uploads/barang/' . $gambar->gambar))) {
+                unlink(public_path('uploads/barang/' . $gambar->gambar));
             }
         }
 
         $barang->delete();
 
-        return redirect()
-            ->route('admin.data-barang.index')
-            ->with(
-                'success',
-                'Barang berhasil dihapus'
-            );
+        return redirect()->route('admin.data-barang.index')
+            ->with('success', 'Barang berhasil dihapus');
     }
 }

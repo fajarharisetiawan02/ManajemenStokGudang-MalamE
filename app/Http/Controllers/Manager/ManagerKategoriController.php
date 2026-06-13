@@ -13,9 +13,6 @@ class ManagerKategoriController extends Controller
             ->orderBy('nama_kategori', 'ASC')
             ->get();
 
-        return view(
-            'pages.manager.kategori',
-            compact('kategori')
-        );
+        return view('pages.manager.kategori', compact('kategori'));
     }
 }

@@ -4,357 +4,262 @@
 
 @section('content')
 
-<div class="space-y-5">
+<div class="w-full space-y-4">
 
-    {{-- FORM --}}
-    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+    {{-- FORM CARD --}}
+    <div class="w-full bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
 
-        <div class="px-5 py-4 border-b border-slate-200 bg-slate-50">
-            <h3 class="text-lg font-semibold text-slate-800">
-                Form Barang Masuk
-            </h3>
-
-            <p class="text-sm text-slate-500 mt-1">
-                Lengkapi data barang masuk di bawah ini.
-            </p>
+        {{-- HEADER --}}
+        <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div>
+                <h3 id="formTitle" class="text-xl font-semibold text-slate-800">Form Barang Masuk</h3>
+                <p id="formSubtitle" class="text-sm text-slate-500 mt-1">
+                    Masukkan kode part terlebih dahulu untuk mengecek data barang.
+                </p>
+            </div>
+            <span id="editBadge"
+                class="hidden items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-700
+                text-xs font-semibold rounded-full border border-amber-200">
+                <i class="fas fa-pen text-xs"></i> Mode Edit
+            </span>
         </div>
 
-        <div class="p-5">
+        {{-- data-store-url --}}
+        <form id="mainForm"
+            action="{{ route('admin.barang-masuk.store') }}"
+            data-store-url="{{ route('admin.barang-masuk.store') }}"
+            method="POST">
+            @csrf
+            <div id="methodContainer"></div>
+            <input type="hidden" name="barang_id" id="barang_id">
 
-            <form action="{{ route('admin.barang-masuk.store') }}" method="POST">
-                @csrf
+            <div class="p-6 space-y-5">
 
-                <div class="grid md:grid-cols-2 gap-4">
+                <div class="grid md:grid-cols-2 gap-5">
 
+                    {{-- TANGGAL --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">
-                            Tanggal Masuk
-                        </label>
-
-                        <input type="date" name="tanggal" required
-                            class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Masuk</label>
+                        <input type="date" name="tanggal" id="inputTanggal" required
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                     </div>
 
+                    {{-- KODE PART + TOMBOL CEK --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">
-                            Barang
-                        </label>
-
-                        <select name="barang_id" required
-                            class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-                            <option value="">
-                                Pilih Barang
-                            </option>
-
-                            @foreach($barangs as $barang)
-
-                            <option value="{{ $barang->id }}">
-                                {{ $barang->kode }} - {{ $barang->nama_barang }}
-                            </option>
-
-                            @endforeach
-
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">
-                            Jumlah Masuk
-                        </label>
-
-                        <input type="number" name="jumlah" required min="1"
-                            class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">
-                            Harga Beli
-                        </label>
-
-                        <input type="number" name="harga_beli" required min="0"
-                            class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-700">
-                            Supplier
-                        </label>
-
-                        <select name="supplier_id" required
-                            class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-                            <option value="">
-                                Pilih Supplier
-                            </option>
-
-                            @foreach($suppliers as $supplier)
-
-                            <option value="{{ $supplier->id }}">
-                                {{ $supplier->nama_supplier }}
-                            </option>
-
-                            @endforeach
-
-                        </select>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Kode Part</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="kode_part" placeholder="Contoh : BRG-001"
+                                class="flex-1 px-4 py-3 border border-slate-300 rounded-lg text-sm
+                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                            <button type="button" id="cekBarang"
+                                class="px-5 py-3 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-medium
+                                rounded-lg shadow-sm transition flex items-center gap-2">
+                                <i class="fas fa-search"></i> Cek Barang
+                            </button>
+                        </div>
                     </div>
 
                 </div>
 
-                <div class="mt-5 pt-5 border-t border-slate-200">
+                {{-- INFO BARANG --}}
+                <div id="infoBarang" class="hidden border-l-4 border-slate-400 bg-slate-50 rounded-lg p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center">
+                            <i class="fas fa-box-open text-slate-600 text-xs"></i>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 text-sm">Informasi Barang Ditemukan</h4>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Nama Barang</p>
+                            <div id="showNama" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Kategori</p>
+                            <div id="showKategori" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Brand</p>
+                            <div id="showBrand" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Stok Saat Ini</p>
+                            <div id="showStok" class="flex items-center gap-2"></div>
+                        </div>
+                    </div>
+                </div>
 
-                    <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow-sm transition">
+                {{-- JUMLAH + HARGA --}}
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Jumlah Masuk</label>
+                        <input type="number" name="jumlah" id="inputJumlah" min="1" required
+                            placeholder="Masukkan jumlah"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Harga Beli</label>
+                        <input type="number" name="harga_beli" id="inputHarga" min="0" required
+                            placeholder="Masukkan harga beli"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                </div>
 
-                        Simpan
+                {{-- SUPPLIER --}}
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Supplier</label>
+                    <select name="supplier_id" id="inputSupplier" required
+                        class="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm
+                        outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition">
+                        <option value="">Pilih Supplier</option>
+                        @foreach($suppliers as $supplier)
+                        <option value="{{ $supplier->id }}">{{ $supplier->nama_supplier }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
+                {{-- FOOTER BUTTONS --}}
+                <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                    <button type="button" id="btnBatal" onclick="resetFormMode()"
+                        class="hidden px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700
+                        text-sm rounded-lg transition items-center gap-2">
+                        <i class="fas fa-times"></i> Batal Edit
                     </button>
-
+                    <div class="ml-auto">
+                        <button type="submit" id="btnSubmit"
+                            class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
+                            rounded-lg shadow-sm transition flex items-center gap-2">
+                            <i class="fas fa-save"></i>
+                            <span id="btnSubmitText">Simpan</span>
+                        </button>
+                    </div>
                 </div>
 
-            </form>
-
-        </div>
-
+            </div>
+        </form>
     </div>
 
-    {{-- TABLE --}}
-    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+    {{-- TABLE CARD --}}
+    <div class="w-full bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
 
         {{-- FILTER --}}
-        <div class="p-4 border-b border-slate-200">
-
-            <form method="GET" class="flex flex-wrap gap-3">
-
+        <div class="px-4 py-4 border-b border-slate-200">
+            <form method="GET" class="flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
-                    class="w-56 px-4 py-2 border border-slate-300 rounded-lg">
-
-                <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
-                    Filter
-
+                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 text-sm
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-lg shadow-sm transition">
+                    <i class="fas fa-filter mr-1"></i> Filter
                 </button>
-
                 <a href="{{ route('admin.barang-masuk.index') }}"
-                    class="px-5 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+                    class="border border-slate-300 px-4 py-2 text-sm rounded-lg hover:bg-slate-50 transition">
                     Reset
                 </a>
-
             </form>
-
         </div>
 
         {{-- TABLE --}}
         <div class="overflow-x-auto">
-
-            <table class="w-full text-sm">
-
-                <thead class="bg-slate-50 text-slate-700">
-
+            <table class="w-full text-sm border-collapse">
+                <thead class="bg-slate-100 text-slate-800">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            No
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Tanggal
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Kode Part
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Nama Barang
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Jumlah Masuk
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Harga Jual
-                        </th>
-
-                        <th class="px-4 py-3 text-left font-semibold border">
-                            Total
-                        </th>
-                        <th class="px-4 py-3 text-center font-semibold border">
-                            Aksi
-                        </th>
+                        <th class="px-4 py-4 text-center font-bold border w-16">No</th>
+                        <th class="px-4 py-4 text-left font-bold border">Tanggal</th>
+                        <th class="px-4 py-4 text-left font-bold border">Kode Part</th>
+                        <th class="px-4 py-4 text-left font-bold border">Nama Barang</th>
+                        <th class="px-4 py-4 text-left font-bold border">Supplier</th>
+                        <th class="px-4 py-4 text-center font-bold border">Jumlah Masuk</th>
+                        <th class="px-4 py-4 text-right font-bold border">Harga Beli</th>
+                        <th class="px-4 py-4 text-right font-bold border">Total</th>
+                        <th class="px-4 py-4 text-center font-bold border w-48">Aksi</th>
                     </tr>
-
                 </thead>
-
                 <tbody class="bg-white">
-
                     @forelse($barangMasuks as $item)
-
-                    <tr class="hover:bg-slate-50">
-
-                        <td class="px-4 py-4 border">
-                            {{ $barangMasuks->firstItem() + $loop->index }}
-                        </td>
-
-                        <td class="px-4 py-4 border">
-                            {{ $item->tanggal }}
-                        </td>
-
-                        <td class="px-4 py-4 border">
-                            {{ $item->barang?->kode ?? '-' }}
-                        </td>
-
-                        <td class="px-4 py-4 border font-medium">
-                            {{ $item->barang?->nama_barang ?? '-' }}
-                        </td>
-
-                        <td class="px-4 py-4 border">
-
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                                {{ $item->jumlah }}
-                            </span>
-
-                        </td>
-
-                        <td class="px-4 py-4 border">
-                            Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
-                        </td>
-
-                        <td class="px-4 py-4 border font-semibold">
-                            Rp {{ number_format($item->jumlah * $item->harga_jual, 0, ',', '.') }}
-                        </td>
-
+                    <tr class="hover:bg-slate-50 transition-colors duration-150">
+                        <td class="px-4 py-4 border text-center">{{ $barangMasuks->firstItem() + $loop->index }}</td>
+                        <td class="px-4 py-4 border">{{ $item->tanggal }}</td>
+                        <td class="px-4 py-4 border">{{ $item->barang?->kode ?? '-' }}</td>
+                        <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang?->nama_barang ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-sm text-slate-700">{{ $item->supplier->nama_supplier ?? '-' }}</td>
                         <td class="px-4 py-4 border text-center">
-
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                +{{ $item->jumlah }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-4 border text-right">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                        <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
+                        <td class="px-4 py-4 border">
                             <div class="flex justify-center gap-2">
-
                                 <button type="button"
-                                        onclick="document.getElementById('editModal{{ $item->id }}').classList.remove('hidden')"
-                                        class="px-3 py-2 bg-amber-500 text-white rounded-lg">
-                                        Edit
-                                        
+                                    onclick="setEditMode(
+                                        {{ $item->id }},
+                                        '{{ $item->tanggal }}',
+                                        {{ $item->jumlah }},
+                                        {{ $item->harga_beli }},
+                                        {{ $item->supplier_id ?? 'null' }},
+                                        '{{ $item->barang?->kode ?? '' }}',
+                                        '{{ addslashes($item->barang?->nama_barang ?? '-') }}',
+                                        '{{ addslashes($item->barang?->kategori->nama_kategori ?? '-') }}',
+                                        '{{ addslashes($item->barang?->brand->nama_brand ?? $item->barang?->brand ?? '-') }}',
+                                        {{ $item->barang?->stok ?? 0 }}
+                                    )"
+                                    class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded-lg shadow-sm transition">
+                                    <i class="fas fa-pen mr-1"></i> Edit
                                 </button>
-
-                                @foreach($barangMasuks as $item)
-
-                                <div id="editModal{{ $item->id }}" class="hidden fixed inset-0 z-50 bg-black/50">
-                                    <div class="bg-white w-full max-w-xl mx-auto mt-20 p-6 rounded-lg">
-
-                                        <h2 class="text-lg font-bold mb-4">Edit Barang Masuk</h2>
-
-                                        <form action="{{ route('admin.barang-masuk.update', $item) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-
-                                            <input type="date" name="tanggal"
-                                                value="{{ $item->tanggal }}"
-                                                class="w-full border p-2 mb-3">
-
-                                            <select name="supplier_id" class="w-full border p-2 mb-3">
-                                                @foreach($suppliers as $s)
-                                                    <option value="{{ $s->id }}"
-                                                        {{ $item->supplier_id == $s->id ? 'selected' : '' }}>
-                                                        {{ $s->nama_supplier }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                            <input type="number" name="jumlah"
-                                                value="{{ $item->jumlah }}"
-                                                class="w-full border p-2 mb-3">
-
-                                            <input type="number" name="harga_beli"
-                                                value="{{ $item->harga_beli }}"
-                                                class="w-full border p-2 mb-3">
-
-                                            <div class="flex justify-end gap-2">
-                                                <button type="button"
-                                                    onclick="document.getElementById('editModal{{ $item->id }}').classList.add('hidden')"
-                                                    class="px-4 py-2 bg-gray-400 text-white rounded">
-                                                    Batal
-                                                </button>
-
-                                                <button class="px-4 py-2 bg-blue-600 text-white rounded">
-                                                    Update
-                                                </button>
-                                            </div>
-
-                                        </form>
-
-                                    </div>
-                                </div>
-
-                                @endforeach
-
-                                <form action="{{ route('admin.barang-masuk.destroy',$item->id) }}" 
-                                      method="POST"
-                                      onsubmit="return confirm('Yakin hapus data ini?')">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                    <button type="submit" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg">
-
-                                        <i class="fas fa-trash mr-1"></i>
-                                        Hapus
-
+                                <form action="{{ route('admin.barang-masuk.destroy', $item->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" onclick="confirmDelete(this.form)"
+                                        class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs rounded-lg shadow-sm transition">
+                                        <i class="fas fa-trash mr-1"></i> Hapus
                                     </button>
-
                                 </form>
-
                             </div>
-
                         </td>
-
                     </tr>
-
                     @empty
-
                     <tr>
-
-                        <td colspan="8" class="px-4 py-10 text-center text-slate-500"> Tidak ada data barang keluar
-                        </td>
-
+                        <td colspan="9" class="py-10 text-center text-gray-500">Belum ada data barang masuk</td>
                     </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
 
         {{-- PAGINATION --}}
-        <div class="flex justify-between items-center px-4 py-3 border-t bg-white">
-
-            <div class="text-sm text-gray-600">
-                Showing
-                {{ $barangMasuks->firstItem() ?? 0 }}
-                to
-                {{ $barangMasuks->lastItem() ?? 0 }}
-                of
-                {{ $barangMasuks->total() }}
-                entries
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 px-5 py-4 border-t bg-slate-50">
+            <div class="text-sm text-slate-600">
+                Menampilkan
+                <span class="font-semibold text-slate-800">{{ $barangMasuks->firstItem() ?? 0 }}</span>
+                -
+                <span class="font-semibold text-slate-800">{{ $barangMasuks->lastItem() ?? 0 }}</span>
+                dari
+                <span class="font-semibold text-blue-600">{{ $barangMasuks->total() }}</span>
+                data barang masuk
             </div>
-
             <div class="flex items-center gap-2">
-
                 <a href="{{ $barangMasuks->previousPageUrl() }}"
-                    class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ !$barangMasuks->onFirstPage() ? '' : 'pointer-events-none opacity-50' }}">
-                    Previous
+                    class="flex items-center px-4 py-2 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
+                    {{ $barangMasuks->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
+                    Sebelumnya
                 </a>
-
-                <span class="border px-4 py-2 rounded bg-gray-100 font-medium">
+                <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-sm">
                     {{ $barangMasuks->currentPage() }}
                 </span>
-
                 <a href="{{ $barangMasuks->nextPageUrl() }}"
-                    class="border px-4 py-2 rounded text-gray-600 hover:bg-gray-50 {{ $barangMasuks->hasMorePages() ? '' : 'pointer-events-none opacity-50' }}">
-                    Next
+                    class="flex items-center px-4 py-2 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
+                    {{ !$barangMasuks->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
+                    Berikutnya
                 </a>
-
             </div>
-
         </div>
 
     </div>
