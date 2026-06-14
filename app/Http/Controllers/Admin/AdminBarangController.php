@@ -14,11 +14,7 @@ class AdminBarangController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Barang::with([
-            'kategori',
-            'supplier',
-            'brand'
-        ])->latest();
+        $query = Barang::with(['kategori', 'supplier', 'brand'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -38,7 +34,6 @@ class AdminBarangController extends Controller
             $query->where('kategori_id', $request->kategori_id);
         }
 
-        // FILTER STOK — dari dashboard "Lihat Semua Produk"
         if ($request->filled('stok')) {
             if ($request->stok === 'menipis') {
                 $query->where('stok', '>', 0)->where('stok', '<=', 10);
@@ -53,26 +48,18 @@ class AdminBarangController extends Controller
         $barangs = $query->paginate($perPage)->withQueryString();
 
         $kategori     = Kategori::all();
-        $supplier     = Supplier::all();
         $brandOptions = Brand::all();
 
         return view('pages.admin.data-barang', compact(
             'barangs',
             'kategori',
-            'supplier',
             'brandOptions'
         ));
     }
 
     public function show($id)
     {
-        $barang = Barang::with([
-            'kategori',
-            'supplier',
-            'brand',
-            'gambarBarang'
-        ])->findOrFail($id);
-
+        $barang = Barang::with(['kategori', 'supplier', 'brand', 'gambarBarang'])->findOrFail($id);
         return view('pages.admin.detail-barang', compact('barang'));
     }
 
@@ -86,7 +73,6 @@ class AdminBarangController extends Controller
         $request->validate([
             'kode'        => 'required|unique:barangs,kode',
             'nama_barang' => 'required',
-            'stok'        => 'required|numeric',
             'harga_jual'  => 'required|numeric',
             'gambar.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -94,11 +80,11 @@ class AdminBarangController extends Controller
         $barang = Barang::create([
             'kode'        => $request->kode,
             'nama_barang' => $request->nama_barang,
-            'stok'        => $request->stok,
-            'harga_beli'  => $request->harga_beli,
+            'stok'        => 0, // default 0, dikelola dari Barang Masuk
+            'harga_beli'  => $request->harga_beli ?? 0,
             'harga_jual'  => $request->harga_jual,
             'kategori_id' => $request->kategori_id,
-            'supplier_id' => $request->supplier_id,
+            'supplier_id' => null,
             'brand_id'    => $request->brand_id,
             'deskripsi'   => $request->deskripsi,
         ]);
@@ -125,7 +111,6 @@ class AdminBarangController extends Controller
         $request->validate([
             'kode'        => 'required|unique:barangs,kode,' . $id,
             'nama_barang' => 'required',
-            'stok'        => 'required|numeric',
             'harga_jual'  => 'required|numeric',
             'gambar.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -133,11 +118,9 @@ class AdminBarangController extends Controller
         $barang->update([
             'kode'        => $request->kode,
             'nama_barang' => $request->nama_barang,
-            'stok'        => $request->stok,
-            'harga_beli'  => $request->harga_beli,
+            'harga_beli'  => $request->harga_beli ?? 0,
             'harga_jual'  => $request->harga_jual,
             'kategori_id' => $request->kategori_id,
-            'supplier_id' => $request->supplier_id,
             'brand_id'    => $request->brand_id,
             'deskripsi'   => $request->deskripsi,
         ]);
