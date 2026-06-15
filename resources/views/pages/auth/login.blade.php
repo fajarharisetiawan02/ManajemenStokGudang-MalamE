@@ -76,8 +76,8 @@
 
                 <!-- BUTTON -->
                 <button type="submit"
-                    class="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600
-                    text-white text-lg font-semibold hover:scale-[1.02] hover:shadow-xl transition duration-300">
+                    class="w-full py-4 rounded-2xl bg-blue-700 hover:bg-blue-800
+                    text-white text-lg font-semibold transition duration-300">
                     {{ __('app.masuk') }}
                 </button>
 
@@ -94,19 +94,5 @@
     </div>
 
 </section>
-
-<script>
-function togglePassword() {
-    const password = document.getElementById('password');
-    const eyeIcon  = document.getElementById('eyeIcon');
-    if (password.type === 'password') {
-        password.type = 'text';
-        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-        password.type = 'password';
-        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-}
-</script>
 
 @endsection

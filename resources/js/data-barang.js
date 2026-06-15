@@ -41,7 +41,7 @@ function closeModal() {
 function editData(button) {
 
     const modal = document.getElementById('modalBarang');
-    const form = document.getElementById('formBarang');
+    const form  = document.getElementById('formBarang');
 
     form.action = "/admin/data-barang/" + button.dataset.id;
 
@@ -51,9 +51,6 @@ function editData(button) {
     form.querySelector('input[name="nama_barang"]').value =
         button.dataset.namaBarang || '';
 
-    form.querySelector('input[name="stok"]').value =
-        button.dataset.stok || '';
-
     form.querySelector('input[name="harga_jual"]').value =
         button.dataset.harga || '';
 
@@ -62,43 +59,21 @@ function editData(button) {
 
     // KATEGORI
     const kategori = form.querySelector('select[name="kategori_id"]');
-    if (kategori) {
-        kategori.value = button.dataset.kategoriId || '';
-    }
+    if (kategori) kategori.value = button.dataset.kategoriId || '';
 
     // BRAND
     const brand = form.querySelector('select[name="brand_id"]');
-    if (brand) {
-        brand.value = button.dataset.brandId || '';
-    }
-
-    // SUPPLIER
-    const supplier = form.querySelector('select[name="supplier_id"]');
-    if (supplier) {
-        supplier.value = button.dataset.supplierId || '';
-    }
+    if (brand) brand.value = button.dataset.brandId || '';
 
     document.getElementById('methodContainer').innerHTML =
         '<input type="hidden" name="_method" value="PUT">';
 
-    document.getElementById('modalTitle').innerText =
-        'Edit Barang';
+    document.getElementById('modalTitle').innerText    = 'Edit Barang';
+    document.getElementById('modalSubtitle').innerText = 'Perbarui data barang di bawah ini.';
+    document.getElementById('submitBtn').innerText     = 'Update';
 
-    document.getElementById('modalSubtitle').innerText =
-        'Perbarui data barang di bawah ini.';
-
-    document.getElementById('submitBtn').innerText =
-        'Update';
-
-    document.getElementById('submitBtn').classList.remove(
-        'bg-blue-600',
-        'hover:bg-blue-700'
-    );
-
-    document.getElementById('submitBtn').classList.add(
-        'bg-amber-500',
-        'hover:bg-amber-600'
-    );
+    document.getElementById('submitBtn').classList.remove('bg-blue-600', 'hover:bg-blue-700');
+    document.getElementById('submitBtn').classList.add('bg-amber-500', 'hover:bg-amber-600');
 
     modal.classList.remove('hidden');
     modal.classList.add('flex');
@@ -106,8 +81,8 @@ function editData(button) {
 
 // ==== PREVIEW GAMBAR 1 FOTO ==== //
 function showImage(src) {
-    const preview = document.getElementById('previewImage');
-    const modal = document.getElementById('imageModal');
+    const preview     = document.getElementById('previewImage');
+    const modal       = document.getElementById('imageModal');
     const thumbGallery = document.getElementById('thumbGallery');
 
     if (!preview || !modal) return;
@@ -121,8 +96,8 @@ function showImage(src) {
 
 // ==== PREVIEW GAMBAR MULTIPLE ==== //
 function showImages(images) {
-    const preview = document.getElementById('previewImage');
-    const modal = document.getElementById('imageModal');
+    const preview      = document.getElementById('previewImage');
+    const modal        = document.getElementById('imageModal');
     const thumbGallery = document.getElementById('thumbGallery');
 
     if (!preview || !modal || !thumbGallery) return;
@@ -130,23 +105,14 @@ function showImages(images) {
     let imageList = images;
 
     if (typeof images === 'string') {
-        try {
-            imageList = JSON.parse(images);
-        } catch (e) {
-            imageList = [images];
-        }
+        try { imageList = JSON.parse(images); }
+        catch (e) { imageList = [images]; }
     }
 
-    if (!Array.isArray(imageList)) {
-        imageList = [imageList];
-    }
-
+    if (!Array.isArray(imageList)) imageList = [imageList];
     imageList = imageList.filter(Boolean);
 
-    if (imageList.length === 0) {
-        showNoImage();
-        return;
-    }
+    if (imageList.length === 0) { showNoImage(); return; }
 
     preview.src = imageList[0];
     thumbGallery.innerHTML = '';
@@ -156,20 +122,16 @@ function showImages(images) {
         button.type = 'button';
         button.className =
             'rounded-xl overflow-hidden border transition duration-200 ' +
-            (index === 0
-                ? 'border-blue-600 ring-2 ring-blue-200'
-                : 'border-gray-200 hover:border-blue-300');
+            (index === 0 ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-blue-300');
 
         button.innerHTML = `<img src="${src}" class="w-full h-20 object-cover">`;
 
         button.addEventListener('click', function () {
             preview.src = src;
-
             thumbGallery.querySelectorAll('button').forEach(btn => {
                 btn.classList.remove('border-blue-600', 'ring-2', 'ring-blue-200');
                 btn.classList.add('border-gray-200');
             });
-
             button.classList.remove('border-gray-200');
             button.classList.add('border-blue-600', 'ring-2', 'ring-blue-200');
         });
@@ -189,9 +151,9 @@ function switchPreview(src) {
 
 // ==== CLOSE PREVIEW GAMBAR ==== //
 function closeImage() {
-    const modal = document.getElementById('imageModal');
+    const modal        = document.getElementById('imageModal');
     const thumbGallery = document.getElementById('thumbGallery');
-    const preview = document.getElementById('previewImage');
+    const preview      = document.getElementById('previewImage');
 
     if (!modal) return;
 
@@ -223,35 +185,28 @@ function confirmDelete(form) {
         cancelButtonColor: '#6b7280',
         confirmButtonText: 'Ya, hapus!'
     }).then((result) => {
-        if (result.isConfirmed) {
-            form.submit();
-        }
+        if (result.isConfirmed) form.submit();
     });
 }
 
 // ==== CLICK OUTSIDE MODAL ==== //
 document.addEventListener("click", function (e) {
     const imageModal = document.getElementById('imageModal');
-
-    if (imageModal && e.target === imageModal) {
-        closeImage();
-    }
+    if (imageModal && e.target === imageModal) closeImage();
 });
 
 // ==== ESC CLOSE ==== //
 document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-        closeImage();
-    }
+    if (e.key === "Escape") closeImage();
 });
 
 // ==== GLOBAL FUNCTION ==== //
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.editData = editData;
-window.showImage = showImage;
-window.showImages = showImages;
+window.openModal     = openModal;
+window.closeModal    = closeModal;
+window.editData      = editData;
+window.showImage     = showImage;
+window.showImages    = showImages;
 window.switchPreview = switchPreview;
-window.closeImage = closeImage;
-window.showNoImage = showNoImage;
+window.closeImage    = closeImage;
+window.showNoImage   = showNoImage;
 window.confirmDelete = confirmDelete;

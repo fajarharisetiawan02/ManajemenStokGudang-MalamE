@@ -9,9 +9,13 @@
 
         <!-- MENU -->
         <div class="hidden md:flex items-center space-x-8 font-medium text-gray-700 ml-auto mr-10">
-            <a href="/home" class="text-blue-700 font-semibold border-b-2 border-blue-700 pb-1">{{ __('app.beranda') }}</a>
-            <a href="/about" class="hover:text-blue-700 transition">{{ __('app.tentang_kami') }}</a>
-            <a href="/contact" class="hover:text-blue-700 transition">{{ __('app.kontak') }}</a>
+            <a href="/home" class="hover:text-blue-700 transition
+                {{ request()->is('/') || request()->is('home') ? 'text-blue-700 font-semibold border-b-2 border-blue-700 pb-1' : '' }}">
+                {{ __('app.beranda') }}
+            </a>
+            <a href="/home#keunggulan" class="hover:text-blue-700 transition">
+                Fitur
+            </a>
         </div>
 
         <!-- LOGIN -->

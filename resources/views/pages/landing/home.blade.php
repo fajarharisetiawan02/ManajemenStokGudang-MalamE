@@ -26,11 +26,6 @@
                         {{ __('app.mulai_sekarang') }}
                     </a>
 
-                    <a href="/contact"
-                        class="border border-slate-300 text-slate-700 px-7 py-3 rounded-xl hover:bg-white transition">
-                        {{ __('app.hubungi_kami') }}
-                    </a>
-
                 </div>
 
                 <!-- STAT -->
@@ -69,10 +64,11 @@
 
             </div>
 
+        </div>
     </section>
 
     <!-- KEUNGGULAN -->
-    <section class="bg-gradient-to-b from-white to-slate-50 py-24">
+    <section id="keunggulan" class="bg-gradient-to-b from-white to-slate-50 py-24">
 
         <div class="container mx-auto px-8">
 
@@ -184,4 +180,5 @@
         </div>
 
     </section>
+
 @endsection

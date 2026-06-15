@@ -18,23 +18,14 @@ class AdminBarangKeluarController extends Controller
             $query->whereHas('barang', function ($q) use ($search) {
                 $q->where('kode', 'like', "%{$search}%")
                   ->orWhere('nama_barang', 'like', "%{$search}%");
-            });
+            })->orWhere('tujuan', 'like', "%{$search}%");
         }
 
         $barangKeluars = $query->paginate(10)->withQueryString();
         $barangs       = Barang::orderBy('nama_barang', 'ASC')->get();
 
-        return view(
-            'pages.admin.barang-keluar',
-            compact('barangKeluars', 'barangs')
-        );
+        return view('pages.admin.barang-keluar', compact('barangKeluars', 'barangs'));
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SIMPAN BARANG KELUAR
-    |--------------------------------------------------------------------------
-    */
 
     public function store(Request $request)
     {
@@ -43,6 +34,7 @@ class AdminBarangKeluarController extends Controller
             'tanggal'    => 'required|date',
             'jumlah'     => 'required|integer|min:1',
             'harga_jual' => 'required|numeric|min:0',
+            'tujuan'     => 'nullable|string|max:255',
         ]);
 
         $barang = Barang::findOrFail($request->barang_id);
@@ -57,6 +49,7 @@ class AdminBarangKeluarController extends Controller
             'jumlah'     => $request->jumlah,
             'harga_jual' => $request->harga_jual,
             'total'      => $request->jumlah * $request->harga_jual,
+            'tujuan'     => $request->tujuan,
         ]);
 
         $barang->stok -= $request->jumlah;
@@ -64,15 +57,8 @@ class AdminBarangKeluarController extends Controller
 
         return redirect()
             ->route('admin.barang-keluar.index')
-            ->with('success', 'Barang keluar berhasil ditambahkan');
+            ->with('success', 'tambah');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE BARANG KELUAR
-    | Barang tidak bisa diubah, hanya tanggal, jumlah, harga_jual
-    |--------------------------------------------------------------------------
-    */
 
     public function update(Request $request, BarangKeluar $barang_keluar)
     {
@@ -80,18 +66,17 @@ class AdminBarangKeluarController extends Controller
             'tanggal'    => 'required|date',
             'jumlah'     => 'required|integer|min:1',
             'harga_jual' => 'required|numeric|min:0',
+            'tujuan'     => 'nullable|string|max:255',
         ]);
 
         $barang = Barang::findOrFail($barang_keluar->barang_id);
 
-        // Rollback stok lama, cek stok baru
         $stokSetelahRollback = $barang->stok + $barang_keluar->jumlah;
 
         if ($stokSetelahRollback < $request->jumlah) {
             return back()->with('error', 'Stok tidak mencukupi');
         }
 
-        // Apply stok baru
         $barang->stok = $stokSetelahRollback - $request->jumlah;
         $barang->save();
 
@@ -100,16 +85,11 @@ class AdminBarangKeluarController extends Controller
             'jumlah'     => $request->jumlah,
             'harga_jual' => $request->harga_jual,
             'total'      => $request->jumlah * $request->harga_jual,
+            'tujuan'     => $request->tujuan,
         ]);
 
-        return back()->with('success', 'Data berhasil diupdate');
+        return back()->with('success', 'update');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | HAPUS BARANG KELUAR
-    |--------------------------------------------------------------------------
-    */
 
     public function destroy(BarangKeluar $barang_keluar)
     {
@@ -120,6 +100,6 @@ class AdminBarangKeluarController extends Controller
 
         $barang_keluar->delete();
 
-        return back()->with('success', 'Data berhasil dihapus');
+        return back()->with('success', 'delete');
     }
 }

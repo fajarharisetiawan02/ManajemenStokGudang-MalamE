@@ -28,7 +28,7 @@ return [
     'kembali_beranda'   => 'Kembali ke Beranda',
 
     // LOGIN
-    'selamat_datang'    => 'Selamat Datang 👋',
+    'selamat_datang'    => 'Selamat Datang',
     'login_subtitle'    => 'Masuk untuk mengelola stok gudang Anda.',
     'username'          => 'Username',
     'kata_sandi'        => 'Kata Sandi',
@@ -45,11 +45,10 @@ return [
     // HOME
     'hero_title'        => 'Kelola Stok Gudang Lebih Mudah & Cepat',
     'hero_subtitle'     => 'Pantau barang masuk, barang keluar, stok spare part, supplier, dan laporan gudang secara real-time dengan sistem modern.',
-    'mulai_sekarang'    => '🚀 Mulai Sekarang',
-    'hubungi_kami'      => '📞 Hubungi Kami',
+    'mulai_sekarang'    => 'Mulai Sekarang',
     'spare_part'        => 'Spare Part',
     'akurasi'           => 'Akurasi',
-    'keunggulan_title'  => 'Keunggulan Sistem GudangPro',
+    'keunggulan_title' => 'Fitur Sistem GudangPro',
     'keunggulan_sub'    => 'Platform Stok Gudang Terpercaya',
     'keunggulan_desc'   => 'Dirancang untuk membantu pengelolaan stok spare part kendaraan menjadi lebih cepat, akurat, efisien, dan modern.',
     'monitoring_stok'   => 'Monitoring Stok',

@@ -28,7 +28,7 @@ return [
     'kembali_beranda'   => 'Back to Home',
 
     // LOGIN
-    'selamat_datang'    => 'Welcome Back 👋',
+    'selamat_datang'    => 'Welcome Back',
     'login_subtitle'    => 'Sign in to manage your warehouse stock.',
     'username'          => 'Username',
     'kata_sandi'        => 'Password',
@@ -45,11 +45,10 @@ return [
     // HOME
     'hero_title'        => 'Manage Warehouse Stock Easier & Faster',
     'hero_subtitle'     => 'Monitor incoming goods, outgoing goods, spare part stock, suppliers, and warehouse reports in real-time with a modern system.',
-    'mulai_sekarang'    => '🚀 Get Started',
-    'hubungi_kami'      => '📞 Contact Us',
+    'mulai_sekarang'    => 'Get Started',
     'spare_part'        => 'Spare Parts',
     'akurasi'           => 'Accuracy',
-    'keunggulan_title'  => 'GudangPro System Advantages',
+    'keunggulan_title' => 'GudangPro System Features',
     'keunggulan_sub'    => 'Trusted Warehouse Stock Platform',
     'keunggulan_desc'   => 'Designed to help manage vehicle spare part stock faster, more accurate, efficient, and modern.',
     'monitoring_stok'   => 'Stock Monitoring',

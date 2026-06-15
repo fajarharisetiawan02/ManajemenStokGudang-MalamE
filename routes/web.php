@@ -140,3 +140,4 @@ Route::prefix('manager')
             ->name('laporan.export-pdf');
 
     });
+    

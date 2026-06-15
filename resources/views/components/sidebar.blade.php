@@ -43,7 +43,7 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
             <a href="{{ route($prefix.'.kategori.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
                 {{ request()->is($prefix.'/kategori*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
-                <i class="fas fa-folder w-6"></i>
+                <i class="fas fa-tags w-6"></i>
                 <span>{{ __('app.kategori') }}</span>
             </a>
 

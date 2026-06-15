@@ -11,6 +11,7 @@
             font-size: 11px;
             color: #1e293b;
             background: #fff;
+            padding: 0 10px;
         }
 
         /* ===== HEADER ===== */
@@ -36,36 +37,20 @@
             line-height: 1.7;
         }
 
-        /* ===== INFO BOX ===== */
-        .info-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid #1e40af;
-            border-radius: 4px;
-            padding: 8px 14px;
-            margin-bottom: 14px;
-            font-size: 10px;
-            color: #475569;
-        }
-        .info-box table { width: 100%; }
-        .info-box td { padding: 2px 0; }
-        .info-box .label { color: #94a3b8; width: 120px; }
-        .info-box .value { font-weight: bold; color: #1e293b; }
-
         /* ===== SUMMARY ===== */
         .summary { width: 100%; margin-bottom: 16px; border-collapse: separate; border-spacing: 6px 0; }
-        .summary td { width: 33.33%; padding: 10px 14px; border-radius: 6px; }
+        .summary td { width: 33.33%; padding: 14px 16px; border-radius: 6px; }
 
         .s-masuk  { background: #f0fdf4; border: 1px solid #bbf7d0; }
         .s-keluar { background: #fef2f2; border: 1px solid #fecaca; }
         .s-stok   { background: #eff6ff; border: 1px solid #bfdbfe; }
 
-        .s-label { font-size: 9px; color: #64748b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .s-value { font-size: 24px; font-weight: bold; }
+        .s-label { font-size: 10px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold; }
+        .s-value { font-size: 32px; font-weight: bold; }
         .s-masuk  .s-value { color: #16a34a; }
         .s-keluar .s-value { color: #dc2626; }
         .s-stok   .s-value { color: #2563eb; }
-        .s-sub { font-size: 9px; color: #94a3b8; margin-top: 2px; }
+        .s-sub { font-size: 10px; color: #94a3b8; margin-top: 4px; }
 
         /* ===== TABLE ===== */
         table.data {
@@ -84,7 +69,6 @@
             letter-spacing: 0.3px;
         }
         table.data thead th.center { text-align: center; }
-        table.data thead th.right  { text-align: right; }
 
         table.data tbody tr:nth-child(even) { background: #f8fafc; }
         table.data tbody tr:nth-child(odd)  { background: #ffffff; }
@@ -169,12 +153,12 @@
         <thead>
             <tr>
                 <th class="center" style="width:28px">No</th>
-                <th style="width:65px">Tanggal</th>
-                <th style="width:65px; white-space:nowrap">No Transaksi</th>
-                <th style="width:65px">Kode Part</th>
-                <th>Nama Barang</th>
+                <th style="width:75px">Tanggal</th>
+                <th style="width:70px; white-space:nowrap">No Transaksi</th>
+                <th style="width:70px">Kode Part</th>
+                <th style="width:200px">Nama Barang</th>
                 <th class="center" style="width:55px">Jenis</th>
-                <th class="center" style="width:38px">Qty</th>
+                <th class="center" style="width:40px">Qty</th>
                 <th style="width:80px">Keterangan</th>
             </tr>
         </thead>

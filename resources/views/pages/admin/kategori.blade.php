@@ -8,32 +8,34 @@
 
         <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
 
-            <div class="p-4 space-y-3">
-
+            <div class="p-4">
                 <button onclick="openTambah()"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
                     <i class="fas fa-plus mr-1"></i> Tambah Kategori
                 </button>
+            </div>
 
-                <div class="flex flex-wrap items-center gap-3">
-                    <select id="filterKategori"
+            <form method="GET" action="{{ url('/admin/kategori') }}">
+                <div class="px-4 pb-4 flex flex-wrap items-center gap-3">
+                    <select name="search"
                         class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua Kategori</option>
                         @foreach ($kategori as $k)
-                            <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
+                            <option value="{{ $k->id }}" {{ request('search') == $k->id ? 'selected' : '' }}>
+                                {{ $k->nama_kategori }}
+                            </option>
                         @endforeach
                     </select>
-                    <button id="btnFilter" type="button"
+                    <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
                         <i class="fas fa-filter mr-1"></i> Filter
                     </button>
-                    <button id="resetFilter" type="button"
+                    <a href="{{ url('/admin/kategori') }}"
                         class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
                         Reset
-                    </button>
+                    </a>
                 </div>
-
-            </div>
+            </form>
 
             {{-- GRID KATEGORI --}}
             <div class="p-5">
@@ -107,7 +109,6 @@
     </div>
 
     {{-- MODAL KATEGORI --}}
-    {{-- data-store-url dipakai kategori.js --}}
     <div id="modalKategori"
         data-store-url="{{ route('admin.kategori.store') }}"
         class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/50 p-4">

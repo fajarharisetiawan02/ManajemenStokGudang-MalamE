@@ -23,7 +23,7 @@ if ($user && $notifCount > 0) {
 }
 @endphp
 
-<div class="bg-white shadow px-4 md:px-8 py-4 flex justify-between items-center
+<div id="mainNavbar" class="bg-white shadow px-4 md:px-8 py-4 flex justify-between items-center
     fixed top-0 left-0 md:left-72 right-0 z-40">
 
     <!-- LEFT -->
@@ -53,53 +53,54 @@ if ($user && $notifCount > 0) {
             </button>
 
             <div id="dropdownNotif"
-                class="hidden absolute right-0 mt-2 w-[340px] bg-white rounded-xl shadow-lg
+                class="hidden absolute right-0 mt-2 w-[380px] bg-white rounded-xl shadow-lg
                 border border-slate-100 z-50 overflow-hidden">
 
-                <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                {{-- HEADER --}}
+                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-bell text-slate-700 text-sm"></i>
-                        <p class="text-sm font-semibold text-slate-800">{{ __('app.notifikasi') }}</p>
+                        <i class="fas fa-bell text-slate-700"></i>
+                        <p class="text-base font-semibold text-slate-800">{{ __('app.notifikasi') }}</p>
                     </div>
                     @if($stokMenipis->count() > 0)
-                    <span class="text-[11px] font-semibold bg-red-50 text-red-700 px-2 py-0.5 rounded-full">
+                    <span class="text-xs font-semibold bg-red-50 text-red-700 px-3 py-1 rounded-full">
                         {{ $stokMenipis->count() }} {{ __('app.stok_menipis') }}
                     </span>
                     @endif
                 </div>
 
                 @if($stokMenipis->count() > 0)
-                <div class="divide-y divide-slate-50 max-h-64 overflow-y-auto py-1">
+                <div class="divide-y divide-slate-50 max-h-80 overflow-y-auto py-1">
                     @foreach($stokMenipis as $barang)
                     <a href="{{ route('admin.data-barang.show', $barang->id) }}"
-                        class="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 transition">
+                        class="flex items-start gap-4 px-5 py-4 hover:bg-slate-50 transition">
 
                         @if($barang->stok <= 0)
-                        <div class="w-[34px] h-[34px] rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fas fa-exclamation-triangle text-red-600 text-xs"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="fas fa-exclamation-triangle text-red-600"></i>
                         </div>
                         @elseif($barang->stok <= 5)
-                        <div class="w-[34px] h-[34px] rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fas fa-exclamation-circle text-orange-500 text-xs"></i>
+                        <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="fas fa-exclamation-circle text-orange-500"></i>
                         </div>
                         @else
-                        <div class="w-[34px] h-[34px] rounded-lg bg-yellow-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fas fa-box text-yellow-500 text-xs"></i>
+                        <div class="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="fas fa-box text-yellow-500"></i>
                         </div>
                         @endif
 
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between gap-2">
-                                <p class="text-xs font-semibold text-slate-700 truncate">{{ $barang->nama_barang }}</p>
+                                <p class="text-sm font-semibold text-slate-700 truncate">{{ $barang->nama_barang }}</p>
                                 @if($barang->stok <= 0)
-                                <span class="text-[10px] font-semibold bg-red-50 text-red-700 px-1.5 py-0.5 rounded flex-shrink-0">{{ __('app.habis') }}</span>
+                                <span class="text-xs font-semibold bg-red-50 text-red-700 px-2 py-0.5 rounded flex-shrink-0">{{ __('app.habis') }}</span>
                                 @elseif($barang->stok <= 5)
-                                <span class="text-[10px] font-semibold bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded flex-shrink-0">{{ __('app.kritis') }}</span>
+                                <span class="text-xs font-semibold bg-orange-50 text-orange-700 px-2 py-0.5 rounded flex-shrink-0">{{ __('app.kritis') }}</span>
                                 @else
-                                <span class="text-[10px] font-semibold bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded flex-shrink-0">{{ __('app.menipis') }}</span>
+                                <span class="text-xs font-semibold bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded flex-shrink-0">{{ __('app.menipis') }}</span>
                                 @endif
                             </div>
-                            <p class="text-xs text-slate-400 mt-0.5">
+                            <p class="text-sm text-slate-400 mt-1">
                                 {{ __('app.stok_tersisa') }}:
                                 <span class="font-semibold {{ $barang->stok <= 0 ? 'text-red-600' : ($barang->stok <= 5 ? 'text-orange-500' : 'text-yellow-600') }}">
                                     {{ $barang->stok }} unit
@@ -110,19 +111,19 @@ if ($user && $notifCount > 0) {
                     @endforeach
                 </div>
 
-                <div class="px-4 py-2.5 border-t border-slate-100 bg-slate-50">
+                <div class="px-5 py-3 border-t border-slate-100 bg-slate-50">
                     <a href="{{ route('admin.data-barang.index') }}?stok=menipis"
-                        class="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center justify-center gap-1.5">
-                        {{ __('app.lihat_semua_produk') }} <i class="fas fa-arrow-right text-[10px]"></i>
+                        class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center justify-center gap-1.5">
+                        {{ __('app.lihat_semua_produk') }} <i class="fas fa-arrow-right text-xs"></i>
                     </a>
                 </div>
 
                 @else
-                <div class="px-4 py-8 text-center">
-                    <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-check text-green-500 text-sm"></i>
+                <div class="px-5 py-10 text-center">
+                    <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-check text-green-500 text-lg"></i>
                     </div>
-                    <p class="text-xs font-semibold text-slate-700">{{ __('app.semua_stok_aman') }}</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ __('app.semua_stok_aman') }}</p>
                     <p class="text-xs text-slate-400 mt-1">{{ __('app.tidak_ada_barang') }}</p>
                 </div>
                 @endif

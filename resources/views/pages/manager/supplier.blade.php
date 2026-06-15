@@ -9,34 +9,26 @@
     <div class="w-full bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
 
         <form method="GET" action="{{ url('/manager/supplier') }}">
-
-            <div class="p-4 flex flex-wrap items-center gap-3">
-
-                <!-- SEARCH -->
+            <div class="px-4 pb-4 pt-4 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari supplier..."
                     class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-                <!-- FILTER -->
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter
                 </button>
-
-                <!-- RESET -->
                 <a href="{{ url('/manager/supplier') }}"
                     class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
                     Reset
                 </a>
-
             </div>
-
         </form>
 
         <div class="flex justify-between items-center px-4 py-3 border-b bg-white">
             <div class="flex items-center gap-2 text-sm">
                 <span>Tampilkan</span>
                 <select onchange="window.location='?per_page='+this.value"
-                    class="h-10 min-w-[75px] border border-slate-300 rounded-lg px-3 pr-8 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    class="h-10 min-w-[75px] border border-slate-300 rounded-lg px-3 pr-8 text-sm bg-white
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="10" {{ request('per_page',10)==10 ? 'selected' : '' }}>10</option>
                     <option value="25" {{ request('per_page')==25 ? 'selected' : '' }}>25</option>
                     <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
@@ -86,15 +78,17 @@
             </div>
             <div class="flex items-center gap-2">
                 <a href="{{ $suppliers->previousPageUrl() }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ $suppliers->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                     Sebelumnya
                 </a>
-                <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold">
+                <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                     {{ $suppliers->currentPage() }}
                 </span>
                 <a href="{{ $suppliers->nextPageUrl() }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ !$suppliers->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
                     Berikutnya
                 </a>

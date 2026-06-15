@@ -1,4 +1,4 @@
-if (document.getElementById('cekBarang')) {
+if (document.getElementById('cekBarang') && document.getElementById('inputSupplier')) {
 
     // === CEK BARANG === //
     document.getElementById('cekBarang').addEventListener('click', function () {
@@ -28,9 +28,9 @@ if (document.getElementById('cekBarang')) {
                 document.getElementById('barang_id').value        = d.id;
                 document.getElementById('showNama').innerHTML     = d.nama_barang ?? '-';
                 document.getElementById('showKategori').innerHTML = d.kategori ?? '-';
-                document.getElementById('showBrand').innerHTML    = d.brand?.nama_brand ?? d.brand ?? '-';
-                renderStok(stok, 'showStok');
-                showInfoBarang();
+                document.getElementById('showBrand').innerHTML    = d.brand ?? '-';
+                renderStokMasuk(stok, 'showStok');
+                showInfoBarangMasuk();
             })
             .catch(() => {
                 this.innerHTML = '<i class="fas fa-search"></i> Cek Barang';
@@ -39,8 +39,7 @@ if (document.getElementById('cekBarang')) {
             });
     });
 
-    // === HELPER STOK BADGE === //
-    window.renderStok = function (stok, elId) {
+    window.renderStokMasuk = function (stok, elId) {
         let stokClass, stokLabel;
         if (stok <= 0)       { stokClass = 'bg-red-100 text-red-700';       stokLabel = 'Habis';   }
         else if (stok <= 10) { stokClass = 'bg-yellow-100 text-yellow-700'; stokLabel = 'Menipis'; }
@@ -51,8 +50,7 @@ if (document.getElementById('cekBarang')) {
             </span>`;
     }
 
-    // === ANIMASI INFO BARANG === //
-    window.showInfoBarang = function () {
+    window.showInfoBarangMasuk = function () {
         const box = document.getElementById('infoBarang');
         box.classList.remove('hidden');
         box.style.opacity   = '0';
@@ -64,10 +62,8 @@ if (document.getElementById('cekBarang')) {
         });
     }
 
-    // === MODE EDIT === //
-    window.setEditMode = function (id, tanggal, jumlah, harga, supplierId, kode, nama, kategori, brand, stok) {
-        const storeUrl = document.getElementById('mainForm').dataset.storeUrl;
-
+    // === MODE EDIT — nama unik biar tidak konflik dengan barang-keluar.js === //
+    window.setEditModeMasuk = function (id, tanggal, jumlah, harga, supplierId, kode, nama, kategori, brand, stok) {
         document.getElementById('mainForm').action = `/admin/barang-masuk/${id}`;
         document.getElementById('methodContainer').innerHTML = '<input type="hidden" name="_method" value="PUT">';
         document.getElementById('inputTanggal').value  = tanggal;
@@ -79,13 +75,12 @@ if (document.getElementById('cekBarang')) {
         document.getElementById('showNama').innerHTML     = nama;
         document.getElementById('showKategori').innerHTML = kategori;
         document.getElementById('showBrand').innerHTML    = brand;
-        renderStok(stok, 'showStok');
-        showInfoBarang();
+        renderStokMasuk(stok, 'showStok');
+        showInfoBarangMasuk();
         document.getElementById('kode_part').readOnly = true;
         document.getElementById('kode_part').classList.add('bg-slate-100', 'cursor-not-allowed');
         document.getElementById('cekBarang').disabled = true;
         document.getElementById('cekBarang').classList.add('opacity-50', 'cursor-not-allowed');
-        document.getElementById('formTitle').textContent    = 'Edit Barang Masuk';
         document.getElementById('formSubtitle').textContent = `Sedang mengedit: ${nama} (${kode})`;
         document.getElementById('editBadge').classList.remove('hidden');
         document.getElementById('editBadge').classList.add('flex');
@@ -97,21 +92,18 @@ if (document.getElementById('cekBarang')) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // === RESET KE MODE TAMBAH === //
     window.resetFormMode = function () {
         const storeUrl = document.getElementById('mainForm').dataset.storeUrl;
-
         document.getElementById('mainForm').action = storeUrl;
         document.getElementById('mainForm').reset();
         document.getElementById('methodContainer').innerHTML = '';
-        document.getElementById('barang_id').value           = '';
-        document.getElementById('kode_part').value           = '';
+        document.getElementById('barang_id').value  = '';
+        document.getElementById('kode_part').value  = '';
         document.getElementById('infoBarang').classList.add('hidden');
         document.getElementById('kode_part').readOnly = false;
         document.getElementById('kode_part').classList.remove('bg-slate-100', 'cursor-not-allowed');
         document.getElementById('cekBarang').disabled = false;
         document.getElementById('cekBarang').classList.remove('opacity-50', 'cursor-not-allowed');
-        document.getElementById('formTitle').textContent    = 'Form Barang Masuk';
         document.getElementById('formSubtitle').textContent = 'Masukkan kode part terlebih dahulu untuk mengecek data barang.';
         document.getElementById('editBadge').classList.add('hidden');
         document.getElementById('editBadge').classList.remove('flex');

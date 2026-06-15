@@ -53,7 +53,7 @@
                         <th class="px-4 py-4 text-left text-sm font-bold border">Telepon</th>
                         <th class="px-4 py-4 text-left text-sm font-bold border">Email</th>
                         <th class="px-4 py-4 text-left text-sm font-bold border">Alamat</th>
-                        <th class="px-4 py-4 text-center text-sm font-bold border w-52">Aksi</th>
+                        <th class="px-4 py-4 text-center text-sm font-bold border w-44">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -65,7 +65,7 @@
                         <td class="px-4 py-4 border text-slate-700">{{ $item->email ?? '-' }}</td>
                         <td class="px-4 py-4 border text-slate-700">{{ $item->alamat }}</td>
                         <td class="px-4 py-4 border">
-                            <div class="flex justify-center gap-2">
+                            <div class="flex justify-center items-center gap-2 flex-nowrap">
                                 <button type="button"
                                     data-id="{{ $item->id }}"
                                     data-nama-supplier="{{ $item->nama_supplier }}"
@@ -73,7 +73,7 @@
                                     data-email="{{ $item->email }}"
                                     data-alamat="{{ $item->alamat }}"
                                     onclick="editSupplier(this)"
-                                    class="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white shadow-sm transition">
+                                    class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                     <i class="fas fa-pen mr-1"></i> Edit
                                 </button>
                                 <form id="delete-form-{{ $item->id }}"
@@ -81,7 +81,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="confirmDelete({{ $item->id }})"
-                                        class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm transition">
+                                        class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                         <i class="fas fa-trash mr-1"></i> Hapus
                                     </button>
                                 </form>
@@ -109,15 +109,17 @@
             </div>
             <div class="flex items-center gap-2">
                 <a href="{{ $suppliers->previousPageUrl() }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ $suppliers->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                     Sebelumnya
                 </a>
-                <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold">
+                <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                     {{ $suppliers->currentPage() }}
                 </span>
                 <a href="{{ $suppliers->nextPageUrl() }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ !$suppliers->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
                     Berikutnya
                 </a>
@@ -128,7 +130,6 @@
 </div>
 
 <!-- MODAL SUPPLIER -->
-{{-- data-base-url dipakai supplier.js --}}
 <div id="modalSupplier"
     data-base-url="{{ url('/admin/supplier') }}"
     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">

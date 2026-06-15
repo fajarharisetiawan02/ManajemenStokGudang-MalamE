@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Models\Supplier;
 use App\Models\Brand;
 use App\Models\BarangGambar;
+use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 
 class AdminBarangController extends Controller
@@ -59,8 +60,15 @@ class AdminBarangController extends Controller
 
     public function show($id)
     {
-        $barang = Barang::with(['kategori', 'supplier', 'brand', 'gambarBarang'])->findOrFail($id);
-        return view('pages.admin.detail-barang', compact('barang'));
+        $barang = Barang::with(['kategori', 'brand', 'gambarBarang'])->findOrFail($id);
+
+        // Ambil data supplier & harga beli dari barang masuk terakhir
+        $masukTerakhir = BarangMasuk::with('supplier')
+            ->where('barang_id', $id)
+            ->latest('tanggal')
+            ->first();
+
+        return view('pages.admin.detail-barang', compact('barang', 'masukTerakhir'));
     }
 
     public function create()
@@ -80,7 +88,7 @@ class AdminBarangController extends Controller
         $barang = Barang::create([
             'kode'        => $request->kode,
             'nama_barang' => $request->nama_barang,
-            'stok'        => 0, // default 0, dikelola dari Barang Masuk
+            'stok'        => 0,
             'harga_beli'  => $request->harga_beli ?? 0,
             'harga_jual'  => $request->harga_jual,
             'kategori_id' => $request->kategori_id,

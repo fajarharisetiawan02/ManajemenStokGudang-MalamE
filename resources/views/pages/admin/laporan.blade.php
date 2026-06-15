@@ -119,14 +119,14 @@
             <table class="w-full text-sm border-collapse">
                 <thead class="bg-slate-100 text-slate-800">
                     <tr>
-                        <th class="px-4 py-4 text-center font-bold border w-16">No</th>
-                        <th class="px-4 py-4 text-left font-bold border">Tanggal</th>
-                        <th class="px-4 py-4 text-left font-bold border">No Transaksi</th>
-                        <th class="px-4 py-4 text-left font-bold border">Kode Part</th>
-                        <th class="px-4 py-4 text-left font-bold border">Nama Barang</th>
-                        <th class="px-4 py-4 text-center font-bold border">Jenis</th>
-                        <th class="px-4 py-4 text-center font-bold border">Qty</th>
-                        <th class="px-4 py-4 text-left font-bold border">Keterangan</th>
+                        <th class="px-4 py-4 text-center text-sm font-bold border w-16">No</th>
+                        <th class="px-4 py-4 text-left text-sm font-bold border">Tanggal</th>
+                        <th class="px-4 py-4 text-left text-sm font-bold border">No Transaksi</th>
+                        <th class="px-4 py-4 text-left text-sm font-bold border">Kode Part</th>
+                        <th class="px-4 py-4 text-left text-sm font-bold border">Nama Barang</th>
+                        <th class="px-4 py-4 text-center text-sm font-bold border">Jenis</th>
+                        <th class="px-4 py-4 text-center text-sm font-bold border">Qty</th>
+                        <th class="px-4 py-4 text-left text-sm font-bold border">Keterangan</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -179,16 +179,16 @@
             </div>
             <div class="flex items-center gap-2">
                 <a href="{{ $laporan->previousPageUrl() }}"
-                    class="flex items-center px-4 py-2 rounded-lg border border-slate-200 bg-white
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                     text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ $laporan->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                     Sebelumnya
                 </a>
-                <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-sm">
+                <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                     {{ $laporan->currentPage() }}
                 </span>
                 <a href="{{ $laporan->nextPageUrl() }}"
-                    class="flex items-center px-4 py-2 rounded-lg border border-slate-200 bg-white
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                     text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ !$laporan->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
                     Berikutnya

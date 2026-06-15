@@ -9,39 +9,40 @@ use Illuminate\Support\Facades\File;
 
 class AdminKategoriController extends Controller
 {
-public function index()
-{
-    $kategori = Kategori::withCount('barang')
-        ->orderBy('nama_kategori', 'ASC')
-        ->get();
+    public function index(Request $request)
+    {
+        $query = Kategori::withCount('barang')->orderBy('nama_kategori', 'ASC');
 
-    return view(
-        'pages.admin.kategori',
-        compact('kategori')
-    );
-}
+        if ($request->filled('search')) {
+            $query->where('id', $request->search);
+        }
+
+        $kategori = $query->get();
+
+        return view('pages.admin.kategori', compact('kategori'));
+    }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_kategori' => 'required|max:100',
-            'parent_id' => 'nullable|exists:kategori,id',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp'
+            'parent_id'     => 'nullable|exists:kategori,id',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp'
         ]);
 
         $foto = null;
 
         if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $namaFile = time().'_'.$file->getClientOriginalName();
+            $file     = $request->file('foto');
+            $namaFile = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/kategori'), $namaFile);
-            $foto = 'uploads/kategori/'.$namaFile;
+            $foto = 'uploads/kategori/' . $namaFile;
         }
 
         Kategori::create([
             'nama_kategori' => $request->nama_kategori,
-            'parent_id' => $request->parent_id,
-            'foto' => $foto
+            'parent_id'     => $request->parent_id,
+            'foto'          => $foto
         ]);
 
         return back()->with('success', 'Kategori berhasil ditambahkan');
@@ -53,20 +54,20 @@ public function index()
 
         $request->validate([
             'nama_kategori' => 'required|max:100',
-            'parent_id' => 'nullable|exists:kategori,id',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp'
+            'parent_id'     => 'nullable|exists:kategori,id',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp'
         ]);
 
         $data = [
             'nama_kategori' => $request->nama_kategori,
-            'parent_id' => $request->parent_id
+            'parent_id'     => $request->parent_id
         ];
 
         if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $namaFile = time().'_'.$file->getClientOriginalName();
+            $file     = $request->file('foto');
+            $namaFile = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/kategori'), $namaFile);
-            $data['foto'] = 'uploads/kategori/'.$namaFile;
+            $data['foto'] = 'uploads/kategori/' . $namaFile;
         }
 
         $kategori->update($data);

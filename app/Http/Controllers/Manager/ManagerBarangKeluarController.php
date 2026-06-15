@@ -17,7 +17,7 @@ class ManagerBarangKeluarController extends Controller
             $query->whereHas('barang', function ($q) use ($search) {
                 $q->where('kode', 'like', "%{$search}%")
                   ->orWhere('nama_barang', 'like', "%{$search}%");
-            });
+            })->orWhere('tujuan', 'like', "%{$search}%");
         }
 
         $barangKeluars = $query->paginate(10)->withQueryString();

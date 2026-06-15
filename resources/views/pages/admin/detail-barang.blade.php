@@ -17,12 +17,8 @@
 
     <!-- TITLE -->
     <div class="px-6 pt-6">
-        <h2 class="text-2xl font-bold text-slate-800">
-            Detail Barang
-        </h2>
-        <p class="text-sm text-slate-500 mt-1">
-            Informasi lengkap barang yang tersimpan di sistem.
-        </p>
+        <h2 class="text-2xl font-bold text-slate-800">Detail Barang</h2>
+        <p class="text-sm text-slate-500 mt-1">Informasi lengkap barang yang tersimpan di sistem.</p>
     </div>
 
     <!-- CONTENT -->
@@ -31,11 +27,8 @@
 
             <!-- GAMBAR -->
             <div>
-                @php
-                    $gambarUtama = $barang->gambarBarang->first();
-                @endphp
+                @php $gambarUtama = $barang->gambarBarang->first(); @endphp
 
-                <!-- Gambar Utama -->
                 <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
                     @if($gambarUtama)
                         <img id="mainImage" src="{{ asset('uploads/barang/' . $gambarUtama->gambar) }}"
@@ -100,15 +93,23 @@
                         <tr class="border-b border-slate-200">
                             <td class="py-4 font-semibold text-slate-700">Supplier</td>
                             <td class="py-4 text-center">:</td>
-                            <td class="py-4 text-slate-800">{{ $barang->supplier->nama_supplier ?? '-' }}</td>
+                            <td class="py-4 text-slate-800">
+                                {{ $masukTerakhir?->supplier?->nama_supplier ?? '-' }}
+                            </td>
                         </tr>
 
                         <tr class="border-b border-slate-200">
                             <td class="py-4 font-semibold text-slate-700">Stok</td>
                             <td class="py-4 text-center">:</td>
                             <td class="py-4">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
-                                    {{ $barang->stok }}
+                                @php
+                                    $stok = (int) $barang->stok;
+                                    if ($stok <= 0)      { $stokClass = 'bg-red-100 text-red-700';       $stokText = 'Habis'; }
+                                    elseif ($stok <= 10) { $stokClass = 'bg-yellow-100 text-yellow-700'; $stokText = 'Menipis'; }
+                                    else                 { $stokClass = 'bg-green-100 text-green-700';   $stokText = 'Aman'; }
+                                @endphp
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold {{ $stokClass }}">
+                                    {{ $barang->stok }} | {{ $stokText }}
                                 </span>
                             </td>
                         </tr>
@@ -117,7 +118,7 @@
                             <td class="py-4 font-semibold text-slate-700">Harga Beli</td>
                             <td class="py-4 text-center">:</td>
                             <td class="py-4 font-semibold text-blue-600">
-                                Rp {{ number_format($barang->harga_beli ?? 0, 0, ',', '.') }}
+                                Rp {{ number_format($masukTerakhir?->harga_beli ?? 0, 0, ',', '.') }}
                             </td>
                         </tr>
 

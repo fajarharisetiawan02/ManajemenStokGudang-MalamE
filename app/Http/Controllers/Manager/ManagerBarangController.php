@@ -5,19 +5,15 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Kategori;
-use App\Models\Supplier;
 use App\Models\Brand;
+use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 
 class ManagerBarangController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Barang::with([
-            'kategori',
-            'supplier',
-            'brand'
-        ])->latest();
+        $query = Barang::with(['kategori', 'brand'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -47,30 +43,28 @@ class ManagerBarangController extends Controller
             }
         }
 
-        $perPage = (int) $request->input('per_page', 10);
-        $barangs = $query->paginate($perPage)->withQueryString();
-
+        $perPage      = (int) $request->input('per_page', 10);
+        $barangs      = $query->paginate($perPage)->withQueryString();
         $kategori     = Kategori::all();
-        $supplier     = Supplier::all();
         $brandOptions = Brand::all();
 
         return view('pages.manager.data-barang', compact(
             'barangs',
             'kategori',
-            'supplier',
             'brandOptions'
         ));
     }
 
     public function show($id)
     {
-        $barang = Barang::with([
-            'kategori',
-            'supplier',
-            'brand',
-            'gambarBarang'
-        ])->findOrFail($id);
+        $barang = Barang::with(['kategori', 'brand', 'gambarBarang'])->findOrFail($id);
 
-        return view('pages.manager.detail-barang', compact('barang'));
+        // Ambil data supplier & harga beli dari barang masuk terakhir
+        $masukTerakhir = BarangMasuk::with('supplier')
+            ->where('barang_id', $id)
+            ->latest('tanggal')
+            ->first();
+
+        return view('pages.manager.detail-barang', compact('barang', 'masukTerakhir'));
     }
 }

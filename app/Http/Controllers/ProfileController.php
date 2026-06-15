@@ -59,13 +59,19 @@ class ProfileController extends Controller
     public function updatePassword(Request $request)
     {
         $request->validate([
-            'password_lama'  => 'required',
-            'password_baru'  => 'required|min:8|confirmed',
+            'password_lama' => 'required',
+            'password_baru' => [
+                'required',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/',
+            ],
         ], [
-            'password_lama.required' => 'Password lama wajib diisi.',
-            'password_baru.required' => 'Password baru wajib diisi.',
-            'password_baru.min'      => 'Password baru minimal 8 karakter.',
-            'password_baru.confirmed'=> 'Konfirmasi password tidak cocok.',
+            'password_lama.required'  => 'Password lama wajib diisi.',
+            'password_baru.required'  => 'Password baru wajib diisi.',
+            'password_baru.min'       => 'Password baru minimal 8 karakter.',
+            'password_baru.confirmed' => 'Konfirmasi password tidak cocok.',
+            'password_baru.regex'     => 'Password harus mengandung huruf besar, angka, dan simbol.',
         ]);
 
         $user = Auth::user();

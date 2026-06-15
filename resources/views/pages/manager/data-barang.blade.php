@@ -6,7 +6,6 @@
 
 @php
 $kategori = $kategori ?? collect();
-$supplier = $supplier ?? collect();
 $brandOptions = $brandOptions ?? collect();
 @endphp
 
@@ -17,14 +16,9 @@ $brandOptions = $brandOptions ?? collect();
 
         <!-- FILTER -->
         <form method="GET" action="{{ url('/manager/data-barang') }}">
-
-            <div class="p-4 flex flex-wrap items-center gap-3">
-
-                <!-- SEARCH -->
+            <div class="px-4 pb-4 pt-4 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
                     class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-                <!-- BRAND -->
                 <select name="brand"
                     class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Semua Brand</option>
@@ -35,21 +29,15 @@ $brandOptions = $brandOptions ?? collect();
                     </option>
                     @endforeach
                 </select>
-
-                <!-- FILTER -->
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter
                 </button>
-
-                <!-- RESET -->
                 <a href="{{ url('/manager/data-barang') }}"
                     class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
                     Reset
                 </a>
-
             </div>
-
         </form>
 
         <div class="flex justify-between items-center px-4 py-3 border-b bg-white">
@@ -78,14 +66,13 @@ $brandOptions = $brandOptions ?? collect();
                         <th class="px-4 py-4 text-center text-sm font-bold border w-36">Aksi</th>
                     </tr>
                 </thead>
-
                 <tbody class="bg-white">
                     @forelse($barangs as $item)
                     @php
                         $stok = (int) $item->stok;
-                        if ($stok <= 0)       { $stokClass = 'bg-red-100 text-red-700';     $stokText = 'Habis';   }
-                        elseif ($stok <= 10)  { $stokClass = 'bg-yellow-100 text-yellow-700'; $stokText = 'Menipis'; }
-                        else                  { $stokClass = 'bg-green-100 text-green-700';  $stokText = 'Aman';    }
+                        if ($stok <= 0)      { $stokClass = 'bg-red-100 text-red-700';       $stokText = 'Habis';   }
+                        elseif ($stok <= 10) { $stokClass = 'bg-yellow-100 text-yellow-700'; $stokText = 'Menipis'; }
+                        else                 { $stokClass = 'bg-green-100 text-green-700';   $stokText = 'Aman';    }
                     @endphp
                     <tr class="hover:bg-slate-50 transition-colors duration-150">
                         <td class="px-4 py-4 border text-center">{{ $barangs->firstItem() + $loop->index }}</td>
@@ -107,9 +94,9 @@ $brandOptions = $brandOptions ?? collect();
                             Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
                         </td>
                         <td class="px-4 py-4 border">
-                            <div class="flex justify-center gap-2">
+                            <div class="flex justify-center items-center gap-2 flex-nowrap">
                                 <a href="{{ route('manager.data-barang.show', $item->id) }}"
-                                    class="px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg shadow-sm transition">
+                                    class="inline-flex items-center px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                     <i class="fas fa-eye mr-1"></i> Detail
                                 </a>
                             </div>
@@ -135,14 +122,18 @@ $brandOptions = $brandOptions ?? collect();
                 data barang
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ $barangs->previousPageUrl() }}" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+                <a href="{{ $barangs->previousPageUrl() }}"
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                     Sebelumnya
                 </a>
-                <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold">
+                <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                     {{ $barangs->currentPage() }}
                 </span>
-                <a href="{{ $barangs->nextPageUrl() }}" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition
+                <a href="{{ $barangs->nextPageUrl() }}"
+                    class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
+                    text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ !$barangs->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
                     Berikutnya
                 </a>

@@ -12,11 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- VITE -->
-    @if(!request()->is('login'))
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-    @vite(['resources/css/app.css'])
-    @endif
 
 </head>
 

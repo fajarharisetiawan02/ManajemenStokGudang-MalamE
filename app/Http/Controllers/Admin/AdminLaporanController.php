@@ -24,7 +24,7 @@ class AdminLaporanController extends Controller
             }
             $masuk = $query->get()->map(fn($item) => (object)[
                 'tanggal'    => $item->tanggal,
-                'no'         => 'BM-' . str_pad($item->id, 3, '0', STR_PAD_LEFT),
+                'no'         => 'GPM-' . Carbon::parse($item->tanggal)->format('ymd') . '-' . str_pad($item->id, 3, '0', STR_PAD_LEFT),
                 'kode'       => $item->barang?->kode ?? '-',
                 'barang'     => $item->barang?->nama_barang ?? '-',
                 'jenis'      => 'Masuk',
@@ -41,7 +41,7 @@ class AdminLaporanController extends Controller
             }
             $keluar = $query->get()->map(fn($item) => (object)[
                 'tanggal'    => $item->tanggal,
-                'no'         => 'BK-' . str_pad($item->id, 3, '0', STR_PAD_LEFT),
+                'no'         => 'GPK-' . Carbon::parse($item->tanggal)->format('ymd') . '-' . str_pad($item->id, 3, '0', STR_PAD_LEFT),
                 'kode'       => $item->barang?->kode ?? '-',
                 'barang'     => $item->barang?->nama_barang ?? '-',
                 'jenis'      => 'Keluar',
@@ -100,7 +100,6 @@ class AdminLaporanController extends Controller
         $sampai = $request->sampai ?? null;
         $jenis  = $request->jenis  ?? 'semua';
 
-        // Jika tanggal tidak dipilih, PDF kosong
         $semua = ($dari && $sampai) ? $this->getData($dari, $sampai, $jenis) : collect();
 
         $totalMasuk  = ($dari && $sampai) ? BarangMasuk::whereBetween('tanggal', [$dari, $sampai])->sum('jumlah') : 0;
