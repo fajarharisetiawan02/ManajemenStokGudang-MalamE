@@ -29,12 +29,6 @@ class AdminBarangMasukController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CEK BARANG BERDASARKAN KODE PART
-    |--------------------------------------------------------------------------
-    */
-
     public function cekBarang($kode)
     {
         $barang = Barang::with(['kategori', 'brand'])
@@ -56,16 +50,11 @@ class AdminBarangMasukController extends Controller
                 'nama_barang' => $barang->nama_barang,
                 'kategori'    => optional($barang->kategori)->nama_kategori,
                 'brand'       => optional($barang->brand)->nama_brand ?? $barang->brand,
+                'tipe'        => $barang->tipe ?? '-',
                 'stok'        => $barang->stok,
             ]
         ]);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SIMPAN BARANG MASUK
-    |--------------------------------------------------------------------------
-    */
 
     public function store(Request $request)
     {
@@ -88,18 +77,11 @@ class AdminBarangMasukController extends Controller
             'total'       => $request->jumlah * $request->harga_beli,
         ]);
 
-        // Update stok barang
         $barang->stok += $request->jumlah;
         $barang->save();
 
         return back()->with('success', 'Barang masuk berhasil ditambahkan.');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE BARANG MASUK
-    |--------------------------------------------------------------------------
-    */
 
     public function update(Request $request, BarangMasuk $barang_masuk)
     {
@@ -112,12 +94,11 @@ class AdminBarangMasukController extends Controller
 
         $barang = Barang::findOrFail($barang_masuk->barang_id);
 
-        // Rollback stok lama, tambah stok baru
         $barang->stok = $barang->stok - $barang_masuk->jumlah + $request->jumlah;
         $barang->save();
 
         $barang_masuk->update([
-            'tanggal'     => $request->tanggal,   // <-- ditambahkan
+            'tanggal'     => $request->tanggal,
             'supplier_id' => $request->supplier_id,
             'jumlah'      => $request->jumlah,
             'harga_beli'  => $request->harga_beli,
@@ -127,17 +108,10 @@ class AdminBarangMasukController extends Controller
         return back()->with('success', 'Data barang masuk berhasil diperbarui.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | HAPUS BARANG MASUK
-    |--------------------------------------------------------------------------
-    */
-
     public function destroy(BarangMasuk $barang_masuk)
     {
         $barang = Barang::findOrFail($barang_masuk->barang_id);
 
-        // Kembalikan stok
         $barang->stok -= $barang_masuk->jumlah;
         $barang->save();
 

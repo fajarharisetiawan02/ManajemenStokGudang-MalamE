@@ -12,14 +12,13 @@
             {{-- HEADER --}}
             <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                 <div>
-
                     <p id="formSubtitle" class="text-sm text-slate-500 mt-1">
                         Masukkan kode part terlebih dahulu untuk mengecek data barang.
                     </p>
                 </div>
                 <span id="editBadge"
                     class="hidden items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-700
-                text-xs font-semibold rounded-full border border-amber-200">
+                    text-xs font-semibold rounded-full border border-amber-200">
                     <i class="fas fa-pen text-xs"></i> Mode Edit
                 </span>
             </div>
@@ -39,7 +38,8 @@
                             <label class="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Masuk</label>
                             <input type="date" name="tanggal" id="inputTanggal" required
                                 class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         {{-- KODE PART + TOMBOL CEK --}}
@@ -48,10 +48,11 @@
                             <div class="flex gap-2">
                                 <input type="text" id="kode_part" placeholder="Contoh : BRG-001"
                                     class="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                    outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                    placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                                 <button type="button" id="cekBarang"
                                     class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
-                                rounded-lg shadow-sm transition flex items-center gap-2">
+                                    rounded-lg shadow-sm transition flex items-center gap-2">
                                     <i class="fas fa-search"></i> Cek Barang
                                 </button>
                             </div>
@@ -67,23 +68,27 @@
                             </div>
                             <h4 class="font-semibold text-slate-800 text-sm">Informasi Barang Ditemukan</h4>
                         </div>
-                        <div class="grid md:grid-cols-2 gap-3">
+                        {{-- Baris 1: Nama Barang | Kategori --}}
+                        <div class="grid md:grid-cols-2 gap-3 mb-3">
                             <div>
                                 <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Nama Barang</p>
-                                <div id="showNama"
-                                    class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
-                                </div>
+                                <div id="showNama" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
                             </div>
                             <div>
                                 <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Kategori</p>
-                                <div id="showKategori"
-                                    class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
-                                </div>
+                                <div id="showKategori" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
                             </div>
-                            <div>
-                                <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Brand</p>
-                                <div id="showBrand"
-                                    class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
+                        </div>
+                        {{-- Baris 2: Brand | Tipe Kendaraan | Stok --}}
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Brand</p>
+                                    <div id="showBrand" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Tipe Kendaraan</p>
+                                    <div id="showTipe" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
                                 </div>
                             </div>
                             <div>
@@ -100,14 +105,16 @@
                             <input type="number" name="jumlah" id="inputJumlah" min="1" required
                                 placeholder="Masukkan jumlah"
                                 class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5">Harga Beli</label>
                             <input type="number" name="harga_beli" id="inputHarga" min="0" required
                                 placeholder="Masukkan harga beli"
                                 class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
                     </div>
 
@@ -116,7 +123,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Supplier</label>
                         <select name="supplier_id" id="inputSupplier" required
                             class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                        outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition">
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition">
                             <option value="">Pilih Supplier</option>
                             @foreach ($suppliers as $supplier)
                                 <option value="{{ $supplier->id }}">{{ $supplier->nama_supplier }}</option>
@@ -128,13 +135,13 @@
                     <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
                         <button type="button" id="btnBatal" onclick="resetFormMode()"
                             class="hidden px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700
-                        text-sm rounded-lg transition items-center gap-2">
+                            text-sm rounded-lg transition items-center gap-2">
                             <i class="fas fa-times"></i> Batal Edit
                         </button>
                         <div class="ml-auto">
                             <button type="submit" id="btnSubmit"
                                 class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
-                            rounded-lg shadow-sm transition flex items-center gap-2">
+                                rounded-lg shadow-sm transition flex items-center gap-2">
                                 <i class="fas fa-save"></i>
                                 <span id="btnSubmitText">Simpan</span>
                             </button>
@@ -153,7 +160,8 @@
                 <div class="px-4 py-4 border-b border-slate-200 flex flex-wrap items-center gap-3">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
                         class="w-64 border border-slate-300 rounded-lg px-4 py-2 text-sm
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-lg shadow-sm transition">
                         <i class="fas fa-filter mr-1"></i> Filter
@@ -183,61 +191,53 @@
                     </thead>
                     <tbody class="bg-white">
                         @forelse($barangMasuks as $item)
-                            <tr class="hover:bg-slate-50 transition-colors duration-150">
-                                <td class="px-4 py-4 border text-center">{{ $barangMasuks->firstItem() + $loop->index }}
-                                </td>
-                                <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
-                                </td>
-                                <td class="px-4 py-4 border">{{ $item->barang?->kode ?? '-' }}</td>
-                                <td class="px-4 py-4 border font-medium text-slate-800">
-                                    {{ $item->barang?->nama_barang ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-slate-700">{{ $item->supplier->nama_supplier ?? '-' }}
-                                </td>
-                                <td class="px-4 py-4 border text-center">
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                        +{{ $item->jumlah }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 border text-right">Rp
-                                    {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
-                                <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp
-                                    {{ number_format($item->total, 0, ',', '.') }}</td>
-                                <td class="px-4 py-4 border">
-                                    <div class="flex justify-center items-center gap-2 flex-nowrap">
-                                        <button type="button"
-                                            onclick="setEditModeMasuk(
-                                        {{ $item->id }},
-                                        '{{ $item->tanggal }}',
-                                        {{ $item->jumlah }},
-                                        {{ $item->harga_beli }},
-                                        {{ $item->supplier_id ?? 'null' }},
-                                        '{{ $item->barang?->kode ?? '' }}',
-                                        '{{ addslashes($item->barang?->nama_barang ?? '-') }}',
-                                        '{{ addslashes($item->barang?->kategori->nama_kategori ?? '-') }}',
-                                        '{{ addslashes($item->barang?->brand->nama_brand ?? ($item->barang?->brand ?? '-')) }}',
-                                        {{ $item->barang?->stok ?? 0 }}
-                                    )"
-                                            class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                            <i class="fas fa-pen mr-1"></i> Edit
+                        <tr class="hover:bg-slate-50 transition-colors duration-150">
+                            <td class="px-4 py-4 border text-center">{{ $barangMasuks->firstItem() + $loop->index }}</td>
+                            <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                            <td class="px-4 py-4 border">{{ $item->barang?->kode ?? '-' }}</td>
+                            <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang?->nama_barang ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-slate-700">{{ $item->supplier->nama_supplier ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-center">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                    +{{ $item->jumlah }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 border text-right">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                            <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
+                            <td class="px-4 py-4 border">
+                                <div class="flex justify-center items-center gap-2 flex-nowrap">
+                                    <button type="button"
+                                        onclick="setEditModeMasuk(
+                                            {{ $item->id }},
+                                            '{{ $item->tanggal }}',
+                                            {{ $item->jumlah }},
+                                            {{ $item->harga_beli }},
+                                            {{ $item->supplier_id ?? 'null' }},
+                                            '{{ $item->barang?->kode ?? '' }}',
+                                            '{{ addslashes($item->barang?->nama_barang ?? '-') }}',
+                                            '{{ addslashes($item->barang?->kategori->nama_kategori ?? '-') }}',
+                                            '{{ addslashes($item->barang?->brand->nama_brand ?? ($item->barang?->brand ?? '-')) }}',
+                                            {{ $item->barang?->stok ?? 0 }},
+                                            '{{ addslashes($item->barang?->tipe ?? '-') }}'
+                                        )"
+                                        class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
+                                        <i class="fas fa-pen mr-1"></i> Edit
+                                    </button>
+                                    <form action="{{ route('admin.barang-masuk.destroy', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete(this.form)"
+                                            class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
+                                            <i class="fas fa-trash mr-1"></i> Hapus
                                         </button>
-                                        <form action="{{ route('admin.barang-masuk.destroy', $item->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" onclick="confirmDelete(this.form)"
-                                                class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                                <i class="fas fa-trash mr-1"></i> Hapus
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="9" class="py-10 text-center text-gray-500">Belum ada data barang masuk
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="9" class="py-10 text-center text-gray-500">Belum ada data barang masuk</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -257,18 +257,17 @@
                 <div class="flex items-center gap-2">
                     <a href="{{ $barangMasuks->previousPageUrl() }}"
                         class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
-                    text-slate-600 hover:bg-slate-100 text-sm transition
-                    {{ $barangMasuks->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
+                        text-slate-600 hover:bg-slate-100 text-sm transition
+                        {{ $barangMasuks->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
-                    <span
-                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
+                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangMasuks->currentPage() }}
                     </span>
                     <a href="{{ $barangMasuks->nextPageUrl() }}"
                         class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
-                    text-slate-600 hover:bg-slate-100 text-sm transition
-                    {{ !$barangMasuks->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
+                        text-slate-600 hover:bg-slate-100 text-sm transition
+                        {{ !$barangMasuks->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
                         Berikutnya
                     </a>
                 </div>

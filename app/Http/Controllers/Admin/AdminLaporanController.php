@@ -18,7 +18,7 @@ class AdminLaporanController extends Controller
     {
         $masuk = collect();
         if ($jenis === 'semua' || $jenis === 'masuk') {
-            $query = BarangMasuk::with(['barang', 'supplier']);
+            $query = BarangMasuk::with(['barang.brand', 'supplier']);
             if ($dari && $sampai) {
                 $query->whereBetween('tanggal', [$dari, $sampai]);
             }
@@ -27,6 +27,8 @@ class AdminLaporanController extends Controller
                 'no'         => 'GPM-' . Carbon::parse($item->tanggal)->format('ymd') . '-' . str_pad($item->id, 3, '0', STR_PAD_LEFT),
                 'kode'       => $item->barang?->kode ?? '-',
                 'barang'     => $item->barang?->nama_barang ?? '-',
+                'brand'      => $item->barang?->brand?->nama_brand ?? '-',
+                'tipe'       => $item->barang?->tipe ?? '-',
                 'jenis'      => 'Masuk',
                 'jumlah'     => $item->jumlah,
                 'keterangan' => 'Pembelian',
@@ -35,7 +37,7 @@ class AdminLaporanController extends Controller
 
         $keluar = collect();
         if ($jenis === 'semua' || $jenis === 'keluar') {
-            $query = BarangKeluar::with(['barang']);
+            $query = BarangKeluar::with(['barang.brand']);
             if ($dari && $sampai) {
                 $query->whereBetween('tanggal', [$dari, $sampai]);
             }
@@ -44,6 +46,8 @@ class AdminLaporanController extends Controller
                 'no'         => 'GPK-' . Carbon::parse($item->tanggal)->format('ymd') . '-' . str_pad($item->id, 3, '0', STR_PAD_LEFT),
                 'kode'       => $item->barang?->kode ?? '-',
                 'barang'     => $item->barang?->nama_barang ?? '-',
+                'brand'      => $item->barang?->brand?->nama_brand ?? '-',
+                'tipe'       => $item->barang?->tipe ?? '-',
                 'jenis'      => 'Keluar',
                 'jumlah'     => $item->jumlah,
                 'keterangan' => 'Penjualan',

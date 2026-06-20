@@ -1,6 +1,5 @@
-if (document.getElementById('cekBarang')) {
+if (document.getElementById('inputTujuan')) {
 
-    // === CEK BARANG === //
     document.getElementById('cekBarang').addEventListener('click', function () {
         const kode = document.getElementById('kode_part').value.trim();
         if (kode === '') {
@@ -10,7 +9,7 @@ if (document.getElementById('cekBarang')) {
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
         this.disabled  = true;
 
-        fetch('/admin/barang-masuk/cek-barang/' + kode)
+        fetch('/admin/barang-keluar/cek-barang/' + kode)
             .then(res => res.json())
             .then(result => {
                 this.innerHTML = '<i class="fas fa-search"></i> Cek Barang';
@@ -29,8 +28,9 @@ if (document.getElementById('cekBarang')) {
                 document.getElementById('showNama').innerHTML     = d.nama_barang ?? '-';
                 document.getElementById('showKategori').innerHTML = d.kategori ?? '-';
                 document.getElementById('showBrand').innerHTML    = d.brand ?? '-';
-                renderStok(stok, 'showStok');
-                showInfoBarang();
+                document.getElementById('showTipe').innerHTML     = d.tipe ?? '-';
+                renderStokKeluar(stok, 'showStok');
+                showInfoBarangKeluar();
             })
             .catch(() => {
                 this.innerHTML = '<i class="fas fa-search"></i> Cek Barang';
@@ -39,8 +39,7 @@ if (document.getElementById('cekBarang')) {
             });
     });
 
-    // === HELPER STOK BADGE === //
-    window.renderStok = function (stok, elId) {
+    window.renderStokKeluar = function (stok, elId) {
         let stokClass, stokLabel;
         if (stok <= 0)       { stokClass = 'bg-red-100 text-red-700';       stokLabel = 'Habis';   }
         else if (stok <= 10) { stokClass = 'bg-yellow-100 text-yellow-700'; stokLabel = 'Menipis'; }
@@ -51,8 +50,7 @@ if (document.getElementById('cekBarang')) {
             </span>`;
     }
 
-    // === ANIMASI INFO BARANG === //
-    window.showInfoBarang = function () {
+    window.showInfoBarangKeluar = function () {
         const box = document.getElementById('infoBarang');
         box.classList.remove('hidden');
         box.style.opacity   = '0';
@@ -64,25 +62,25 @@ if (document.getElementById('cekBarang')) {
         });
     }
 
-    // === MODE EDIT === //
-    window.setEditMode = function (id, tanggal, jumlah, harga, kode, nama, kategori, brand, stok) {
+    window.setEditMode = function (id, tanggal, jumlah, harga, kode, nama, kategori, brand, stok, tujuan, tipe) {
         document.getElementById('mainForm').action = `/admin/barang-keluar/${id}`;
         document.getElementById('methodContainer').innerHTML = '<input type="hidden" name="_method" value="PUT">';
-        document.getElementById('inputTanggal').value = tanggal;
-        document.getElementById('inputJumlah').value  = jumlah;
-        document.getElementById('inputHarga').value   = harga;
-        document.getElementById('kode_part').value    = kode;
-        document.getElementById('barang_id').value    = '';
+        document.getElementById('inputTanggal').value  = tanggal;
+        document.getElementById('inputJumlah').value   = jumlah;
+        document.getElementById('inputHarga').value    = harga;
+        document.getElementById('inputTujuan').value   = tujuan ?? '';
+        document.getElementById('kode_part').value     = kode;
+        document.getElementById('barang_id').value     = '';
         document.getElementById('showNama').innerHTML     = nama;
         document.getElementById('showKategori').innerHTML = kategori;
         document.getElementById('showBrand').innerHTML    = brand;
-        renderStok(stok, 'showStok');
-        showInfoBarang();
+        document.getElementById('showTipe').innerHTML     = tipe ?? '-';
+        renderStokKeluar(stok, 'showStok');
+        showInfoBarangKeluar();
         document.getElementById('kode_part').readOnly = true;
         document.getElementById('kode_part').classList.add('bg-slate-100', 'cursor-not-allowed');
         document.getElementById('cekBarang').disabled = true;
         document.getElementById('cekBarang').classList.add('opacity-50', 'cursor-not-allowed');
-        document.getElementById('formTitle').textContent    = 'Edit Barang Keluar';
         document.getElementById('formSubtitle').textContent = `Sedang mengedit: ${nama} (${kode})`;
         document.getElementById('editBadge').classList.remove('hidden');
         document.getElementById('editBadge').classList.add('flex');
@@ -94,21 +92,18 @@ if (document.getElementById('cekBarang')) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // === RESET KE MODE TAMBAH === //
     window.resetFormMode = function () {
         const storeUrl = document.getElementById('mainForm').dataset.storeUrl;
-
         document.getElementById('mainForm').action = storeUrl;
         document.getElementById('mainForm').reset();
         document.getElementById('methodContainer').innerHTML = '';
-        document.getElementById('barang_id').value           = '';
-        document.getElementById('kode_part').value           = '';
+        document.getElementById('barang_id').value  = '';
+        document.getElementById('kode_part').value  = '';
         document.getElementById('infoBarang').classList.add('hidden');
         document.getElementById('kode_part').readOnly = false;
         document.getElementById('kode_part').classList.remove('bg-slate-100', 'cursor-not-allowed');
         document.getElementById('cekBarang').disabled = false;
         document.getElementById('cekBarang').classList.remove('opacity-50', 'cursor-not-allowed');
-        document.getElementById('formTitle').textContent    = 'Form Barang Keluar';
         document.getElementById('formSubtitle').textContent = 'Masukkan kode part terlebih dahulu untuk mengecek data barang.';
         document.getElementById('editBadge').classList.add('hidden');
         document.getElementById('editBadge').classList.remove('flex');
@@ -118,5 +113,4 @@ if (document.getElementById('cekBarang')) {
         document.getElementById('btnSubmit').className =
             'px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition flex items-center gap-2';
     }
-
 }

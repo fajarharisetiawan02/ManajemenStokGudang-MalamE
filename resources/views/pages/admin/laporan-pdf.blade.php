@@ -80,6 +80,9 @@
         }
         table.data tbody td.center { text-align: center; }
 
+        .nama-barang { font-weight: bold; }
+        .tipe-barang { font-size: 9px; color: #94a3b8; margin-top: 2px; }
+
         .badge {
             display: inline-block;
             padding: 2px 8px;
@@ -103,7 +106,8 @@
         .footer table { width: 100%; }
         .footer td { font-size: 9px; color: #94a3b8; }
         .footer td:last-child { text-align: right; }
-        .footer .brand { color: #1e40af; font-weight: bold; }
+        .footer .brand-gudang { color: #1e293b; font-weight: bold; }
+        .footer .brand-pro { color: #1e40af; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -169,7 +173,17 @@
                 <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                 <td>{{ $item->no }}</td>
                 <td>{{ $item->kode ?? '-' }}</td>
-                <td>{{ $item->barang }}</td>
+                <td>
+                    <div class="nama-barang">{{ $item->barang }}</div>
+                    @php
+                        $brand = $item->brand ?? '-';
+                        $tipe  = $item->tipe ?? '-';
+                        $sub   = trim(($brand !== '-' ? $brand : '') . ' ' . ($tipe !== '-' ? $tipe : ''));
+                    @endphp
+                    @if($sub)
+                        <div class="tipe-barang">{{ $sub }}</div>
+                    @endif
+                </td>
                 <td class="center">
                     <span class="badge {{ $item->jenis === 'Masuk' ? 'badge-masuk' : 'badge-keluar' }}">
                         {{ $item->jenis }}
@@ -194,7 +208,7 @@
     <div class="footer">
         <table>
             <tr>
-                <td><span class="brand">GudangPro</span> — Kelola Stok Gudang Lebih Mudah & Cepat</td>
+                <td><span class="brand-gudang">Gudang</span><span class="brand-pro">Pro</span> - Kelola Stok Gudang Lebih Mudah &amp; Cepat</td>
                 <td>Total {{ $laporan->count() }} transaksi &nbsp;|&nbsp; Dicetak: {{ now()->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }}</td>
             </tr>
         </table>

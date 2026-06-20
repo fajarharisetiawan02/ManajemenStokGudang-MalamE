@@ -23,18 +23,18 @@
 
     <!-- CONTENT -->
     <div class="p-6">
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
 
             <!-- GAMBAR -->
-            <div>
+            <div class="flex flex-col h-full">
                 @php $gambarUtama = $barang->gambarBarang->first(); @endphp
 
-                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden flex-1 flex items-center justify-center">
                     @if($gambarUtama)
                         <img id="mainImage" src="{{ asset('uploads/barang/' . $gambarUtama->gambar) }}"
-                            alt="{{ $barang->nama_barang }}" class="w-full h-[450px] object-contain p-4">
+                            alt="{{ $barang->nama_barang }}" class="w-full h-full object-contain p-4" style="min-height: 300px;">
                     @else
-                        <div class="h-[450px] flex items-center justify-center text-slate-400">
+                        <div class="py-24 flex items-center justify-center text-slate-400 w-full">
                             <div class="text-center">
                                 <i class="fas fa-image text-5xl mb-3"></i>
                                 <p>Tidak ada gambar</p>
@@ -88,6 +88,12 @@
                             <td class="py-4 font-semibold text-slate-700">Brand</td>
                             <td class="py-4 text-center">:</td>
                             <td class="py-4 text-slate-800">{{ $barang->brand->nama_brand ?? '-' }}</td>
+                        </tr>
+
+                        <tr class="border-b border-slate-200">
+                            <td class="py-4 font-semibold text-slate-700">Tipe Kendaraan</td>
+                            <td class="py-4 text-center">:</td>
+                            <td class="py-4 text-slate-800">{{ $barang->tipe ?? '-' }}</td>
                         </tr>
 
                         <tr class="border-b border-slate-200">

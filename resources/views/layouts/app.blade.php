@@ -26,38 +26,23 @@
     </div>
 
     <div class="flex">
-
-        <!-- SIDEBAR -->
         <x-sidebar />
-
-        <!-- OVERLAY (MOBILE) -->
         <div id="overlay" onclick="toggleSidebar()"
             class="fixed inset-0 bg-black/40 hidden z-40 md:hidden">
         </div>
-
-        <!-- CONTENT -->
         <div class="md:ml-72 w-full flex flex-col min-h-screen">
-
-            <!-- NAVBAR -->
             <x-navbar />
-
-            <!-- MAIN CONTENT -->
             <div class="p-4 md:p-8 pt-20 md:pt-24 flex-1">
                 @yield('content')
             </div>
-
-            <!-- FOOTER -->
             <x-footer />
-
         </div>
-
     </div>
 
     <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="hidden">
         @csrf
     </form>
 
-    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

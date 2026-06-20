@@ -29,8 +29,7 @@
                     <div class="h-16 bg-gradient-to-r from-blue-600 to-blue-500"></div>
                     <div class="px-5 pb-5">
                         <div class="-mt-8 mb-4 flex justify-center">
-                            <div
-                                class="w-16 h-16 rounded-xl bg-gradient-to-br {{ $color }}
+                            <div class="w-16 h-16 rounded-xl bg-gradient-to-br {{ $color }}
                             flex items-center justify-center shadow-lg border-4 border-white">
                                 <span class="text-white font-bold text-xl">{{ $initials }}</span>
                             </div>
@@ -38,8 +37,7 @@
                         <div class="text-center">
                             <h3 class="font-bold text-slate-800 text-base">{{ $user->name }}</h3>
                             <p class="text-slate-400 text-xs mt-0.5 truncate">{{ $user->email }}</p>
-                            <span
-                                class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full
+                            <span class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full
                             bg-blue-100 text-blue-700 text-xs font-semibold capitalize">
                                 <i class="fas fa-shield-alt text-xs"></i>
                                 {{ ucfirst($user->role) }}
@@ -104,8 +102,9 @@
                                     <input type="text" name="name" value="{{ old('name', $user->name) }}" required
                                         placeholder="Nama lengkap"
                                         class="w-full px-4 py-3 border rounded-lg text-sm outline-none
-                                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
-                                    {{ $errors->has('name') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
+                                        {{ $errors->has('name') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                     @error('name')
                                         <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
                                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
@@ -119,8 +118,9 @@
                                     <input type="text" name="username" value="{{ old('username', $user->username) }}"
                                         required placeholder="Username"
                                         class="w-full px-4 py-3 border rounded-lg text-sm outline-none
-                                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
-                                    {{ $errors->has('username') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
+                                        {{ $errors->has('username') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                     @error('username')
                                         <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
                                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
@@ -134,8 +134,9 @@
                                     <input type="email" name="email" value="{{ old('email', $user->email) }}" required
                                         placeholder="email@contoh.com"
                                         class="w-full px-4 py-3 border rounded-lg text-sm outline-none
-                                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
-                                    {{ $errors->has('email') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
+                                        {{ $errors->has('email') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                     @error('email')
                                         <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
                                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
@@ -149,9 +150,8 @@
                                         Role
                                         <span class="text-slate-400 font-normal text-xs">(tidak dapat diubah)</span>
                                     </label>
-                                    <div
-                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200
-                                    rounded-lg text-sm text-slate-500 capitalize cursor-not-allowed flex items-center gap-2">
+                                    <div class="w-full px-4 py-3 bg-slate-50 border border-slate-200
+                                        rounded-lg text-sm text-slate-500 capitalize cursor-not-allowed flex items-center gap-2">
                                         <i class="fas fa-shield-alt text-slate-400 text-xs"></i>
                                         {{ ucfirst($user->role) }}
                                     </div>
@@ -163,7 +163,7 @@
                             <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
                                 <button type="submit"
                                     class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
-                                rounded-lg shadow-sm transition flex items-center gap-2">
+                                    rounded-lg shadow-sm transition flex items-center gap-2">
                                     <i class="fas fa-save"></i> Simpan Perubahan
                                 </button>
                             </div>
@@ -194,8 +194,9 @@
                                         <input type="password" name="password_lama" id="passwordLama" required
                                             placeholder="Masukkan password saat ini"
                                             class="w-full px-4 pr-12 py-3 border rounded-lg text-sm outline-none
-                                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
-                                        {{ $errors->has('password_lama') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
+                                            {{ $errors->has('password_lama') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                         <button type="button" onclick="togglePassword('passwordLama','eyeLama')"
                                             class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
                                             <i id="eyeLama" class="fas fa-eye text-sm"></i>
@@ -215,8 +216,9 @@
                                         <input type="password" name="password_baru" id="passwordBaru" required
                                             placeholder="Minimal 8 karakter"
                                             class="w-full px-4 pr-12 py-3 border rounded-lg text-sm outline-none
-                                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
-                                        {{ $errors->has('password_baru') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
+                                            {{ $errors->has('password_baru') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                         <button type="button" onclick="togglePassword('passwordBaru','eyeBaru')"
                                             class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
                                             <i id="eyeBaru" class="fas fa-eye text-sm"></i>
@@ -241,13 +243,13 @@
 
                                 {{-- KONFIRMASI --}}
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Konfirmasi Password
-                                        Baru</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Konfirmasi Password Baru</label>
                                     <div class="relative">
                                         <input type="password" name="password_baru_confirmation" id="passwordKonfirm"
                                             required placeholder="Ulangi password baru"
                                             class="w-full px-4 pr-12 py-3 border border-slate-300 rounded-lg text-sm
-                                        outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                                         <button type="button" onclick="togglePassword('passwordKonfirm','eyeKonfirm')"
                                             class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
                                             <i id="eyeKonfirm" class="fas fa-eye text-sm"></i>
@@ -261,7 +263,7 @@
                             <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
                                 <button type="submit"
                                     class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium
-                                rounded-lg shadow-sm transition flex items-center gap-2">
+                                    rounded-lg shadow-sm transition flex items-center gap-2">
                                     <i class="fas fa-key"></i> Ganti Password
                                 </button>
                             </div>

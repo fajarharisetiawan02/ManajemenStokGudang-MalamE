@@ -44,7 +44,7 @@ class AdminSupplierController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'tambah');
+            ->with('success', 'Supplier berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -67,7 +67,7 @@ class AdminSupplierController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'update');
+            ->with('success', 'Supplier berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -78,6 +78,6 @@ class AdminSupplierController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'delete');
+            ->with('success', 'Supplier berhasil dihapus');
     }
 }

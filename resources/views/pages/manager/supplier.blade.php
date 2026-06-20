@@ -11,7 +11,8 @@
         <form method="GET" action="{{ url('/manager/supplier') }}">
             <div class="px-4 pb-4 pt-4 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari supplier..."
-                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                    placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter

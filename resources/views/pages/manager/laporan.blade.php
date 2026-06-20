@@ -136,7 +136,12 @@
                         <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                         <td class="px-4 py-4 border font-medium text-slate-700">{{ $item->no }}</td>
                         <td class="px-4 py-4 border">{{ $item->kode ?? '-' }}</td>
-                        <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang }}</td>
+                        <td class="px-4 py-4 border">
+                            <p class="font-medium text-slate-800">{{ $item->barang }}</p>
+                            @if(!empty($item->brand) && $item->brand !== '-' || !empty($item->tipe) && $item->tipe !== '-')
+                                <p class="text-xs text-slate-400 mt-0.5">{{ $item->brand !== '-' ? $item->brand : '' }} {{ $item->tipe !== '-' ? $item->tipe : '' }}</p>
+                            @endif
+                        </td>
                         <td class="px-4 py-4 border text-center">
                             @if($item->jenis === 'Masuk')
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">

@@ -73,19 +73,19 @@
 
                                 <div class="flex items-center gap-1.5">
                                     <a href="{{ route('admin.data-barang.index', ['kategori_id' => $item->id]) }}"
-                                        class="px-3 py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-lg shadow-sm transition text-sm">
-                                        <i class="fas fa-boxes text-xs"></i> Barang
+                                        class="inline-flex items-center px-3 py-2 bg-slate-700 hover:bg-slate-800 text-white text-sm rounded-lg transition whitespace-nowrap">
+                                        <i class="fas fa-boxes text-xs mr-1"></i> Barang
                                     </a>
                                     <button type="button"
                                         onclick="openEdit('{{ $item->id }}','{{ addslashes($item->nama_kategori) }}')"
-                                        class="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white transition text-sm">
+                                        class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                         <i class="fas fa-pen mr-1"></i> Edit
                                     </button>
                                     <form method="POST" action="{{ route('admin.kategori.destroy', $item->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" onclick="confirmDelete(this.form)"
-                                            class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm transition text-sm">
+                                            class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                             <i class="fas fa-trash mr-1"></i> Hapus
                                         </button>
                                     </form>
@@ -111,18 +111,18 @@
     {{-- MODAL KATEGORI --}}
     <div id="modalKategori"
         data-store-url="{{ route('admin.kategori.store') }}"
-        class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/50 p-4">
+        class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4">
         <div class="relative bg-white w-full max-w-lg rounded-xl border border-slate-200 shadow-2xl overflow-hidden"
             onclick="event.stopPropagation()">
 
             {{-- HEADER --}}
-            <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+            <div class="bg-slate-50 border-b border-slate-200 px-6 py-5 flex items-center justify-between">
                 <div>
-                    <h2 id="modalTitleKategori" class="text-lg font-bold text-slate-800">Tambah Kategori</h2>
-                    <p id="modalSubtitleKategori" class="text-xs text-slate-500 mt-0.5">Lengkapi data kategori baru.</p>
+                    <h2 id="modalTitleKategori" class="text-xl font-bold text-slate-800">Tambah Kategori</h2>
+                    <p id="modalSubtitleKategori" class="text-sm text-slate-500 mt-1">Lengkapi data kategori baru.</p>
                 </div>
                 <button type="button" onclick="closeKategoriModal()"
-                    class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 hover:text-red-500 transition
+                    class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-500 transition
                     flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
@@ -139,8 +139,9 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Kategori</label>
                         <input type="text" name="nama_kategori" id="kategoriNama"
                             placeholder="Contoh: Mesin, Body, Elektrikal..." required
-                            class="w-full border border-slate-300 rounded-lg px-4 py-3 text-sm
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                            class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">
@@ -154,16 +155,14 @@
                 </div>
 
                 {{-- FOOTER --}}
-                <div class="flex justify-end gap-2 mt-6 pt-4 border-t border-slate-200">
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
                     <button type="button" onclick="closeKategoriModal()"
-                        class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm rounded-lg transition">
+                        class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm rounded-lg transition">
                         Batal
                     </button>
                     <button id="submitKategoriBtn" type="submit"
-                        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
-                        rounded-lg shadow-sm transition flex items-center gap-2">
-                        <i class="fas fa-save"></i>
-                        <span id="submitKategoriBtnText">Simpan Kategori</span>
+                        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
+                        <span id="submitKategoriBtnText">Simpan</span>
                     </button>
                 </div>
 

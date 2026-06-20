@@ -14,7 +14,8 @@
             <div class="px-4 py-4 border-b border-slate-200 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
                     class="w-64 border border-slate-300 rounded-lg px-4 py-2 text-sm
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+                    placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter

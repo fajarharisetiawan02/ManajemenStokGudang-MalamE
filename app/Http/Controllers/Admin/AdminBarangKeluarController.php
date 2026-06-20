@@ -27,6 +27,33 @@ class AdminBarangKeluarController extends Controller
         return view('pages.admin.barang-keluar', compact('barangKeluars', 'barangs'));
     }
 
+    public function cekBarang($kode)
+    {
+        $barang = Barang::with(['kategori', 'brand'])
+            ->where('kode', $kode)
+            ->first();
+
+        if (!$barang) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Barang tidak ditemukan'
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id'          => $barang->id,
+                'kode'        => $barang->kode,
+                'nama_barang' => $barang->nama_barang,
+                'kategori'    => optional($barang->kategori)->nama_kategori,
+                'brand'       => optional($barang->brand)->nama_brand ?? $barang->brand,
+                'tipe'        => $barang->tipe ?? '-',
+                'stok'        => $barang->stok,
+            ]
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

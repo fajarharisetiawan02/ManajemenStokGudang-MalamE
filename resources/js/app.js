@@ -12,6 +12,7 @@ import './supplier';
 import './kategori';
 import './layout';
 import './profil.js';
+import './home.js';
 
 import Chart from 'chart.js/auto';
 window.Chart = Chart;

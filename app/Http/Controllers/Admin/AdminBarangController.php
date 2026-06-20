@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Kategori;
-use App\Models\Supplier;
 use App\Models\Brand;
+use App\Models\Tipe;
 use App\Models\BarangGambar;
 use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class AdminBarangController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Barang::with(['kategori', 'supplier', 'brand'])->latest();
+        $query = Barang::with(['kategori', 'brand'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -45,24 +45,19 @@ class AdminBarangController extends Controller
             }
         }
 
-        $perPage = (int) $request->input('per_page', 10);
-        $barangs = $query->paginate($perPage)->withQueryString();
-
+        $perPage      = (int) $request->input('per_page', 10);
+        $barangs      = $query->paginate($perPage)->withQueryString();
         $kategori     = Kategori::all();
         $brandOptions = Brand::all();
+        $tipeOptions  = Tipe::orderBy('nama_tipe')->get();
 
-        return view('pages.admin.data-barang', compact(
-            'barangs',
-            'kategori',
-            'brandOptions'
-        ));
+        return view('pages.admin.data-barang', compact('barangs', 'kategori', 'brandOptions', 'tipeOptions'));
     }
 
     public function show($id)
     {
         $barang = Barang::with(['kategori', 'brand', 'gambarBarang'])->findOrFail($id);
 
-        // Ambil data supplier & harga beli dari barang masuk terakhir
         $masukTerakhir = BarangMasuk::with('supplier')
             ->where('barang_id', $id)
             ->latest('tanggal')
@@ -81,6 +76,7 @@ class AdminBarangController extends Controller
         $request->validate([
             'kode'        => 'required|unique:barangs,kode',
             'nama_barang' => 'required',
+            'tipe'        => 'required|string',
             'harga_jual'  => 'required|numeric',
             'gambar.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -88,8 +84,9 @@ class AdminBarangController extends Controller
         $barang = Barang::create([
             'kode'        => $request->kode,
             'nama_barang' => $request->nama_barang,
+            'tipe'        => $request->tipe,
             'stok'        => 0,
-            'harga_beli'  => $request->harga_beli ?? 0,
+            'harga_beli'  => 0,
             'harga_jual'  => $request->harga_jual,
             'kategori_id' => $request->kategori_id,
             'supplier_id' => null,
@@ -119,6 +116,7 @@ class AdminBarangController extends Controller
         $request->validate([
             'kode'        => 'required|unique:barangs,kode,' . $id,
             'nama_barang' => 'required',
+            'tipe'        => 'required|string',
             'harga_jual'  => 'required|numeric',
             'gambar.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -126,7 +124,7 @@ class AdminBarangController extends Controller
         $barang->update([
             'kode'        => $request->kode,
             'nama_barang' => $request->nama_barang,
-            'harga_beli'  => $request->harga_beli ?? 0,
+            'tipe'        => $request->tipe,
             'harga_jual'  => $request->harga_jual,
             'kategori_id' => $request->kategori_id,
             'brand_id'    => $request->brand_id,

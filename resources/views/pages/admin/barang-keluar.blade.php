@@ -12,7 +12,6 @@
         {{-- HEADER --}}
         <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
             <div>
-                
                 <p id="formSubtitle" class="text-sm text-slate-500 mt-1">
                     Masukkan kode part terlebih dahulu untuk mengecek data barang.
                 </p>
@@ -39,7 +38,8 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Keluar</label>
                         <input type="date" name="tanggal" id="inputTanggal" required
                             class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     </div>
 
                     {{-- KODE PART + TOMBOL CEK --}}
@@ -48,7 +48,8 @@
                         <div class="flex gap-2">
                             <input type="text" id="kode_part" placeholder="Contoh : BRG-001"
                                 class="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                             <button type="button" id="cekBarang"
                                 class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
                                 rounded-lg shadow-sm transition flex items-center gap-2">
@@ -67,7 +68,8 @@
                         </div>
                         <h4 class="font-semibold text-slate-800 text-sm">Informasi Barang Ditemukan</h4>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-3">
+                    {{-- Baris 1: Nama Barang | Kategori --}}
+                    <div class="grid md:grid-cols-2 gap-3 mb-3">
                         <div>
                             <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Nama Barang</p>
                             <div id="showNama" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
@@ -76,9 +78,18 @@
                             <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Kategori</p>
                             <div id="showKategori" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Brand</p>
-                            <div id="showBrand" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                    </div>
+                    {{-- Baris 2: Brand | Tipe Kendaraan | Stok --}}
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Brand</p>
+                                <div id="showBrand" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Tipe Kendaraan</p>
+                                <div id="showTipe" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                            </div>
                         </div>
                         <div>
                             <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Stok Saat Ini</p>
@@ -94,14 +105,16 @@
                         <input type="number" name="jumlah" id="inputJumlah" min="1" required
                             placeholder="Masukkan jumlah"
                             class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Harga Jual</label>
                         <input type="number" name="harga_jual" id="inputHarga" min="0" required
                             placeholder="Masukkan harga jual"
                             class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                            placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     </div>
                 </div>
 
@@ -112,7 +125,8 @@
                     </label>
                     <input type="text" name="tujuan" id="inputTujuan" placeholder="Contoh: Customer"
                         class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                        outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
 
                 <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
@@ -143,7 +157,8 @@
             <div class="px-4 py-4 border-b border-slate-200 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang / tujuan..."
                     class="w-64 border border-slate-300 rounded-lg px-4 py-2 text-sm
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+                    placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter
@@ -201,7 +216,8 @@
                                         '{{ addslashes($item->barang?->kategori->nama_kategori ?? '-') }}',
                                         '{{ addslashes(optional($item->barang?->brand)->nama_brand ?? ($item->barang?->brand ?? '-')) }}',
                                         {{ $item->barang?->stok ?? 0 }},
-                                        '{{ addslashes($item->tujuan ?? '') }}'
+                                        '{{ addslashes($item->tujuan ?? '') }}',
+                                        '{{ addslashes($item->barang?->tipe ?? '-') }}'
                                     )"
                                     class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                     <i class="fas fa-pen mr-1"></i> Edit

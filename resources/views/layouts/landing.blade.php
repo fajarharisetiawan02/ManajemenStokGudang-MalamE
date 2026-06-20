@@ -8,6 +8,9 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
+    <!-- PRELOAD HERO IMAGE -->
+    <link rel="preload" as="image" href="{{ asset('images/gudang.png') }}">
+
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 

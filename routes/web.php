@@ -82,6 +82,9 @@ Route::prefix('admin')
         Route::resource('barang-masuk', AdminBarangMasukController::class);
 
         /* === BARANG KELUAR === */
+        Route::get('/barang-keluar/cek-barang/{kode}', [AdminBarangKeluarController::class, 'cekBarang'])
+            ->name('barang-keluar.cek');
+
         Route::resource('barang-keluar', AdminBarangKeluarController::class);
 
         /* === LAPORAN === */
@@ -140,4 +143,3 @@ Route::prefix('manager')
             ->name('laporan.export-pdf');
 
     });
-    

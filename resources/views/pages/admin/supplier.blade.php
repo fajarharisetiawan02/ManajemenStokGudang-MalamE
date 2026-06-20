@@ -11,14 +11,14 @@
         <div class="p-4">
             <button type="button" onclick="setModeTambahSupplier()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
-                <i class="fas fa-plus"></i> Tambah Supplier
+                <i class="fas fa-plus mr-1"></i> Tambah Supplier
             </button>
         </div>
 
         <form method="GET" action="{{ url('/admin/supplier') }}">
             <div class="px-4 pb-4 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari supplier..."
-                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter
@@ -80,7 +80,7 @@
                                     action="{{ url('/admin/supplier/'.$item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" onclick="confirmDelete({{ $item->id }})"
+                                    <button type="button" onclick="confirmDelete(this.form)"
                                         class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
                                         <i class="fas fa-trash mr-1"></i> Hapus
                                     </button>
@@ -132,9 +132,10 @@
 <!-- MODAL SUPPLIER -->
 <div id="modalSupplier"
     data-base-url="{{ url('/admin/supplier') }}"
-    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+    class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4">
 
-    <div class="relative bg-white w-full max-w-3xl rounded-xl border border-slate-200 shadow-2xl overflow-hidden">
+    <div class="relative bg-white w-full max-w-3xl rounded-xl border border-slate-200 shadow-2xl overflow-hidden"
+        onclick="event.stopPropagation()">
 
         <div class="bg-slate-50 border-b border-slate-200 px-6 py-5 flex items-center justify-between">
             <div>
@@ -147,39 +148,49 @@
             </button>
         </div>
 
-        <form id="formSupplier" action="{{ url('/admin/supplier') }}" method="POST" class="p-5">
+        <form id="formSupplier" action="{{ url('/admin/supplier') }}" method="POST" class="p-6">
             @csrf
             <div id="methodContainerSupplier"></div>
-            <div class="grid md:grid-cols-2 gap-4">
+            <div class="grid md:grid-cols-2 gap-5">
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Supplier</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Supplier</label>
                     <input type="text" name="nama" id="supplier_nama" required placeholder="Contoh: PT Astra"
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Telepon</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Telepon</label>
                     <input type="text" name="telepon" id="supplier_telepon" required placeholder="Contoh: 0812xxxx"
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                        Email <span class="text-slate-400 font-normal">(Opsional)</span>
+                    </label>
                     <input type="email" name="email" id="supplier_email" placeholder="supplier@email.com"
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
-                    <textarea name="alamat" id="supplier_alamat" rows="4" required placeholder="Alamat lengkap supplier"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500"></textarea>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Alamat</label>
+                    <textarea name="alamat" id="supplier_alamat" rows="3" required placeholder="Alamat lengkap supplier"
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none
+                        placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm"></textarea>
                 </div>
             </div>
-            <div class="flex justify-end gap-2 mt-5 pt-4 border-t">
+            <div class="flex justify-end gap-3 mt-5 pt-4 border-t border-slate-200">
                 <button type="button" onclick="closeSupplierModal()"
-                    class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg">
+                    class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm rounded-lg transition">
                     Batal
                 </button>
                 <button id="submitSupplierBtn" type="submit"
-                    class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition">
-                    Simpan Supplier
+                    class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
+                    Simpan
                 </button>
             </div>
         </form>
