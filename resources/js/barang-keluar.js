@@ -1,9 +1,38 @@
 if (document.getElementById('inputTujuan')) {
 
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ==== VALIDASI CEK BARANG SEBELUM SIMPAN ==== //
+        const form = document.getElementById('mainForm');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                const barangId = document.getElementById('barang_id')?.value?.trim();
+                if (!barangId) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Belum Cek Barang!',
+                        text: 'Masukkan kode part dan klik tombol "Cek Barang" terlebih dahulu sebelum menyimpan.',
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+                    });
+                }
+            });
+        }
+
+    });
+
     document.getElementById('cekBarang').addEventListener('click', function () {
         const kode = document.getElementById('kode_part').value.trim();
         if (kode === '') {
-            Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Masukkan kode part terlebih dahulu' });
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Masukkan kode part terlebih dahulu',
+                backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+            });
             return;
         }
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
@@ -16,7 +45,12 @@ if (document.getElementById('inputTujuan')) {
                 this.disabled  = false;
 
                 if (!result.success) {
-                    Swal.fire({ icon: 'error', title: 'Gagal', text: 'Kode Part tidak ditemukan' });
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Kode Part tidak ditemukan',
+                        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+                    });
                     document.getElementById('infoBarang').classList.add('hidden');
                     return;
                 }
@@ -35,7 +69,12 @@ if (document.getElementById('inputTujuan')) {
             .catch(() => {
                 this.innerHTML = '<i class="fas fa-search"></i> Cek Barang';
                 this.disabled  = false;
-                Swal.fire({ icon: 'error', title: 'Error', text: 'Terjadi kesalahan koneksi' });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Terjadi kesalahan koneksi',
+                    backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+                });
             });
     });
 
@@ -90,6 +129,7 @@ if (document.getElementById('inputTujuan')) {
         document.getElementById('btnSubmit').className =
             'px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-lg shadow-sm transition flex items-center gap-2';
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById('btnReset')?.classList.add('hidden');
     }
 
     window.resetFormMode = function () {
@@ -112,5 +152,6 @@ if (document.getElementById('inputTujuan')) {
         document.getElementById('btnSubmitText').textContent = 'Simpan';
         document.getElementById('btnSubmit').className =
             'px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition flex items-center gap-2';
+        document.getElementById('btnReset')?.classList.remove('hidden');
     }
 }

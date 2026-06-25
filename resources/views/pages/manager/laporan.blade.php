@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan')
+@section('title', __('app.laporan'))
 
 @section('content')
 
@@ -11,38 +11,38 @@
 
         {{-- BARIS 1: EXPORT --}}
         <div class="px-5 pt-5 pb-3 flex items-center gap-2">
-            <a href="{{ route('manager.laporan.export-excel') }}?dari={{ $dari }}&sampai={{ $sampai }}&jenis={{ $jenis }}"
+            <button type="button" onclick="exportLaporan('excel')"
                 class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center gap-2">
                 <i class="fas fa-file-excel"></i> Excel
-            </a>
-            <a href="{{ route('manager.laporan.export-pdf') }}?dari={{ $dari }}&sampai={{ $sampai }}&jenis={{ $jenis }}"
+            </button>
+            <button type="button" onclick="exportLaporan('pdf')"
                 class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center gap-2">
                 <i class="fas fa-file-pdf"></i> PDF
-            </a>
+            </button>
         </div>
 
         {{-- GARIS PEMISAH --}}
         <div class="border-t border-slate-100 mx-5"></div>
 
         {{-- BARIS 2: FILTER --}}
-        <form method="GET" action="{{ route('manager.laporan.index') }}" class="px-5 py-4">
+        <form id="formFilter" method="GET" action="{{ route('manager.laporan.index') }}" class="px-5 py-4">
             <div class="flex flex-wrap gap-3 items-center">
 
                 <div class="flex items-center gap-2">
                     <label class="text-sm text-slate-600 whitespace-nowrap">Dari</label>
-                    <input type="date" name="dari" value="{{ $dari }}"
+                    <input type="date" name="dari" id="input_dari" value="{{ $dari }}"
                         class="px-4 py-2.5 border border-slate-300 rounded-lg text-sm outline-none
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <div class="flex items-center gap-2">
                     <label class="text-sm text-slate-600 whitespace-nowrap">Sampai</label>
-                    <input type="date" name="sampai" value="{{ $sampai }}"
+                    <input type="date" name="sampai" id="input_sampai" value="{{ $sampai }}"
                         class="px-4 py-2.5 border border-slate-300 rounded-lg text-sm outline-none
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
-                <select name="jenis"
+                <select name="jenis" id="input_jenis"
                     class="px-4 py-2.5 border border-slate-300 rounded-lg text-sm outline-none
                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="semua" {{ $jenis === 'semua' ? 'selected' : '' }}>Semua Transaksi</option>
@@ -132,12 +132,12 @@
                 <tbody class="bg-white">
                     @forelse($laporan as $item)
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="px-4 py-4 border text-center">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                        <td class="px-4 py-4 border font-medium text-slate-700">{{ $item->no }}</td>
-                        <td class="px-4 py-4 border">{{ $item->kode ?? '-' }}</td>
-                        <td class="px-4 py-4 border">
-                            <p class="font-medium text-slate-800">{{ $item->barang }}</p>
+                        <td class="px-4 py-4 border text-center text-black">{{ $laporan->firstItem() + $loop->index }}</td>
+                        <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->no }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->kode ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-black">
+                            <p class="font-medium text-black">{{ $item->barang }}</p>
                             @if(!empty($item->brand) && $item->brand !== '-' || !empty($item->tipe) && $item->tipe !== '-')
                                 <p class="text-xs text-slate-400 mt-0.5">{{ $item->brand !== '-' ? $item->brand : '' }} {{ $item->tipe !== '-' ? $item->tipe : '' }}</p>
                             @endif
@@ -157,7 +157,7 @@
                             {{ $item->jenis === 'Masuk' ? 'text-green-600' : 'text-red-600' }}">
                             {{ $item->jenis === 'Masuk' ? '+' : '-' }}{{ $item->jumlah }}
                         </td>
-                        <td class="px-4 py-4 border text-slate-500">{{ $item->keterangan }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->keterangan }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -204,5 +204,59 @@
     </div>
 
 </div>
+
+@section('script')
+<script>
+if (!sessionStorage.getItem('laporan_filtered')) {
+    document.getElementById('input_dari').value   = '';
+    document.getElementById('input_sampai').value = '';
+}
+sessionStorage.removeItem('laporan_filtered');
+
+document.getElementById('formFilter').addEventListener('submit', function () {
+    sessionStorage.setItem('laporan_filtered', '1');
+});
+
+function exportLaporan(type) {
+    const dari   = document.getElementById('input_dari').value;
+    const sampai = document.getElementById('input_sampai').value;
+    const jenis  = document.getElementById('input_jenis').value;
+
+    if (!dari || !sampai) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Periode Belum Dipilih!',
+            text: 'Silakan isi tanggal "Dari" dan "Sampai" terlebih dahulu sebelum mengekspor laporan.',
+            confirmButtonColor: '#2563eb',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+        });
+        return;
+    }
+
+    if (new Date(dari) > new Date(sampai)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Tanggal Tidak Valid!',
+            text: 'Tanggal "Dari" tidak boleh lebih besar dari tanggal "Sampai".',
+            confirmButtonColor: '#2563eb',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+        });
+        return;
+    }
+
+    const params = `?dari=${dari}&sampai=${sampai}&jenis=${jenis}`;
+
+    if (type === 'excel') {
+        window.location.href = "{{ route('manager.laporan.export-excel') }}" + params;
+    } else {
+        window.open("{{ route('manager.laporan.export-pdf') }}" + params, "_blank");
+    }
+}
+</script>
+@endsection
 
 @endsection

@@ -129,6 +129,6 @@ class ManagerLaporanController extends Controller
         $sampai_label = $sampai ?? 'semua';
         $filename = 'laporan-transaksi-' . $dari_label . '-sd-' . $sampai_label . '.pdf';
 
-        return $pdf->download($filename);
+        return $pdf->stream($filename);
     }
 }

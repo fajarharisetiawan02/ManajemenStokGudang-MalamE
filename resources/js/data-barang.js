@@ -21,10 +21,11 @@ function createCustomDropdown(selectId, placeholder) {
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.id = triggerId;
-    trigger.style.fontFamily = 'inherit';
+    trigger.style.fontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
     trigger.style.fontSize = '14px';
     trigger.style.height = '42px';
     trigger.style.fontWeight = '400';
+    trigger.style.letterSpacing = 'normal';
     trigger.className = 'w-full mt-2 px-4 border border-slate-300 rounded-lg outline-none bg-white text-left flex items-center justify-between focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition';
     trigger.innerHTML = `<span id="${labelId}" style="color:#94a3b8;">${placeholder}</span><svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>`;
     wrapper.appendChild(trigger);
@@ -33,13 +34,13 @@ function createCustomDropdown(selectId, placeholder) {
     dropdown.id = listId;
     dropdown.className = 'absolute z-[99999] w-full bg-white border border-slate-300 rounded-lg shadow-lg mt-1 hidden overflow-y-auto';
     dropdown.style.maxHeight = '200px';
-    dropdown.style.fontFamily = 'inherit';
+    dropdown.style.fontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
 
     Array.from(select.options).forEach((opt) => {
         if (!opt.value) return;
         const item = document.createElement('div');
         item.className = 'px-4 py-2.5 cursor-pointer';
-        item.style.fontFamily = 'inherit';
+        item.style.fontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
         item.style.fontSize = '0.875rem';
         item.style.color = '#0f172a';
         item.textContent = opt.text;
@@ -68,7 +69,6 @@ function createCustomDropdown(selectId, placeholder) {
 
     trigger.addEventListener('click', function (e) {
         e.stopPropagation();
-        // Tutup semua dropdown lain
         document.querySelectorAll('[id$="_list"]').forEach(function (d) {
             if (d.id !== listId) d.classList.add('hidden');
         });
@@ -120,6 +120,9 @@ function openModal() {
     const methodContainer = document.getElementById('methodContainer');
     if (methodContainer) methodContainer.innerHTML = '';
 
+    const hiddenId = document.getElementById('input_id');
+    if (hiddenId) hiddenId.value = '';
+
     const title = document.getElementById('modalTitle');
     if (title) title.innerText = 'Tambah Barang';
 
@@ -128,9 +131,8 @@ function openModal() {
 
     const submitBtn = document.getElementById('submitBtn');
     if (submitBtn) {
-        submitBtn.innerText = 'Simpan';
-        submitBtn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
-        submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+        submitBtn.innerText    = 'Simpan';
+        submitBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition';
     }
 
     resetCustomDropdown('input_kategori', 'Pilih Kategori');
@@ -151,6 +153,7 @@ function closeModal() {
     document.body.classList.remove('overflow-hidden');
 }
 
+// ==== EDIT DATA ==== //
 function editData(button) {
     const modal = document.getElementById('modalBarang');
     const form  = document.getElementById('formBarang');
@@ -161,6 +164,15 @@ function editData(button) {
     form.querySelector('input[name="harga_jual"]').value   = button.dataset.harga || '';
     form.querySelector('textarea[name="deskripsi"]').value = button.dataset.deskripsi || '';
 
+    let hiddenId = document.getElementById('input_id');
+    if (!hiddenId) {
+        hiddenId = document.createElement('input');
+        hiddenId.type = 'hidden';
+        hiddenId.id   = 'input_id';
+        form.appendChild(hiddenId);
+    }
+    hiddenId.value = button.dataset.id || '';
+
     setCustomDropdownValue('input_kategori', button.dataset.kategoriId || '', 'Pilih Kategori');
     setCustomDropdownValue('input_brand', button.dataset.brandId || '', 'Pilih Brand');
     setCustomDropdownValue('input_tipe', button.dataset.tipe || '', 'Pilih Tipe Kendaraan');
@@ -168,13 +180,21 @@ function editData(button) {
     document.getElementById('methodContainer').innerHTML = '<input type="hidden" name="_method" value="PUT">';
     document.getElementById('modalTitle').innerText    = 'Edit Barang';
     document.getElementById('modalSubtitle').innerText = 'Perbarui data barang di bawah ini.';
-    document.getElementById('submitBtn').innerText     = 'Update';
-    document.getElementById('submitBtn').classList.remove('bg-blue-600', 'hover:bg-blue-700');
-    document.getElementById('submitBtn').classList.add('bg-amber-500', 'hover:bg-amber-600');
+    document.getElementById('submitBtn').innerText    = 'Simpan Perubahan';
+    document.getElementById('submitBtn').className = 'px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-lg shadow-sm transition';
 
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.classList.add('overflow-hidden');
+}
+
+// ==== CEK KODE PART DUPLIKAT ==== //
+function cekKodePart(kode, excludeId, callback) {
+    const url = `/admin/data-barang/check-kode?kode=${encodeURIComponent(kode)}&exclude_id=${excludeId || ''}`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => callback(data.exists))
+        .catch(() => callback(false));
 }
 
 // ==== INIT ==== //
@@ -182,6 +202,66 @@ document.addEventListener('DOMContentLoaded', function () {
     createCustomDropdown('input_kategori', 'Pilih Kategori');
     createCustomDropdown('input_brand', 'Pilih Brand');
     createCustomDropdown('input_tipe', 'Pilih Tipe Kendaraan');
+
+    const inputKode  = document.getElementById('input_kode');
+    const formBarang = document.getElementById('formBarang');
+
+    if (inputKode) {
+        inputKode.addEventListener('blur', function () {
+            const kode = this.value.trim();
+            if (!kode) return;
+
+            const excludeId = document.getElementById('input_id')?.value || '';
+
+            cekKodePart(kode, excludeId, function (exists) {
+                if (exists) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Kode Part Sudah Digunakan!',
+                        text: `Kode "${kode}" sudah ada di sistem. Gunakan kode yang berbeda.`,
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'Ganti Kode',
+                        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+                    }).then(() => {
+                        inputKode.value = '';
+                        inputKode.focus();
+                    });
+                }
+            });
+        });
+    }
+
+    if (formBarang) {
+        formBarang.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const kode = inputKode?.value.trim();
+            if (!kode) {
+                formBarang.submit();
+                return;
+            }
+
+            const excludeId = document.getElementById('input_id')?.value || '';
+
+            cekKodePart(kode, excludeId, function (exists) {
+                if (exists) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kode Part Duplikat!',
+                        text: `Kode "${kode}" sudah digunakan oleh barang lain. Silakan gunakan kode yang berbeda.`,
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'OK',
+                        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+                    }).then(() => {
+                        inputKode.value = '';
+                        inputKode.focus();
+                    });
+                } else {
+                    formBarang.submit();
+                }
+            });
+        });
+    }
 });
 
 // ==== PREVIEW GAMBAR 1 FOTO ==== //
@@ -236,13 +316,11 @@ function showImages(images) {
     modal.classList.add('flex');
 }
 
-// ==== SWITCH PREVIEW GALLERY ==== //
 function switchPreview(src) {
     const preview = document.getElementById('previewImage');
     if (preview) preview.src = src;
 }
 
-// ==== CLOSE PREVIEW GAMBAR ==== //
 function closeImage() {
     const modal        = document.getElementById('imageModal');
     const thumbGallery = document.getElementById('thumbGallery');
@@ -254,12 +332,16 @@ function closeImage() {
     modal.classList.add('hidden');
 }
 
-// ==== NO IMAGE ==== //
 function showNoImage() {
-    Swal.fire({ icon: 'info', title: 'Tidak Ada Gambar', text: 'Produk ini belum memiliki gambar', confirmButtonColor: '#2563eb' });
+    Swal.fire({
+        icon: 'info',
+        title: 'Tidak Ada Gambar',
+        text: 'Produk ini belum memiliki gambar',
+        confirmButtonColor: '#2563eb',
+        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+    });
 }
 
-// ==== DELETE CONFIRM ==== //
 function confirmDelete(form) {
     Swal.fire({
         title: 'Yakin hapus data ini?',
@@ -268,22 +350,20 @@ function confirmDelete(form) {
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Ya, hapus!'
+        confirmButtonText: 'Ya, hapus!',
+        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
     }).then((result) => { if (result.isConfirmed) form.submit(); });
 }
 
-// ==== CLICK OUTSIDE MODAL ==== //
 document.addEventListener("click", function (e) {
     const imageModal = document.getElementById('imageModal');
     if (imageModal && e.target === imageModal) closeImage();
 });
 
-// ==== ESC CLOSE ==== //
 document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeImage();
 });
 
-// ==== GLOBAL FUNCTION ==== //
 window.openModal     = openModal;
 window.closeModal    = closeModal;
 window.editData      = editData;

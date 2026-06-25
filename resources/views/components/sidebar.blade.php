@@ -83,13 +83,4 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
 
     </div>
 
-    <!-- LOGOUT -->
-    <div class="pt-5 mt-4 border-t border-slate-700/50">
-        <button type="button" onclick="confirmLogout()"
-            class="w-full flex items-center gap-4 px-5 py-3 rounded-lg text-red-400 hover:bg-red-500/20 transition">
-            <i class="fas fa-sign-out-alt w-6"></i>
-            <span>{{ __('app.keluar') }}</span>
-        </button>
-    </div>
-
 </aside>

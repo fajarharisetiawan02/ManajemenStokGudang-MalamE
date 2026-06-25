@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Barang Masuk')
+@section('title', __('app.barang_masuk'))
 
 @section('content')
 
@@ -45,17 +45,17 @@
                 <tbody class="bg-white">
                     @forelse($barangMasuks as $item)
                     <tr class="hover:bg-slate-50 transition-colors duration-150">
-                        <td class="px-4 py-4 border text-center">{{ $barangMasuks->firstItem() + $loop->index }}</td>
-                        <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                        <td class="px-4 py-4 border">{{ $item->barang?->kode ?? '-' }}</td>
-                        <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang?->nama_barang ?? '-' }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->supplier->nama_supplier ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-center text-black">{{ $barangMasuks->firstItem() + $loop->index }}</td>
+                        <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->barang?->kode ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->barang?->nama_barang ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->supplier->nama_supplier ?? '-' }}</td>
                         <td class="px-4 py-4 border text-center">
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                                 +{{ $item->jumlah }}
                             </span>
                         </td>
-                        <td class="px-4 py-4 border text-right">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                        <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
                         <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                     </tr>
                     @empty

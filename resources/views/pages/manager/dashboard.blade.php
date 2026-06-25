@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', __('app.dashboard'))
 
 @section('content')
 
@@ -10,8 +10,7 @@
     </div>
 
     {{-- HERO --}}
-    <div
-        class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl border border-blue-500 shadow-sm mb-8 px-8 py-6 flex items-center justify-between relative overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl border border-blue-500 shadow-sm mb-8 px-8 py-6 flex items-center justify-between relative overflow-hidden">
         <div class="text-white max-w-lg z-20">
             <h1 class="text-3xl font-bold mb-1">Halo! 👋</h1>
             <h2 class="text-xl font-semibold text-white/95">
@@ -28,16 +27,13 @@
     {{-- STATISTIK --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-        {{-- TOTAL BARANG --}}
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition">
             <div class="h-1 bg-blue-600"></div>
             <div class="p-6 flex justify-between items-start">
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Total Barang</p>
                     <h3 class="text-4xl font-bold text-slate-800 mt-3">{{ number_format($totalBarang) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold">
-                        Semua Barang
-                    </span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold">Semua Barang</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
                     <i class="fas fa-box text-blue-600 text-xl"></i>
@@ -45,16 +41,13 @@
             </div>
         </div>
 
-        {{-- BARANG MASUK --}}
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition">
             <div class="h-1 bg-green-600"></div>
             <div class="p-6 flex justify-between items-start">
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Barang Masuk</p>
                     <h3 class="text-4xl font-bold text-green-600 mt-3">{{ number_format($barangMasuk) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-green-100 text-green-600 text-xs font-semibold">
-                        Hari Ini
-                    </span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-green-100 text-green-600 text-xs font-semibold">7 Hari Terakhir</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
                     <i class="fas fa-arrow-down text-green-600 text-xl"></i>
@@ -62,16 +55,13 @@
             </div>
         </div>
 
-        {{-- BARANG KELUAR --}}
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition">
             <div class="h-1 bg-red-600"></div>
             <div class="p-6 flex justify-between items-start">
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Barang Keluar</p>
                     <h3 class="text-4xl font-bold text-red-600 mt-3">{{ number_format($barangKeluar) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-semibold">
-                        Hari Ini
-                    </span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-semibold">7 Hari Terakhir</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center">
                     <i class="fas fa-arrow-up text-red-600 text-xl"></i>
@@ -79,17 +69,13 @@
             </div>
         </div>
 
-        {{-- SUPPLIER --}}
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition">
             <div class="h-1 bg-purple-600"></div>
             <div class="p-6 flex justify-between items-start">
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Supplier</p>
                     <h3 class="text-4xl font-bold text-purple-600 mt-3">{{ number_format($supplier) }}</h3>
-                    <span
-                        class="inline-flex mt-3 px-3 py-1 rounded-full bg-purple-100 text-purple-600 text-xs font-semibold">
-                        Aktif
-                    </span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-purple-100 text-purple-600 text-xs font-semibold">Aktif</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center">
                     <i class="fas fa-truck text-purple-600 text-xl"></i>
@@ -102,7 +88,6 @@
     {{-- CHART --}}
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
 
-        {{-- PERGERAKAN STOK --}}
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 h-[430px] flex flex-col">
             <div class="flex flex-wrap justify-between items-start gap-4 mb-5">
                 <div>
@@ -113,9 +98,7 @@
                             <p class="text-sm text-slate-500">Barang masuk dan keluar dalam periode tertentu</p>
                         </div>
                     </div>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
-                        12 Bulan Terakhir
-                    </span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">12 Bulan Terakhir</span>
                 </div>
             </div>
             <div class="flex-1">
@@ -123,7 +106,6 @@
             </div>
         </div>
 
-        {{-- DISTRIBUSI SUPPLIER --}}
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 h-[430px] flex flex-col">
             <div class="flex items-center gap-3 mb-5">
                 <i class="fas fa-chart-pie text-blue-600 text-xl"></i>
@@ -148,73 +130,54 @@
 
     {{-- TRANSAKSI TERBARU --}}
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
-        <div class="flex items-center justify-between mb-5">
-            <div>
-                <h3 class="font-bold text-xl text-slate-800">
-                    <i class="fas fa-clock-rotate-left text-green-600 mr-2"></i>
-                    Transaksi Terbaru
-                </h3>
-                <p class="text-sm text-slate-500 mt-1">Aktivitas barang masuk dan keluar terbaru</p>
+        <div class="flex items-center gap-3 mb-5">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                <i class="fas fa-clock-rotate-left text-green-600 text-lg"></i>
             </div>
-            <a href="{{ route('manager.barang-masuk.index') }}"
-                class="text-blue-600 hover:text-blue-700 text-sm font-semibold">
-                Lihat Semua →
-            </a>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Transaksi Terbaru</h3>
+                <p class="text-sm text-slate-500">Aktivitas barang masuk dan keluar terbaru</p>
+            </div>
         </div>
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-                <thead class="bg-slate-50 text-slate-700">
+            <table class="w-full text-sm border-collapse">
+                <thead class="bg-slate-100 text-slate-800">
                     <tr>
-                        <th class="px-4 py-3 text-center font-bold border w-12">No</th>
-                        <th class="px-4 py-3 text-left font-bold border">Tanggal</th>
-                        <th class="px-4 py-3 text-left font-bold border">Nama Barang</th>
-                        <th class="px-4 py-3 text-center font-bold border">Jenis</th>
-                        <th class="px-4 py-3 text-center font-bold border">Qty</th>
-                        <th class="px-4 py-3 text-center font-bold border">Status</th>
+                        <th class="px-4 py-4 text-center font-bold border w-12">No</th>
+                        <th class="px-4 py-4 text-left font-bold border">Tanggal</th>
+                        <th class="px-4 py-4 text-left font-bold border">Kode Part</th>
+                        <th class="px-4 py-4 text-left font-bold border">Nama Barang</th>
+                        <th class="px-4 py-4 text-center font-bold border">Jenis</th>
+                        <th class="px-4 py-4 text-center font-bold border">Qty</th>
+                        <th class="px-4 py-4 text-left font-bold border">Supplier / Tujuan</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="bg-white">
                     @forelse($transaksi as $i => $item)
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-4 py-4 border text-center">{{ $i + 1 }}</td>
-                            <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang }}</td>
+                        <tr class="hover:bg-slate-50 transition-colors duration-150">
+                            <td class="px-4 py-4 border text-center text-black">{{ $i + 1 }}</td>
+                            <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $item->kode ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $item->barang }}</td>
                             <td class="px-4 py-4 border text-center">
                                 @if ($item->status === 'Masuk')
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
                                         <i class="fas fa-arrow-down mr-1"></i> Masuk
                                     </span>
                                 @else
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
                                         <i class="fas fa-arrow-up mr-1"></i> Keluar
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-4 py-4 border text-center">
-                                @if ($item->status === 'Masuk')
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
-                                        +{{ $item->qty }}
-                                    </span>
-                                @else
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
-                                        -{{ $item->qty }}
-                                    </span>
-                                @endif
+                            <td class="px-4 py-4 border text-center font-semibold {{ $item->status === 'Masuk' ? 'text-green-600' : 'text-red-600' }}">
+                                {{ $item->status === 'Masuk' ? '+' : '-' }}{{ $item->qty }}
                             </td>
-                            <td class="px-4 py-4 border text-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
-                                    Selesai
-                                </span>
-                            </td>
+                            <td class="px-4 py-4 border text-black">{{ $item->keterangan ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-10 text-center text-slate-400">Belum ada transaksi</td>
+                            <td colspan="7" class="py-10 text-center text-slate-400">Belum ada transaksi</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -236,69 +199,46 @@
             </div>
             <a href="{{ route('manager.data-barang.index') }}?stok=menipis"
                 class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white
-            px-4 py-2 rounded-xl shadow-sm transition text-sm font-medium">
+                px-4 py-2 rounded-xl shadow-sm transition text-sm font-medium">
                 <i class="fas fa-eye"></i> Lihat Semua Produk
             </a>
         </div>
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-                <thead class="bg-slate-50 text-slate-700">
+            <table class="w-full text-sm border-collapse">
+                <thead class="bg-slate-100 text-slate-800">
                     <tr>
-                        <th class="px-4 py-3 text-center font-bold border w-12">No</th>
-                        <th class="px-4 py-3 text-left font-bold border">Kode Part</th>
-                        <th class="px-4 py-3 text-left font-bold border">Nama Barang</th>
-                        <th class="px-4 py-3 text-left font-bold border">Kategori</th>
-                        <th class="px-4 py-3 text-center font-bold border">Stok</th>
-                        <th class="px-4 py-3 text-center font-bold border">Status</th>
-                        <th class="px-4 py-3 text-center font-bold border">Aksi</th>
+                        <th class="px-4 py-4 text-center font-bold border w-12">No</th>
+                        <th class="px-4 py-4 text-left font-bold border">Kode Part</th>
+                        <th class="px-4 py-4 text-left font-bold border">Nama Barang</th>
+                        <th class="px-4 py-4 text-left font-bold border">Kategori</th>
+                        <th class="px-4 py-4 text-center font-bold border">Stok</th>
+                        <th class="px-4 py-4 text-center font-bold border">Status</th>
+                        <th class="px-4 py-4 text-center font-bold border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="bg-white">
                     @forelse($stokMenipis as $i => $barang)
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-4 py-4 border text-center">{{ $i + 1 }}</td>
-                            <td class="px-4 py-4 border">{{ $barang->kode }}</td>
-                            <td class="px-4 py-4 border font-medium text-slate-800">{{ $barang->nama_barang }}</td>
-                            <td class="px-4 py-4 border">
-                                <span
-                                    class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                                    {{ $barang->kategori->nama_kategori ?? '-' }}
-                                </span>
+                        <tr class="hover:bg-slate-50 transition-colors duration-150">
+                            <td class="px-4 py-4 border text-center text-black">{{ $i + 1 }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $barang->kode }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $barang->nama_barang }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $barang->kategori->nama_kategori ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-center font-semibold
+                                {{ $barang->stok <= 0 ? 'text-red-600' : 'text-yellow-600' }}">
+                                {{ $barang->stok }}
                             </td>
                             <td class="px-4 py-4 border text-center">
                                 @if ($barang->stok <= 0)
-                                    <span
-                                        class="inline-flex items-center justify-center min-w-[50px] px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">
-                                        {{ $barang->stok }}
-                                    </span>
-                                @else
-                                    <span
-                                        class="inline-flex items-center justify-center min-w-[50px] px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold">
-                                        {{ $barang->stok }}
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="px-4 py-4 border text-center">
-                                @if ($barang->stok <= 0)
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
-                                        <i class="fas fa-times-circle mr-1"></i> Habis
-                                    </span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">Habis</span>
                                 @elseif($barang->stok <= 5)
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
-                                        <i class="fas fa-triangle-exclamation mr-1"></i> Kritis
-                                    </span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">Kritis</span>
                                 @else
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">
-                                        <i class="fas fa-exclamation mr-1"></i> Menipis
-                                    </span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">Menipis</span>
                                 @endif
                             </td>
                             <td class="px-4 py-4 border text-center">
                                 <a href="{{ route('manager.data-barang.show', $barang->id) }}"
-                                    class="px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg shadow-sm transition text-xs">
+                                    class="inline-flex items-center px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm rounded-lg shadow-sm transition whitespace-nowrap">
                                     <i class="fas fa-eye mr-1"></i> Detail
                                 </a>
                             </td>

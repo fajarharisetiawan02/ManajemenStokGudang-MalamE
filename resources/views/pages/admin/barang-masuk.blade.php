@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Barang Masuk')
+@section('title', __('app.barang_masuk'))
 
 @section('content')
 
@@ -35,23 +35,24 @@
 
                         {{-- TANGGAL --}}
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Masuk</label>
+                            <label class="block text-sm font-medium text-slate-700">Tanggal Masuk</label>
                             <input type="date" name="tanggal" id="inputTanggal" required
-                                class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
-                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
-                                placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                min="{{ date('Y-m-d', strtotime('-3 days')) }}"
+                                max="{{ date('Y-m-d') }}"
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg text-sm
+                                outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition">
                         </div>
 
                         {{-- KODE PART + TOMBOL CEK --}}
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Kode Part</label>
-                            <div class="flex gap-2">
+                            <label class="block text-sm font-medium text-slate-700">Kode Part</label>
+                            <div class="flex gap-2 mt-2">
                                 <input type="text" id="kode_part" placeholder="Contoh : BRG-001"
-                                    class="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
+                                    class="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-800 bg-white
                                     outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                                     placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                                 <button type="button" id="cekBarang"
-                                    class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
+                                    class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
                                     rounded-lg shadow-sm transition flex items-center gap-2">
                                     <i class="fas fa-search"></i> Cek Barang
                                 </button>
@@ -68,7 +69,6 @@
                             </div>
                             <h4 class="font-semibold text-slate-800 text-sm">Informasi Barang Ditemukan</h4>
                         </div>
-                        {{-- Baris 1: Nama Barang | Kategori --}}
                         <div class="grid md:grid-cols-2 gap-3 mb-3">
                             <div>
                                 <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Nama Barang</p>
@@ -79,11 +79,10 @@
                                 <div id="showKategori" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
                             </div>
                         </div>
-                        {{-- Baris 2: Brand | Tipe Kendaraan | Stok --}}
                         <div class="grid md:grid-cols-2 gap-3">
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Brand</p>
+                                    <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Merek</p>
                                     <div id="showBrand" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
                                 </div>
                                 <div>
@@ -101,18 +100,18 @@
                     {{-- JUMLAH + HARGA --}}
                     <div class="grid md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Jumlah Masuk</label>
+                            <label class="block text-sm font-medium text-slate-700">Jumlah Masuk</label>
                             <input type="number" name="jumlah" id="inputJumlah" min="1" required
                                 placeholder="Masukkan jumlah"
-                                class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-800 bg-white
                                 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                                 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Harga Beli</label>
+                            <label class="block text-sm font-medium text-slate-700">Harga Beli</label>
                             <input type="number" name="harga_beli" id="inputHarga" min="0" required
                                 placeholder="Masukkan harga beli"
-                                class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-800 bg-white
                                 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                                 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
@@ -120,9 +119,9 @@
 
                     {{-- SUPPLIER --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Supplier</label>
+                        <label class="block text-sm font-medium text-slate-700">Supplier</label>
                         <select name="supplier_id" id="inputSupplier" required
-                            class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm leading-tight
+                            class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg text-sm
                             outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition">
                             <option value="">Pilih Supplier</option>
                             @foreach ($suppliers as $supplier)
@@ -132,17 +131,21 @@
                     </div>
 
                     {{-- FOOTER BUTTONS --}}
-                    <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                    <div class="pt-5 mt-5 border-t border-slate-200 flex items-center justify-between">
                         <button type="button" id="btnBatal" onclick="resetFormMode()"
                             class="hidden px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700
                             text-sm rounded-lg transition items-center gap-2">
-                            <i class="fas fa-times"></i> Batal Edit
+                            Batal Edit
                         </button>
-                        <div class="ml-auto">
+                        <div class="ml-auto flex items-center gap-2">
+                            <button type="button" id="btnReset" onclick="resetFormMode()"
+                                class="px-5 py-2.5 border border-slate-300 hover:bg-slate-50 text-slate-700
+                                text-sm font-medium rounded-lg transition">
+                                Reset
+                            </button>
                             <button type="submit" id="btnSubmit"
                                 class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
-                                rounded-lg shadow-sm transition flex items-center gap-2">
-                                <i class="fas fa-save"></i>
+                                rounded-lg shadow-sm transition">
                                 <span id="btnSubmitText">Simpan</span>
                             </button>
                         </div>
@@ -157,7 +160,7 @@
 
             {{-- FILTER --}}
             <form method="GET" action="{{ route('admin.barang-masuk.index') }}">
-                <div class="px-4 py-4 border-b border-slate-200 flex flex-wrap items-center gap-3">
+                <div class="px-4 py-4 flex flex-wrap items-center gap-3">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
                         class="w-64 border border-slate-300 rounded-lg px-4 py-2 text-sm
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
@@ -178,7 +181,7 @@
                 <table class="w-full text-sm border-collapse">
                     <thead class="bg-slate-100 text-slate-800">
                         <tr>
-                            <th class="px-4 py-4 text-center text-sm font-bold border w-16">No</th>
+                            <th class="px-4 py-4 text-center text-sm font-bold border w-12">No</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Tanggal</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Kode Part</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Nama Barang</th>
@@ -192,17 +195,17 @@
                     <tbody class="bg-white">
                         @forelse($barangMasuks as $item)
                         <tr class="hover:bg-slate-50 transition-colors duration-150">
-                            <td class="px-4 py-4 border text-center">{{ $barangMasuks->firstItem() + $loop->index }}</td>
-                            <td class="px-4 py-4 border">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-4 py-4 border">{{ $item->barang?->kode ?? '-' }}</td>
-                            <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->barang?->nama_barang ?? '-' }}</td>
-                            <td class="px-4 py-4 border text-slate-700">{{ $item->supplier->nama_supplier ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-center text-black">{{ $barangMasuks->firstItem() + $loop->index }}</td>
+                            <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $item->barang?->kode ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $item->barang?->nama_barang ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-black">{{ $item->supplier->nama_supplier ?? '-' }}</td>
                             <td class="px-4 py-4 border text-center">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                                     +{{ $item->jumlah }}
                                 </span>
                             </td>
-                            <td class="px-4 py-4 border text-right">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                            <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
                             <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                             <td class="px-4 py-4 border">
                                 <div class="flex justify-center items-center gap-2 flex-nowrap">

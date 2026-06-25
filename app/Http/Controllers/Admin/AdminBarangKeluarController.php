@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\BarangKeluar;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdminBarangKeluarController extends Controller
 {
@@ -56,9 +57,19 @@ class AdminBarangKeluarController extends Controller
 
     public function store(Request $request)
     {
+        $minDate = Carbon::now()->subDays(3)->format('Y-m-d');
+        $maxDate = Carbon::now()->format('Y-m-d');
+
+        // Validasi tanggal sebelum validate lain
+        if ($request->tanggal < $minDate || $request->tanggal > $maxDate) {
+            return back()
+                ->withInput()
+                ->with('error', 'Tanggal tidak valid. Hanya boleh input tanggal 3 hari ke belakang hingga hari ini.');
+        }
+
         $request->validate([
             'barang_id'  => 'required|exists:barangs,id',
-            'tanggal'    => 'required|date',
+            'tanggal'    => 'required|date|before_or_equal:today|after_or_equal:' . $minDate,
             'jumlah'     => 'required|integer|min:1',
             'harga_jual' => 'required|numeric|min:0',
             'tujuan'     => 'nullable|string|max:255',
@@ -67,7 +78,7 @@ class AdminBarangKeluarController extends Controller
         $barang = Barang::findOrFail($request->barang_id);
 
         if ($barang->stok < $request->jumlah) {
-            return back()->with('error', 'Stok barang tidak mencukupi');
+            return back()->with('error', 'Stok barang tidak mencukupi.');
         }
 
         BarangKeluar::create([
@@ -84,13 +95,22 @@ class AdminBarangKeluarController extends Controller
 
         return redirect()
             ->route('admin.barang-keluar.index')
-            ->with('success', 'tambah');
+            ->with('success', 'Barang keluar berhasil ditambahkan.');
     }
 
     public function update(Request $request, BarangKeluar $barang_keluar)
     {
+        $minDate = Carbon::now()->subDays(3)->format('Y-m-d');
+        $maxDate = Carbon::now()->format('Y-m-d');
+
+        if ($request->tanggal < $minDate || $request->tanggal > $maxDate) {
+            return back()
+                ->withInput()
+                ->with('error', 'Tanggal tidak valid. Hanya boleh input tanggal 3 hari ke belakang hingga hari ini.');
+        }
+
         $request->validate([
-            'tanggal'    => 'required|date',
+            'tanggal'    => 'required|date|before_or_equal:today|after_or_equal:' . $minDate,
             'jumlah'     => 'required|integer|min:1',
             'harga_jual' => 'required|numeric|min:0',
             'tujuan'     => 'nullable|string|max:255',
@@ -101,7 +121,7 @@ class AdminBarangKeluarController extends Controller
         $stokSetelahRollback = $barang->stok + $barang_keluar->jumlah;
 
         if ($stokSetelahRollback < $request->jumlah) {
-            return back()->with('error', 'Stok tidak mencukupi');
+            return back()->with('error', 'Stok tidak mencukupi.');
         }
 
         $barang->stok = $stokSetelahRollback - $request->jumlah;
@@ -115,7 +135,7 @@ class AdminBarangKeluarController extends Controller
             'tujuan'     => $request->tujuan,
         ]);
 
-        return back()->with('success', 'update');
+        return back()->with('success', 'Data barang keluar berhasil diperbarui.');
     }
 
     public function destroy(BarangKeluar $barang_keluar)
@@ -127,6 +147,6 @@ class AdminBarangKeluarController extends Controller
 
         $barang_keluar->delete();
 
-        return back()->with('success', 'delete');
+        return back()->with('success', 'Data barang keluar berhasil dihapus.');
     }
 }

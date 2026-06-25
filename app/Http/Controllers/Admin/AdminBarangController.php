@@ -73,6 +73,13 @@ class AdminBarangController extends Controller
 
     public function store(Request $request)
     {
+        // Cek kode duplikat sebelum validate
+        if (Barang::where('kode', $request->kode)->exists()) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Kode Part "' . $request->kode . '" sudah digunakan. Gunakan kode yang berbeda.');
+        }
+
         $request->validate([
             'kode'        => 'required|unique:barangs,kode',
             'nama_barang' => 'required',

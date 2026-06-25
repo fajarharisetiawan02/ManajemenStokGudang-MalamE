@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Barang')
+@section('title', __('app.data_barang'))
 
 @section('content')
 
@@ -22,7 +22,7 @@
                     placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     <select name="brand"
                         class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua Brand</option>
+                        <option value="">Semua Merek</option>
                         @foreach ($brandOptions as $brand)
                             <option value="{{ $brand->nama_brand }}"
                                 {{ request('brand') === $brand->nama_brand ? 'selected' : '' }}>
@@ -61,7 +61,7 @@
                             <th class="px-4 py-4 text-center text-sm font-bold border w-12">No</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Kode Part</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Nama Barang</th>
-                            <th class="px-4 py-4 text-left text-sm font-bold border">Brand</th>
+                            <th class="px-4 py-4 text-left text-sm font-bold border">Merek</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border w-40">Tipe</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Kategori</th>
                             <th class="px-4 py-4 text-center text-sm font-bold border w-32">Stok</th>
@@ -85,17 +85,14 @@
                                 }
                             @endphp
                             <tr class="hover:bg-slate-50 transition-colors duration-150">
-                                <td class="px-4 py-4 border text-center">{{ $barangs->firstItem() + $loop->index }}</td>
-                                <td class="px-4 py-4 border">{{ $item->kode }}</td>
-                                <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->nama_barang }}</td>
-                                <td class="px-4 py-4 border text-slate-700">{{ $item->brand->nama_brand ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-slate-700">{{ $item->tipe ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-slate-700">
-                                    {{ $item->kategori->nama_kategori ?? '-' }}
-                                </td>
+                                <td class="px-4 py-4 border text-center text-black">{{ $barangs->firstItem() + $loop->index }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->kode }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->nama_barang }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->brand->nama_brand ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->tipe ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-center">
-                                    <span
-                                        class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
+                                    <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
                                         <span>{{ $item->stok }}</span>
                                         <span>|</span>
                                         <span>{{ $stokText }}</span>
@@ -139,8 +136,7 @@
                     {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
-                    <span
-                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
+                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangs->currentPage() }}
                     </span>
                     <a href="{{ $barangs->nextPageUrl() }}"

@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
             icon: 'success',
             title: locale === 'en' ? 'Success!' : 'Berhasil!',
             text: success,
-            confirmButtonColor: '#2563eb'
+            confirmButtonColor: '#2563eb',
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
         });
     }
 
@@ -23,7 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
             icon: 'error',
             title: locale === 'en' ? 'Failed!' : 'Gagal!',
             text: error,
-            confirmButtonColor: '#ef4444'
+            confirmButtonColor: '#ef4444',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+        }).then(() => {
+            // Buka modal barang lagi kalau error kode duplikat
+            if (error.includes('Kode Part') && typeof openModal === 'function') {
+                openModal();
+            }
         });
     }
 
@@ -32,7 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
             icon: 'warning',
             title: locale === 'en' ? 'Warning!' : 'Peringatan!',
             text: warning,
-            confirmButtonColor: '#f59e0b'
+            confirmButtonColor: '#f59e0b',
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
         });
     }
 
@@ -46,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: '#ef4444',
             cancelButtonColor: '#6b7280',
             confirmButtonText: locale === 'en' ? 'Yes, delete!' : 'Ya, hapus!',
-            cancelButtonText: locale === 'en' ? 'Cancel' : 'Batal'
+            cancelButtonText: locale === 'en' ? 'Cancel' : 'Batal',
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
         }).then((result) => {
             if (result.isConfirmed) form.submit();
         });
@@ -85,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonText: `<i class="fas fa-sign-out-alt mr-2"></i> ${locale === 'en' ? 'Yes, Sign Out' : 'Ya, Keluar'}`,
             cancelButtonText: `<i class="fas fa-times mr-2"></i> ${locale === 'en' ? 'Cancel' : 'Batal'}`,
             reverseButtons: true,
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
             customClass: {
                 popup:         'rounded-2xl',
                 actions:       'gap-4 mt-6',

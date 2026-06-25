@@ -40,7 +40,7 @@
                         <input type="text" name="username" value="{{ old('username') }}" required
                             placeholder="{{ __('app.masukkan_username') }}"
                             class="w-full border border-gray-200 rounded-2xl pl-14 pr-5 py-4 bg-gray-50
-                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition
+                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                             placeholder:text-gray-400 placeholder:font-normal placeholder:text-sm">
                     </div>
                     @error('username')
@@ -58,7 +58,7 @@
                         <input type="password" id="password" name="password" required
                             placeholder="{{ __('app.masukkan_password') }}"
                             class="w-full border border-gray-200 rounded-2xl pl-14 pr-14 py-4 bg-gray-50
-                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition
+                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                             placeholder:text-gray-400 placeholder:font-normal placeholder:text-sm">
                         <button type="button" onclick="togglePassword()"
                             class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition">

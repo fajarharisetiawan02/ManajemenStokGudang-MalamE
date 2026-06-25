@@ -65,11 +65,7 @@
             <!-- TITLE -->
             <div class="text-center mb-16">
 
-                <span class="bg-blue-100 text-blue-700 px-5 py-2 rounded-full text-sm font-semibold shadow-sm">
-                    {{ __('app.keunggulan_sub') }}
-                </span>
-
-                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mt-6">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900">
                     {{ __('app.keunggulan_title') }}
                 </h2>
 
@@ -139,7 +135,7 @@
                         transition duration-300">
                     <div class="w-14 h-14 rounded-xl bg-purple-100 text-purple-600
                             flex items-center justify-center text-2xl mb-5">
-                        <i class="fa-solid fa-users"></i>
+                        <i class="fa-solid fa-user-group"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">
                         {{ __('app.multi_user') }}

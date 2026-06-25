@@ -14,12 +14,13 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        $today = Carbon::today();
+        $today     = Carbon::today();
+        $tujuhHari = Carbon::today()->subDays(7);
 
         // ============ STATISTIK ============
         $totalBarang  = Barang::count();
-        $barangMasuk  = BarangMasuk::whereDate('tanggal', $today)->sum('jumlah');
-        $barangKeluar = BarangKeluar::whereDate('tanggal', $today)->sum('jumlah');
+        $barangMasuk  = BarangMasuk::whereBetween('tanggal', [$tujuhHari, $today])->sum('jumlah');
+        $barangKeluar = BarangKeluar::whereBetween('tanggal', [$tujuhHari, $today])->sum('jumlah');
         $supplier     = Supplier::count();
 
         // ============ CHART PERGERAKAN STOK (12 bulan terakhir) ============
@@ -71,15 +72,17 @@ class AdminDashboardController extends Controller
         $totalStok = Barang::sum('stok');
 
         // ============ TRANSAKSI TERBARU ============
-        $masukTerbaru = BarangMasuk::with('barang')
+        $masukTerbaru = BarangMasuk::with(['barang', 'supplier'])
             ->latest('tanggal')
             ->limit(5)
             ->get()
             ->map(fn($item) => (object)[
-                'tanggal' => $item->tanggal,
-                'barang'  => $item->barang?->nama_barang ?? '-',
-                'qty'     => $item->jumlah,
-                'status'  => 'Masuk',
+                'tanggal'    => $item->tanggal,
+                'kode'       => $item->barang?->kode ?? '-',
+                'barang'     => $item->barang?->nama_barang ?? '-',
+                'qty'        => $item->jumlah,
+                'status'     => 'Masuk',
+                'keterangan' => $item->supplier?->nama_supplier ?? '-',
             ]);
 
         $keluarTerbaru = BarangKeluar::with('barang')
@@ -87,10 +90,12 @@ class AdminDashboardController extends Controller
             ->limit(5)
             ->get()
             ->map(fn($item) => (object)[
-                'tanggal' => $item->tanggal,
-                'barang'  => $item->barang?->nama_barang ?? '-',
-                'qty'     => $item->jumlah,
-                'status'  => 'Keluar',
+                'tanggal'    => $item->tanggal,
+                'kode'       => $item->barang?->kode ?? '-',
+                'barang'     => $item->barang?->nama_barang ?? '-',
+                'qty'        => $item->jumlah,
+                'status'     => 'Keluar',
+                'keterangan' => $item->tujuan ?? '-',
             ]);
 
         $transaksi = $masukTerbaru->concat($keluarTerbaru)

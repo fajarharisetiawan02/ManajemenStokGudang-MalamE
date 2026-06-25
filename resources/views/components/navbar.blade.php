@@ -7,20 +7,7 @@ $stokMenipis = \App\Models\Barang::with('kategori')
     ->limit(5)
     ->get();
 
-$readIds = $user
-    ? \App\Models\NotifikasiRead::where('user_id', $user->id)->pluck('barang_id')->toArray()
-    : [];
-
-$notifCount = $stokMenipis->whereNotIn('id', $readIds)->count();
-
-if ($user && $notifCount > 0) {
-    foreach ($stokMenipis->whereNotIn('id', $readIds) as $barang) {
-        \App\Models\NotifikasiRead::updateOrCreate(
-            ['user_id' => $user->id, 'barang_id' => $barang->id],
-            ['read_at' => now()]
-        );
-    }
-}
+$notifCount = $stokMenipis->count();
 @endphp
 
 <div id="mainNavbar" class="bg-white shadow px-4 md:px-8 py-4 flex justify-between items-center
@@ -161,11 +148,6 @@ if ($user && $notifCount > 0) {
                 <a href="{{ route('profile.index') }}"
                     class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition">
                     <i class="fas fa-user text-slate-400 w-4"></i> {{ __('app.profil') }}
-                </a>
-
-                <a href="{{ route('profile.index') }}#password"
-                    class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition">
-                    <i class="fas fa-key text-yellow-500 w-4"></i> {{ __('app.ubah_kata_sandi') }}
                 </a>
 
                 <div class="border-t border-slate-100">

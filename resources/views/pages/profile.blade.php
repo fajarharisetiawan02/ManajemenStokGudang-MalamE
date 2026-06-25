@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profil')
+@section('title', __('app.profil'))
 
 @section('content')
 
@@ -163,8 +163,8 @@
                             <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
                                 <button type="submit"
                                     class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
-                                    rounded-lg shadow-sm transition flex items-center gap-2">
-                                    <i class="fas fa-save"></i> Simpan Perubahan
+                                    rounded-lg shadow-sm transition">
+                                    Simpan Perubahan
                                 </button>
                             </div>
                         </div>
@@ -263,8 +263,8 @@
                             <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
                                 <button type="submit"
                                     class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium
-                                    rounded-lg shadow-sm transition flex items-center gap-2">
-                                    <i class="fas fa-key"></i> Ganti Password
+                                    rounded-lg shadow-sm transition">
+                                    Ganti Password
                                 </button>
                             </div>
                         </div>

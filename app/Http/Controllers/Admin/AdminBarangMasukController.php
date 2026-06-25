@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\BarangMasuk;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdminBarangMasukController extends Controller
 {
@@ -58,10 +59,20 @@ class AdminBarangMasukController extends Controller
 
     public function store(Request $request)
     {
+        $minDate = Carbon::now()->subDays(3)->format('Y-m-d');
+        $maxDate = Carbon::now()->format('Y-m-d');
+
+        // Validasi tanggal sebelum validate lain
+        if ($request->tanggal < $minDate || $request->tanggal > $maxDate) {
+            return back()
+                ->withInput()
+                ->with('error', 'Tanggal tidak valid. Hanya boleh input tanggal 3 hari ke belakang hingga hari ini.');
+        }
+
         $request->validate([
             'barang_id'   => 'required|exists:barangs,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'tanggal'     => 'required|date',
+            'tanggal'     => 'required|date|before_or_equal:today|after_or_equal:' . $minDate,
             'jumlah'      => 'required|integer|min:1',
             'harga_beli'  => 'required|numeric|min:0',
         ]);
@@ -85,8 +96,17 @@ class AdminBarangMasukController extends Controller
 
     public function update(Request $request, BarangMasuk $barang_masuk)
     {
+        $minDate = Carbon::now()->subDays(3)->format('Y-m-d');
+        $maxDate = Carbon::now()->format('Y-m-d');
+
+        if ($request->tanggal < $minDate || $request->tanggal > $maxDate) {
+            return back()
+                ->withInput()
+                ->with('error', 'Tanggal tidak valid. Hanya boleh input tanggal 3 hari ke belakang hingga hari ini.');
+        }
+
         $request->validate([
-            'tanggal'     => 'required|date',
+            'tanggal'     => 'required|date|before_or_equal:today|after_or_equal:' . $minDate,
             'supplier_id' => 'required|exists:suppliers,id',
             'jumlah'      => 'required|integer|min:1',
             'harga_beli'  => 'required|numeric|min:0',
@@ -117,6 +137,6 @@ class AdminBarangMasukController extends Controller
 
         $barang_masuk->delete();
 
-        return back()->with('success', 'Data berhasil dihapus.');
+        return back()->with('success', 'Data barang masuk berhasil dihapus.');
     }
 }

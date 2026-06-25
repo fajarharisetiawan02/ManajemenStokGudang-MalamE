@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Supplier')
+@section('title', __('app.supplier'))
 
 @section('content')
 <div class="w-full space-y-4">
@@ -59,11 +59,11 @@
                 <tbody class="bg-white">
                     @forelse($suppliers as $item)
                     <tr class="hover:bg-slate-50 transition-colors duration-150">
-                        <td class="px-4 py-4 border text-center">{{ $suppliers->firstItem() + $loop->index }}</td>
-                        <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->nama_supplier }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->telepon }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->email ?? '-' }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->alamat }}</td>
+                        <td class="px-4 py-4 border text-center text-black">{{ $suppliers->firstItem() + $loop->index }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->nama_supplier }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->telepon }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->email ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->alamat }}</td>
                         <td class="px-4 py-4 border">
                             <div class="flex justify-center items-center gap-2 flex-nowrap">
                                 <button type="button"
@@ -132,12 +132,13 @@
 <!-- MODAL SUPPLIER -->
 <div id="modalSupplier"
     data-base-url="{{ url('/admin/supplier') }}"
-    class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4">
+    class="fixed z-[9999] hidden items-start justify-center overflow-y-auto backdrop-blur-sm bg-black/40"
+    style="top:0;left:0;right:0;bottom:0;margin:0;padding:1.5rem 1rem;">
 
-    <div class="relative bg-white w-full max-w-3xl rounded-xl border border-slate-200 shadow-2xl overflow-hidden"
+    <div class="bg-white w-full max-w-3xl rounded-xl shadow-2xl border border-slate-200 flex flex-col my-auto"
         onclick="event.stopPropagation()">
 
-        <div class="bg-slate-50 border-b border-slate-200 px-6 py-5 flex items-center justify-between">
+        <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between rounded-t-xl">
             <div>
                 <h2 id="modalSupplierTitle" class="text-xl font-bold text-slate-800">Tambah Supplier</h2>
                 <p id="modalSupplierSubtitle" class="text-sm text-slate-500 mt-1">Lengkapi data supplier baru di bawah ini.</p>
@@ -153,39 +154,39 @@
             <div id="methodContainerSupplier"></div>
             <div class="grid md:grid-cols-2 gap-5">
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Supplier</label>
+                    <label class="block text-sm font-medium text-slate-700">Nama Supplier</label>
                     <input type="text" name="nama" id="supplier_nama" required placeholder="Contoh: PT Astra"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        class="w-full mt-2 border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-800 outline-none bg-white
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Telepon</label>
+                    <label class="block text-sm font-medium text-slate-700">Telepon</label>
                     <input type="text" name="telepon" id="supplier_telepon" required placeholder="Contoh: 0812xxxx"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        class="w-full mt-2 border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-800 outline-none bg-white
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
-                        Email <span class="text-slate-400 font-normal">(Opsional)</span>
+                    <label class="block text-sm font-medium text-slate-700">
+                        Email <span class="text-slate-400">(Opsional)</span>
                     </label>
                     <input type="email" name="email" id="supplier_email" placeholder="supplier@email.com"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        class="w-full mt-2 border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-800 outline-none bg-white
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 </div>
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Alamat</label>
+                    <label class="block text-sm font-medium text-slate-700">Alamat</label>
                     <textarea name="alamat" id="supplier_alamat" rows="3" required placeholder="Alamat lengkap supplier"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm outline-none
+                        class="w-full mt-2 border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-800 outline-none bg-white
                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none
                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm"></textarea>
                 </div>
             </div>
-            <div class="flex justify-end gap-3 mt-5 pt-4 border-t border-slate-200">
+            <div class="flex justify-end gap-3 pt-5 mt-5 border-t border-slate-200">
                 <button type="button" onclick="closeSupplierModal()"
-                    class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm rounded-lg transition">
+                    class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
                     Batal
                 </button>
                 <button id="submitSupplierBtn" type="submit"

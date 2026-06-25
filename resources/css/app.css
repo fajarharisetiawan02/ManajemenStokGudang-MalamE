@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+.swal2-backdrop-show {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    background: rgba(15, 23, 42, 0.5) !important;
+}

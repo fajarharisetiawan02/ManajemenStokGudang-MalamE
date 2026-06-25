@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Barang')
+@section('title', __('app.data_barang'))
 
 @section('content')
 
@@ -29,7 +29,7 @@
                         class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     <select name="brand"
                         class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua Brand</option>
+                        <option value="">Semua Merek</option>
                         @foreach ($brandOptions as $brand)
                             <option value="{{ $brand->nama_brand }}"
                                 {{ request('brand') === $brand->nama_brand ? 'selected' : '' }}>
@@ -68,7 +68,7 @@
                             <th class="px-4 py-4 text-center text-sm font-bold border w-12">No</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Kode Part</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Nama Barang</th>
-                            <th class="px-4 py-4 text-left text-sm font-bold border">Brand</th>
+                            <th class="px-4 py-4 text-left text-sm font-bold border">Merek</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border w-40">Tipe</th>
                             <th class="px-4 py-4 text-left text-sm font-bold border">Kategori</th>
                             <th class="px-4 py-4 text-center text-sm font-bold border w-32">Stok</th>
@@ -92,17 +92,14 @@
                                 }
                             @endphp
                             <tr class="hover:bg-slate-50 transition-colors duration-150">
-                                <td class="px-4 py-4 border text-center">{{ $barangs->firstItem() + $loop->index }}</td>
-                                <td class="px-4 py-4 border">{{ $item->kode }}</td>
-                                <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->nama_barang }}</td>
-                                <td class="px-4 py-4 border text-slate-700">{{ $item->brand->nama_brand ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-slate-700">{{ $item->tipe ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-slate-700">
-                                    {{ $item->kategori->nama_kategori ?? '-' }}
-                                </td>
+                                <td class="px-4 py-4 border text-center text-black">{{ $barangs->firstItem() + $loop->index }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->kode }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->nama_barang }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->brand->nama_brand ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->tipe ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-center">
-                                    <span
-                                        class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
+                                    <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
                                         <span>{{ $item->stok }}</span>
                                         <span>|</span>
                                         <span>{{ $stokText }}</span>
@@ -148,9 +145,9 @@
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 px-5 py-4 border-t bg-slate-50">
                 <div class="text-sm text-slate-600">
                     Menampilkan
-                    <span class="font-semibold text-slate-800">{{ $barangs->firstItem() ?? 0 }}</span>
+                    <span class="font-semibold text-black">{{ $barangs->firstItem() ?? 0 }}</span>
                     -
-                    <span class="font-semibold text-slate-800">{{ $barangs->lastItem() ?? 0 }}</span>
+                    <span class="font-semibold text-black">{{ $barangs->lastItem() ?? 0 }}</span>
                     dari
                     <span class="font-semibold text-blue-600">{{ $barangs->total() }}</span>
                     data barang
@@ -162,8 +159,7 @@
                         {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
-                    <span
-                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
+                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangs->currentPage() }}
                     </span>
                     <a href="{{ $barangs->nextPageUrl() }}"
@@ -177,7 +173,7 @@
         </div>
 
         <!-- MODAL BARANG -->
-        <div id="modalBarang" class="fixed z-[9999] hidden items-start justify-center bg-black/50 overflow-y-auto"
+        <div id="modalBarang" class="fixed z-[9999] hidden items-start justify-center overflow-y-auto backdrop-blur-sm bg-black/40"
             style="top:0;left:0;right:0;bottom:0;margin:0;padding:1.5rem 1rem;">
             <div class="bg-white w-full max-w-3xl rounded-xl shadow-2xl border border-slate-200 flex flex-col my-auto"
                 onclick="event.stopPropagation()">
@@ -186,8 +182,7 @@
                 <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between rounded-t-xl">
                     <div>
                         <h2 id="modalTitle" class="text-xl font-bold text-slate-800">Tambah Barang</h2>
-                        <p id="modalSubtitle" class="text-sm text-slate-500 mt-1">Lengkapi data barang baru di bawah ini.
-                        </p>
+                        <p id="modalSubtitle" class="text-sm text-slate-500 mt-1">Lengkapi data barang baru di bawah ini.</p>
                     </div>
                     <button type="button" onclick="closeModal()"
                         class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-500 transition">
@@ -206,13 +201,13 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Kode Part</label>
                             <input type="text" name="kode" id="input_kode" required placeholder="Contoh: BRG-001"
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Nama Barang</label>
                             <input type="text" name="nama_barang" id="input_nama" required placeholder="Nama Barang"
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         <div>
@@ -227,10 +222,10 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-slate-700">Brand</label>
+                            <label class="block text-sm font-medium text-slate-700">Merek</label>
                             <select name="brand_id" id="input_brand" required
                                 class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                <option value="">Pilih Brand</option>
+                                <option value="">Pilih Merek</option>
                                 @foreach ($brandOptions as $brand)
                                     <option value="{{ $brand->id }}">{{ $brand->nama_brand }}</option>
                                 @endforeach
@@ -252,7 +247,7 @@
                             <label class="block text-sm font-medium text-slate-700">Harga Jual</label>
                             <input type="number" name="harga_jual" id="input_harga" required min="0"
                                 placeholder="Contoh: 100000"
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         <div class="md:col-span-2">
@@ -260,17 +255,15 @@
                                 Deskripsi <span class="text-slate-400">(Opsional)</span>
                             </label>
                             <textarea name="deskripsi" id="input_deskripsi" rows="2" placeholder="Masukkan deskripsi barang..."
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm"></textarea>
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm"></textarea>
                         </div>
 
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-slate-700 mb-2">Gambar Produk</label>
-                            <div
-                                class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-4 text-center hover:border-blue-400 transition">
+                            <div class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-4 text-center hover:border-blue-400 transition">
                                 <input type="file" name="gambar[]" multiple accept="image/*"
                                     class="w-full text-sm text-slate-700">
-                                <p class="mt-2 text-xs text-slate-500">Maksimal 4 gambar (JPG, JPEG, PNG • 2MB per gambar)
-                                </p>
+                                <p class="mt-2 text-xs text-slate-500">Maksimal 4 gambar (JPG, JPEG, PNG • 2MB per gambar)</p>
                             </div>
                         </div>
 
@@ -282,7 +275,7 @@
                             Batal
                         </button>
                         <button id="submitBtn" type="submit"
-                            class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition">
+                            class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
                             Simpan
                         </button>
                     </div>

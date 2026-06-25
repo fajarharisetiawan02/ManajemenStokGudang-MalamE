@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kategori')
+@section('title', __('app.kategori'))
 
 @section('content')
 
@@ -111,19 +111,19 @@
     {{-- MODAL KATEGORI --}}
     <div id="modalKategori"
         data-store-url="{{ route('admin.kategori.store') }}"
-        class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4">
-        <div class="relative bg-white w-full max-w-lg rounded-xl border border-slate-200 shadow-2xl overflow-hidden"
+        class="fixed z-[9999] hidden items-start justify-center overflow-y-auto backdrop-blur-sm bg-black/40"
+        style="top:0;left:0;right:0;bottom:0;margin:0;padding:1.5rem 1rem;">
+        <div class="bg-white w-full max-w-3xl rounded-xl shadow-2xl border border-slate-200 flex flex-col my-auto"
             onclick="event.stopPropagation()">
 
             {{-- HEADER --}}
-            <div class="bg-slate-50 border-b border-slate-200 px-6 py-5 flex items-center justify-between">
+            <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between rounded-t-xl">
                 <div>
                     <h2 id="modalTitleKategori" class="text-xl font-bold text-slate-800">Tambah Kategori</h2>
                     <p id="modalSubtitleKategori" class="text-sm text-slate-500 mt-1">Lengkapi data kategori baru.</p>
                 </div>
                 <button type="button" onclick="closeKategoriModal()"
-                    class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-500 transition
-                    flex items-center justify-center">
+                    class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -134,30 +134,34 @@
                 @csrf
                 <div id="methodContainerKategori"></div>
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Kategori</label>
+                <div class="grid md:grid-cols-2 gap-5">
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700">Nama Kategori</label>
                         <input type="text" name="nama_kategori" id="kategoriNama"
                             placeholder="Contoh: Mesin, Body, Elektrikal..." required
-                            class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm
-                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                            class="w-full mt-2 border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-800
+                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white
                             placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
-                            Foto Kategori <span class="text-slate-400 font-normal">(Opsional)</span>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700">
+                            Foto Kategori <span class="text-slate-400">(Opsional)</span>
                         </label>
-                        <input type="file" name="foto" accept="image/*"
-                            class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm
-                            outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        <p class="text-xs text-slate-400 mt-1">Format: JPG, PNG • Maks 2MB</p>
+                        <div class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-4 text-center hover:border-blue-400 transition mt-2">
+                            <input type="file" name="foto" accept="image/*"
+                                class="w-full text-sm text-slate-700">
+                            <p class="mt-2 text-xs text-slate-500">Format: JPG, PNG • Maks 2MB</p>
+                        </div>
                     </div>
+
                 </div>
 
                 {{-- FOOTER --}}
-                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+                <div class="flex justify-end gap-3 pt-5 mt-5 border-t border-slate-200">
                     <button type="button" onclick="closeKategoriModal()"
-                        class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm rounded-lg transition">
+                        class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
                         Batal
                     </button>
                     <button id="submitKategoriBtn" type="submit"

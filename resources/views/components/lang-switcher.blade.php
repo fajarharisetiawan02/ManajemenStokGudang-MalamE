@@ -17,7 +17,7 @@
                 <span class="text-gray-700 font-medium">Indonesia</span>
             @endif
 
-            <span class="text-gray-400 text-sm">▼</span>
+            <span id="langChevron" class="text-gray-400 text-sm transition-transform duration-200">▼</span>
         </button>
 
         <div id="langMenu"
@@ -47,7 +47,11 @@
 
 <script>
 function toggleLangMenu() {
-    document.getElementById('langMenu').classList.toggle('hidden');
+    const menu    = document.getElementById('langMenu');
+    const chevron = document.getElementById('langChevron');
+    const isHidden = menu.classList.contains('hidden');
+    menu.classList.toggle('hidden');
+    chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 function setLanguage(lang) {
     document.getElementById('localeInput').value = lang;
@@ -55,8 +59,11 @@ function setLanguage(lang) {
 }
 document.addEventListener('click', function(e) {
     const wrapper = document.getElementById('langForm');
+    const menu    = document.getElementById('langMenu');
+    const chevron = document.getElementById('langChevron');
     if (wrapper && !wrapper.contains(e.target)) {
-        document.getElementById('langMenu')?.classList.add('hidden');
+        menu?.classList.add('hidden');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
     }
 });
 </script>

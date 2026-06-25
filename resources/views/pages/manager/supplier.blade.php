@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Supplier')
+@section('title', __('app.supplier'))
 
 @section('content')
 <div class="w-full space-y-4">
@@ -52,11 +52,11 @@
                 <tbody class="bg-white">
                     @forelse($suppliers as $item)
                     <tr class="hover:bg-slate-50 transition-colors duration-150">
-                        <td class="px-4 py-4 border text-center">{{ $suppliers->firstItem() + $loop->index }}</td>
-                        <td class="px-4 py-4 border font-medium text-slate-800">{{ $item->nama_supplier }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->telepon }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->email ?? '-' }}</td>
-                        <td class="px-4 py-4 border text-slate-700">{{ $item->alamat }}</td>
+                        <td class="px-4 py-4 border text-center text-black">{{ $suppliers->firstItem() + $loop->index }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->nama_supplier }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->telepon }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->email ?? '-' }}</td>
+                        <td class="px-4 py-4 border text-black">{{ $item->alamat }}</td>
                     </tr>
                     @empty
                     <tr>

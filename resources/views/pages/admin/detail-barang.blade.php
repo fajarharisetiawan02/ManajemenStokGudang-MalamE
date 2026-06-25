@@ -85,7 +85,7 @@
                         </tr>
 
                         <tr class="border-b border-slate-200">
-                            <td class="py-4 font-semibold text-slate-700">Brand</td>
+                            <td class="py-4 font-semibold text-slate-700">Merek</td>
                             <td class="py-4 text-center">:</td>
                             <td class="py-4 text-slate-800">{{ $barang->brand->nama_brand ?? '-' }}</td>
                         </tr>
