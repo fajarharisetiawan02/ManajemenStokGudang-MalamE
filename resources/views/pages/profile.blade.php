@@ -19,7 +19,7 @@
         $color = $colors[ord($user->name[0]) % count($colors)];
     @endphp
 
-    <div class="w-full max-w-full overflow-hidden">
+    <div class="w-full max-w-full">
         <div class="flex flex-col md:flex-row gap-5 items-start">
 
             {{-- === KIRI (sticky) === --}}
@@ -30,7 +30,8 @@
                     <div class="h-16 bg-gradient-to-r from-blue-600 to-blue-500"></div>
                     <div class="px-5 pb-5">
                         <div class="-mt-8 mb-4 flex justify-center">
-                            <div class="w-16 h-16 rounded-xl bg-gradient-to-br {{ $color }}
+                            <div
+                                class="w-16 h-16 rounded-xl bg-gradient-to-br {{ $color }}
                             flex items-center justify-center shadow-lg border-4 border-white">
                                 <span class="text-white font-bold text-xl">{{ $initials }}</span>
                             </div>
@@ -38,7 +39,8 @@
                         <div class="text-center">
                             <h3 class="font-bold text-slate-800 text-base">{{ $user->name }}</h3>
                             <p class="text-slate-400 text-xs mt-0.5 truncate">{{ $user->email }}</p>
-                            <span class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full
+                            <span
+                                class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full
                             bg-blue-100 text-blue-700 text-xs font-semibold capitalize">
                                 <i class="fas fa-shield-alt text-xs"></i>
                                 {{ ucfirst($user->role) }}
@@ -140,7 +142,8 @@
                                         Role
                                         <span class="text-slate-400 font-normal text-xs">(tidak dapat diubah)</span>
                                     </label>
-                                    <div class="w-full px-4 py-3 bg-slate-50 border border-slate-200
+                                    <div
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200
                                         rounded-lg text-sm text-slate-500 capitalize cursor-not-allowed flex items-center gap-2">
                                         <i class="fas fa-shield-alt text-slate-400 text-xs"></i>
                                         {{ ucfirst($user->role) }}
@@ -173,8 +176,8 @@
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Password Saat Ini</label>
                                     <div class="relative">
-                                        <input type="password" name="password_lama" id="passwordLama" required autocomplete="new-password"
-                                            placeholder="Masukkan password saat ini"
+                                        <input type="password" name="password_lama" id="passwordLama" required
+                                            autocomplete="new-password" placeholder="Masukkan password saat ini"
                                             class="w-full px-4 pr-12 py-3 border rounded-lg text-sm outline-none
                                             focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white
                                             placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
@@ -193,8 +196,8 @@
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Password Baru</label>
                                     <div class="relative">
-                                        <input type="password" name="password_baru" id="passwordBaru" required autocomplete="new-password"
-                                            placeholder="Minimal 8 karakter"
+                                        <input type="password" name="password_baru" id="passwordBaru" required
+                                            autocomplete="new-password" placeholder="Minimal 8 karakter"
                                             class="w-full px-4 pr-12 py-3 border rounded-lg text-sm outline-none
                                             focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white
                                             placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
@@ -220,7 +223,8 @@
                                     @enderror
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Konfirmasi Password Baru</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Konfirmasi Password
+                                        Baru</label>
                                     <div class="relative">
                                         <input type="password" name="password_baru_confirmation" id="passwordKonfirm"
                                             required autocomplete="new-password" placeholder="Ulangi password baru"

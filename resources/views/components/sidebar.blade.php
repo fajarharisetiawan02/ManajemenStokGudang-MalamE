@@ -27,7 +27,7 @@ $urlPrefix = $role === 'admin' ? 'gp/dashboard' : 'gp/workspace';
 
             <a href="{{ route($prefix.'.dashboard') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($urlPrefix) ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix) || request()->is($urlPrefix.'/dashboard') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-home w-6"></i>
                 <span>{{ __('app.dashboard') }}</span>
             </a>
