@@ -6,7 +6,7 @@
 
     <!-- HERO -->
     <section class="relative overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50">
-        <div class="container mx-auto px-8 py-20 grid md:grid-cols-2 gap-10 items-center min-h-[88vh]">
+        <div class="container mx-auto px-4 md:px-8 py-12 md:py-20 grid md:grid-cols-2 gap-10 items-center min-h-[88vh]">
 
             <!-- LEFT -->
             <div>
@@ -34,7 +34,7 @@
 
                     <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
                         <h3 class="text-2xl font-bold text-blue-700 counter" data-target="{{ $totalTransaksi }}">0</h3>
-                        <p class="text-sm text-gray-500">Total Transaksi</p>
+                        <p class="text-sm text-gray-500">{{ __('app.total_transaksi') }}</p>
                     </div>
 
                 </div>
@@ -48,7 +48,7 @@
                 <div class="absolute w-[520px] h-[520px] bg-slate-200 rounded-full blur-3xl opacity-60"></div>
 
                 <!-- image -->
-                <img src="{{ asset('images/gudang.png') }}" alt="Gudang Dashboard" class="relative z-10 w-full max-w-3xl object-contain
+                <img src="{{ asset('images/gudang.png') }}" alt="Gudang Dashboard" class="relative z-10 w-full max-w-sm md:max-w-3xl object-contain
                     brightness-105 contrast-95 saturate-90 opacity-95
                     mix-blend-multiply">
 
@@ -58,9 +58,9 @@
     </section>
 
     <!-- KEUNGGULAN -->
-    <section id="keunggulan" class="bg-gradient-to-b from-white to-slate-50 py-24">
+    <section id="keunggulan" class="bg-gradient-to-b from-white to-slate-50 py-16 md:py-24">
 
-        <div class="container mx-auto px-8">
+        <div class="container mx-auto px-4 md:px-8">
 
             <!-- TITLE -->
             <div class="text-center mb-16">
@@ -93,7 +93,7 @@
                         {{ __('app.monitoring_stok') }}
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Pantau jumlah stok spare part secara langsung. Data diperbarui setiap ada transaksi masuk atau keluar.
+                        {{ __('app.monitoring_desc') }}
                     </p>
                 </div>
 
@@ -109,7 +109,7 @@
                         {{ __('app.alert_otomatis') }}
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Sistem memberi notifikasi otomatis ketika stok spare part mendekati batas minimum yang ditentukan.
+                        {{ __('app.alert_desc') }}
                     </p>
                 </div>
 
@@ -125,7 +125,7 @@
                         {{ __('app.laporan_lengkap') }}
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Data transaksi masuk dan keluar tersedia dalam bentuk laporan yang bisa diexport ke Excel maupun PDF.
+                        {{ __('app.laporan_desc') }}
                     </p>
                 </div>
 
@@ -141,7 +141,7 @@
                         {{ __('app.multi_user') }}
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Sistem mendukung dua role pengguna yaitu Admin yang bisa kelola data dan Manager yang bisa memantau stok.
+                        {{ __('app.multi_user_desc') }}
                     </p>
                 </div>
 

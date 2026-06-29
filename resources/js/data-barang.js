@@ -106,6 +106,25 @@ function setCustomDropdownValue(selectId, value, placeholder) {
     }
 }
 
+// ==== VALIDASI FILE GAMBAR ==== //
+function validasiGambar(files) {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    let formatError = false;
+    let sizeError = false;
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!allowedTypes.includes(file.type)) formatError = true;
+        else if (file.size > maxSize) sizeError = true;
+    }
+
+    const errors = [];
+    if (formatError) errors.push('Format file tidak didukung. Hanya JPG, JPEG, dan PNG yang diperbolehkan.');
+    if (sizeError) errors.push('Ukuran file melebihi batas maksimal 2MB.');
+    return errors;
+}
+
 // ==== OPEN MODAL TAMBAH ==== //
 function openModal() {
     const modal = document.getElementById('modalBarang');
@@ -115,7 +134,7 @@ function openModal() {
     if (!form) return;
 
     form.reset();
-    form.action = "/admin/data-barang";
+    form.action = document.getElementById("modalBarang").dataset.storeUrl;
 
     const methodContainer = document.getElementById('methodContainer');
     if (methodContainer) methodContainer.innerHTML = '';
@@ -138,6 +157,11 @@ function openModal() {
     resetCustomDropdown('input_kategori', 'Pilih Kategori');
     resetCustomDropdown('input_brand', 'Pilih Brand');
     resetCustomDropdown('input_tipe', 'Pilih Tipe Kendaraan');
+    document.querySelectorAll('#formBarang input:not([type=file]), #formBarang textarea').forEach(el => el.style.backgroundColor = '#ffffff');
+    const inputGambar = document.getElementById('input_gambar');
+    if (inputGambar) inputGambar.value = '';
+    const gambarLabel = document.getElementById('gambar_label');
+    if (gambarLabel) gambarLabel.textContent = '';
 
     modal.classList.remove('hidden');
     modal.classList.add('flex');
@@ -158,7 +182,7 @@ function editData(button) {
     const modal = document.getElementById('modalBarang');
     const form  = document.getElementById('formBarang');
 
-    form.action = "/admin/data-barang/" + button.dataset.id;
+    form.action = document.getElementById("modalBarang").dataset.storeUrl.replace("/store", "") + "/" + button.dataset.id;
     form.querySelector('input[name="kode"]').value         = button.dataset.noPart || '';
     form.querySelector('input[name="nama_barang"]').value  = button.dataset.namaBarang || '';
     form.querySelector('input[name="harga_jual"]').value   = button.dataset.harga || '';
@@ -177,6 +201,11 @@ function editData(button) {
     setCustomDropdownValue('input_brand', button.dataset.brandId || '', 'Pilih Brand');
     setCustomDropdownValue('input_tipe', button.dataset.tipe || '', 'Pilih Tipe Kendaraan');
 
+    document.querySelectorAll('#formBarang input:not([type=file]), #formBarang textarea').forEach(el => el.style.backgroundColor = '#ffffff');
+    const inputGambarEdit = document.getElementById('input_gambar');
+    if (inputGambarEdit) inputGambarEdit.value = '';
+    const gambarLabelEdit = document.getElementById('gambar_label');
+    if (gambarLabelEdit) gambarLabelEdit.textContent = '';
     document.getElementById('methodContainer').innerHTML = '<input type="hidden" name="_method" value="PUT">';
     document.getElementById('modalTitle').innerText    = 'Edit Barang';
     document.getElementById('modalSubtitle').innerText = 'Perbarui data barang di bawah ini.';
@@ -190,7 +219,7 @@ function editData(button) {
 
 // ==== CEK KODE PART DUPLIKAT ==== //
 function cekKodePart(kode, excludeId, callback) {
-    const url = `/admin/data-barang/check-kode?kode=${encodeURIComponent(kode)}&exclude_id=${excludeId || ''}`;
+    const url = document.getElementById("modalBarang").dataset.storeUrl.replace("/store", "") + `/check-kode?kode=${encodeURIComponent(kode)}&exclude_id=${excludeId || ''}`;
     fetch(url)
         .then(res => res.json())
         .then(data => callback(data.exists))
@@ -203,8 +232,52 @@ document.addEventListener('DOMContentLoaded', function () {
     createCustomDropdown('input_brand', 'Pilih Brand');
     createCustomDropdown('input_tipe', 'Pilih Tipe Kendaraan');
 
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 'input_gambar') {
+            const label = document.getElementById('gambar_label');
+            if (!label) return;
+            label.textContent = e.target.files.length > 0
+                ? e.target.files.length + ' file dipilih: ' + Array.from(e.target.files).map(f => f.name).join(', ')
+                : '';
+        }
+    });
+
     const inputKode  = document.getElementById('input_kode');
     const formBarang = document.getElementById('formBarang');
+
+    // ==== VALIDASI GAMBAR SAAT FILE DIPILIH ==== //
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.name === 'gambar[]') {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+            const errors = validasiGambar(files);
+            if (errors.length > 0) {
+                e.target.value = '';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Format File Tidak Didukung!',
+                    html: errors.join('<br>'),
+                    confirmButtonColor: '#2563eb',
+                    confirmButtonText: 'OK',
+                    backdrop: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        const swalContainer = document.querySelector('.swal2-container');
+                        if (swalContainer) {
+                            swalContainer.style.zIndex = '999999';
+                            swalContainer.style.pointerEvents = 'all';
+                        }
+                        const modal = document.getElementById('modalBarang');
+                        if (modal) modal.style.pointerEvents = 'none';
+                    },
+                    didClose: () => {
+                        const modal = document.getElementById('modalBarang');
+                        if (modal) modal.style.pointerEvents = '';
+                    },
+                });
+            }
+        }
+    });
 
     if (inputKode) {
         inputKode.addEventListener('blur', function () {
@@ -234,6 +307,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (formBarang) {
         formBarang.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            // ==== CEK FILE GAMBAR SAAT SUBMIT ==== //
+            const inputFile = formBarang.querySelector('input[name="gambar[]"]');
+            if (inputFile && inputFile.files.length > 0) {
+                const errors = validasiGambar(inputFile.files);
+                if (errors.length > 0) {
+                    inputFile.value = '';
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Format File Tidak Didukung!',
+                        html: errors.join('<br>'),
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'OK',
+                        backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+                    });
+                    return;
+                }
+            }
 
             const kode = inputKode?.value.trim();
             if (!kode) {

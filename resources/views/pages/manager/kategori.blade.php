@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.kategori'))
+@section('title', __('app.title_kategori'))
+@section('page_title', __('app.kategori'))
 
 @section('content')
 
@@ -12,7 +13,7 @@
             <form method="GET" action="{{ url('/manager/kategori') }}">
                 <div class="px-4 pb-4 pt-4 flex flex-wrap items-center gap-3">
                     <select name="search"
-                        class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua Kategori</option>
                         @foreach ($kategori as $k)
                             <option value="{{ $k->id }}" {{ request('search') == $k->id ? 'selected' : '' }}>
@@ -21,11 +22,11 @@
                         @endforeach
                     </select>
                     <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                         <i class="fas fa-filter mr-1"></i> Filter
                     </button>
                     <a href="{{ url('/manager/kategori') }}"
-                        class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+                        class="border border-slate-300 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition">
                         Reset
                     </a>
                 </div>
@@ -60,14 +61,14 @@
                             </div>
 
                             {{-- BODY --}}
-                            <div class="px-4 py-3 flex items-center justify-between">
-                                <h2 class="font-bold text-slate-800 text-sm">
+                            <div class="px-4 py-3 flex items-center justify-between gap-2">
+                                <h2 class="font-bold text-slate-800 text-sm truncate flex-1 min-w-0 mr-2">
                                     {{ $item->nama_kategori }}
                                 </h2>
-                                <div class="flex items-center gap-1.5">
+                                <div class="flex items-center gap-1.5 flex-shrink-0">
                                     <a href="{{ route('manager.data-barang.index', ['kategori_id' => $item->id]) }}"
-                                        class="px-3 py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-lg shadow-sm transition text-sm">
-                                        <i class="fas fa-boxes text-xs"></i> Barang
+                                        class="inline-flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 bg-slate-700 hover:bg-slate-800 text-white text-sm rounded-lg transition">
+                                        <i class="fas fa-box md:mr-1"></i><span class="hidden md:inline"> Barang</span>
                                     </a>
                                 </div>
                             </div>

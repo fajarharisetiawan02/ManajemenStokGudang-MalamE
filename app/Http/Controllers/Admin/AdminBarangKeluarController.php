@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\BarangKeluar;
+use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -60,7 +61,7 @@ class AdminBarangKeluarController extends Controller
         $minDate = Carbon::now()->subDays(3)->format('Y-m-d');
         $maxDate = Carbon::now()->format('Y-m-d');
 
-        // Validasi tanggal sebelum validate lain
+        // Validasi tanggal range
         if ($request->tanggal < $minDate || $request->tanggal > $maxDate) {
             return back()
                 ->withInput()
@@ -76,6 +77,17 @@ class AdminBarangKeluarController extends Controller
         ]);
 
         $barang = Barang::findOrFail($request->barang_id);
+
+        // Validasi tanggal keluar tidak boleh sebelum tanggal masuk pertama
+        $masukPertama = BarangMasuk::where('barang_id', $request->barang_id)
+            ->orderBy('tanggal', 'asc')
+            ->value('tanggal');
+
+        if ($masukPertama && $request->tanggal < $masukPertama) {
+            return back()
+                ->withInput()
+                ->with('error', 'Tanggal keluar tidak boleh sebelum tanggal barang pertama kali masuk (' . Carbon::parse($masukPertama)->format('d/m/Y') . ').');
+        }
 
         if ($barang->stok < $request->jumlah) {
             return back()->with('error', 'Stok barang tidak mencukupi.');
@@ -117,6 +129,17 @@ class AdminBarangKeluarController extends Controller
         ]);
 
         $barang = Barang::findOrFail($barang_keluar->barang_id);
+
+        // Validasi tanggal keluar tidak boleh sebelum tanggal masuk pertama
+        $masukPertama = BarangMasuk::where('barang_id', $barang_keluar->barang_id)
+            ->orderBy('tanggal', 'asc')
+            ->value('tanggal');
+
+        if ($masukPertama && $request->tanggal < $masukPertama) {
+            return back()
+                ->withInput()
+                ->with('error', 'Tanggal keluar tidak boleh sebelum tanggal barang pertama kali masuk (' . Carbon::parse($masukPertama)->format('d/m/Y') . ').');
+        }
 
         $stokSetelahRollback = $barang->stok + $barang_keluar->jumlah;
 

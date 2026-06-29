@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.data_barang'))
+@section('title', __('app.title_data_barang'))
+@section('page_title', __('app.data_barang'))
 
 @section('content')
 
@@ -16,12 +17,12 @@
 
             <!-- FILTER -->
             <form method="GET" action="{{ url('/manager/data-barang') }}">
-                <div class="px-4 pb-4 pt-4 flex flex-wrap items-center gap-3">
+                <div class="px-4 pt-4 pb-4 flex flex-wrap items-center gap-3">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
-                        class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                        class="w-full md:w-64 border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                     placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                     <select name="brand"
-                        class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                        class="border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500">
                         <option value="">Semua Merek</option>
                         @foreach ($brandOptions as $brand)
                             <option value="{{ $brand->nama_brand }}"
@@ -31,11 +32,11 @@
                         @endforeach
                     </select>
                     <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                         <i class="fas fa-filter mr-1"></i> Filter
                     </button>
                     <a href="{{ url('/manager/data-barang') }}"
-                        class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+                        class="border border-slate-300 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition">
                         Reset
                     </a>
                 </div>
@@ -87,10 +88,10 @@
                             <tr class="hover:bg-slate-50 transition-colors duration-150">
                                 <td class="px-4 py-4 border text-center text-black">{{ $barangs->firstItem() + $loop->index }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->kode }}</td>
-                                <td class="px-4 py-4 border text-black">{{ $item->nama_barang }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->nama_barang }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->brand->nama_brand ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->tipe ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-black">{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-center">
                                     <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
                                         <span>{{ $item->stok }}</span>
@@ -101,18 +102,19 @@
                                 <td class="px-4 py-4 border text-right font-semibold text-slate-700">
                                     Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
                                 </td>
-                                <td class="px-4 py-4 border">
-                                    <div class="flex justify-center items-center gap-2 flex-nowrap">
-                                        <a href="{{ route('manager.data-barang.show', $item->id) }}"
-                                            class="inline-flex items-center px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                            <i class="fas fa-eye mr-1"></i> Detail
-                                        </a>
-                                    </div>
+                                <td class="px-4 py-4 border text-center">
+                                    <a href="{{ route('manager.data-barang.show', $item->id) }}"
+                                        class="inline-flex items-center px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm rounded-lg transition whitespace-nowrap">
+                                        <i class="fas fa-eye mr-1"></i> Detail
+                                    </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="py-10 text-center text-gray-500">Belum ada data barang</td>
+                                <td colspan="9" class="py-10 text-center text-slate-400">
+                                    <i class="fas fa-box text-3xl mb-3 block text-slate-300"></i>
+                                    Belum ada data barang
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -130,19 +132,19 @@
                     data barang
                 </div>
                 <div class="flex items-center gap-2">
-                    <a href="{{ $barangs->previousPageUrl() }}"
+                    <a href="{{ $barangs->currentPage() > 1 ? $barangs->url($barangs->currentPage() - 1) : '#' }}"
                         class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
-                    text-slate-600 hover:bg-slate-100 text-sm transition
-                    {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
+                        text-slate-600 hover:bg-slate-100 text-sm transition
+                        {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
                     <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangs->currentPage() }}
                     </span>
-                    <a href="{{ $barangs->nextPageUrl() }}"
+                    <a href="{{ $barangs->hasMorePages() ? $barangs->url($barangs->currentPage() + 1) : '#' }}"
                         class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
-                    text-slate-600 hover:bg-slate-100 text-sm transition
-                    {{ !$barangs->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
+                        text-slate-600 hover:bg-slate-100 text-sm transition
+                        {{ !$barangs->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
                         Berikutnya
                     </a>
                 </div>

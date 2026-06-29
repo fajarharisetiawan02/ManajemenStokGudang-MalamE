@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.kategori'))
+@section('title', __('app.title_kategori'))
+@section('page_title', __('app.kategori'))
 
 @section('content')
 
@@ -10,7 +11,7 @@
 
             <div class="p-4">
                 <button onclick="openTambah()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                     <i class="fas fa-plus mr-1"></i> Tambah Kategori
                 </button>
             </div>
@@ -18,7 +19,7 @@
             <form method="GET" action="{{ url('/admin/kategori') }}">
                 <div class="px-4 pb-4 flex flex-wrap items-center gap-3">
                     <select name="search"
-                        class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua Kategori</option>
                         @foreach ($kategori as $k)
                             <option value="{{ $k->id }}" {{ request('search') == $k->id ? 'selected' : '' }}>
@@ -27,11 +28,11 @@
                         @endforeach
                     </select>
                     <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                         <i class="fas fa-filter mr-1"></i> Filter
                     </button>
                     <a href="{{ url('/admin/kategori') }}"
-                        class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+                        class="border border-slate-300 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition">
                         Reset
                     </a>
                 </div>
@@ -66,27 +67,26 @@
                             </div>
 
                             {{-- BODY --}}
-                            <div class="px-4 py-3 flex items-center justify-between">
-                                <h2 class="font-bold text-slate-800 text-sm">
+                            <div class="px-4 py-3 flex items-center justify-between gap-2">
+                                <h2 class="font-bold text-slate-800 text-sm truncate flex-1 min-w-0 mr-2">
                                     {{ $item->nama_kategori }}
                                 </h2>
-
-                                <div class="flex items-center gap-1.5">
+                                <div class="flex items-center gap-1.5 flex-shrink-0">
                                     <a href="{{ route('admin.data-barang.index', ['kategori_id' => $item->id]) }}"
-                                        class="inline-flex items-center px-3 py-2 bg-slate-700 hover:bg-slate-800 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                        <i class="fas fa-boxes text-xs mr-1"></i> Barang
+                                        class="inline-flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 bg-slate-700 hover:bg-slate-800 text-white text-sm rounded-lg transition">
+                                        <i class="fas fa-box md:mr-1"></i><span class="hidden md:inline"> Barang</span>
                                     </a>
                                     <button type="button"
                                         onclick="openEdit('{{ $item->id }}','{{ addslashes($item->nama_kategori) }}')"
-                                        class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                        <i class="fas fa-pen mr-1"></i> Edit
+                                        class="inline-flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition">
+                                        <i class="fas fa-pen md:mr-1"></i><span class="hidden md:inline"> Edit</span>
                                     </button>
                                     <form method="POST" action="{{ route('admin.kategori.destroy', $item->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" onclick="confirmDelete(this.form)"
-                                            class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                            <i class="fas fa-trash mr-1"></i> Hapus
+                                            class="inline-flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition">
+                                            <i class="fas fa-trash md:mr-1"></i><span class="hidden md:inline"> Hapus</span>
                                         </button>
                                     </form>
                                 </div>
@@ -130,7 +130,7 @@
 
             {{-- FORM --}}
             <form id="formKategori" method="POST" enctype="multipart/form-data"
-                action="{{ route('admin.kategori.store') }}" class="p-6">
+                action="{{ route('admin.kategori.store') }}" class="p-6" autocomplete="off">
                 @csrf
                 <div id="methodContainerKategori"></div>
 
@@ -149,10 +149,14 @@
                         <label class="block text-sm font-medium text-slate-700">
                             Foto Kategori <span class="text-slate-400">(Opsional)</span>
                         </label>
-                        <div class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-4 text-center hover:border-blue-400 transition mt-2">
-                            <input type="file" name="foto" accept="image/*"
-                                class="w-full text-sm text-slate-700">
-                            <p class="mt-2 text-xs text-slate-500">Format: JPG, PNG • Maks 2MB</p>
+                        <div onclick="document.getElementById('input_foto').click()"
+                            class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-5 text-center hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer mt-2">
+                            <input type="file" name="foto" id="input_foto" class="hidden"
+                                onclick="event.stopPropagation()">
+                            <i class="fas fa-cloud-upload-alt text-2xl text-slate-400 mb-2 block"></i>
+                            <p class="text-sm text-slate-500 font-medium">Klik untuk upload foto</p>
+                            <p class="mt-1 text-xs text-slate-400">Format: JPG, PNG • Maks 2MB</p>
+                            <p id="foto_label" class="mt-2 text-xs text-blue-600 font-medium"></p>
                         </div>
                     </div>
 

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.dashboard'))
+@section('title', __('app.title_dashboard'))
+@section('page_title', __('app.dashboard'))
 
 @section('content')
 
@@ -11,11 +12,11 @@
 
     {{-- HERO --}}
     <div
-        class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl border border-blue-500 shadow-sm mb-8 px-8 py-6 flex items-center justify-between relative overflow-hidden">
+        class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl border border-blue-500 shadow-sm mb-8 px-4 md:px-8 py-4 md:py-6 flex items-center justify-between relative overflow-hidden">
         <div class="text-white max-w-lg z-20">
             <h1 class="text-3xl font-bold mb-1">Halo! 👋</h1>
             <h2 class="text-xl font-semibold text-white/95">
-                {{ Auth::user()->name ?? 'Admin GudangPro' }}
+                {{ Auth::user()->name ?? 'Manager GudangPro' }}
             </h2>
             <p class="mt-3 text-base text-white/90 leading-relaxed max-w-md">
                 Pantau stok barang, transaksi masuk & keluar, serta aktivitas gudang secara real-time dengan GudangPro.
@@ -89,7 +90,7 @@
     {{-- CHART --}}
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
 
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 h-[430px] flex flex-col">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:h-[430px] flex flex-col">
             <div class="flex flex-wrap justify-between items-start gap-4 mb-5">
                 <div>
                     <div class="flex items-center gap-3">
@@ -107,7 +108,7 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 h-[430px] flex flex-col">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:h-[430px] flex flex-col">
             <div class="flex items-center gap-3 mb-5">
                 <i class="fas fa-chart-pie text-blue-600 text-xl"></i>
                 <div>
@@ -115,7 +116,7 @@
                     <p class="text-sm text-slate-500">Persentase stok berdasarkan pemasok</p>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4 flex-1">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
                 <div class="flex items-center justify-center">
                     <div class="relative w-full max-w-[220px]">
                         <canvas id="donutGudang"></canvas>
@@ -159,7 +160,7 @@
                             <td class="px-4 py-4 border text-center text-black">{{ $i + 1 }}</td>
                             <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                             <td class="px-4 py-4 border text-black">{{ $item->kode ?? '-' }}</td>
-                            <td class="px-4 py-4 border text-black">{{ $item->barang }}</td>
+                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->barang }}</td>
                             <td class="px-4 py-4 border text-center">
                                 @if ($item->status === 'Masuk')
                                     <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
@@ -174,11 +175,14 @@
                             <td class="px-4 py-4 border text-center font-semibold {{ $item->status === 'Masuk' ? 'text-green-600' : 'text-red-600' }}">
                                 {{ $item->status === 'Masuk' ? '+' : '-' }}{{ $item->qty }}
                             </td>
-                            <td class="px-4 py-4 border text-black">{{ $item->keterangan ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->keterangan ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-10 text-center text-slate-400">Belum ada transaksi</td>
+                            <td colspan="7" class="py-10 text-center text-slate-400">
+                                <i class="fas fa-clock-rotate-left text-3xl mb-3 block text-slate-300"></i>
+                                Belum ada transaksi
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -200,7 +204,7 @@
             </div>
             <a href="{{ route('admin.data-barang.index') }}?stok=menipis"
                 class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white
-                px-4 py-2 rounded-xl shadow-sm transition text-sm font-medium">
+                px-4 py-2.5 rounded-xl shadow-sm transition text-sm font-medium">
                 <i class="fas fa-eye"></i> Lihat Semua Produk
             </a>
         </div>
@@ -222,8 +226,8 @@
                         <tr class="hover:bg-slate-50 transition-colors duration-150">
                             <td class="px-4 py-4 border text-center text-black">{{ $i + 1 }}</td>
                             <td class="px-4 py-4 border text-black">{{ $barang->kode }}</td>
-                            <td class="px-4 py-4 border text-black">{{ $barang->nama_barang }}</td>
-                            <td class="px-4 py-4 border text-black">{{ $barang->kategori->nama_kategori ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $barang->nama_barang }}</td>
+                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $barang->kategori->nama_kategori ?? '-' }}</td>
                             <td class="px-4 py-4 border text-center font-semibold
                                 {{ $barang->stok <= 0 ? 'text-red-600' : 'text-yellow-600' }}">
                                 {{ $barang->stok }}
@@ -231,8 +235,6 @@
                             <td class="px-4 py-4 border text-center">
                                 @if ($barang->stok <= 0)
                                     <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">Habis</span>
-                                @elseif($barang->stok <= 5)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">Kritis</span>
                                 @else
                                     <span class="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">Menipis</span>
                                 @endif
@@ -247,7 +249,8 @@
                     @empty
                         <tr>
                             <td colspan="7" class="py-10 text-center text-green-600 font-semibold">
-                                <i class="fas fa-check-circle mr-2"></i> Semua stok dalam kondisi aman
+                                <i class="fas fa-check-circle text-3xl mb-3 block text-green-400"></i>
+                                Semua stok dalam kondisi aman
                             </td>
                         </tr>
                     @endforelse

@@ -1,6 +1,6 @@
 <?php
 return [
-    // NAVBAR & SIDEBAR
+    // NAVBAR & SIDEBAR LABEL
     'dashboard'         => 'Dashboard',
     'data_barang'       => 'Data Barang',
     'kategori'          => 'Kategori',
@@ -23,6 +23,17 @@ return [
     'kritis'            => 'Kritis',
     'menipis'           => 'Menipis',
     'stok_tersisa'      => 'Stok tersisa',
+
+    // PAGE TITLES (untuk @section('title'))
+    'title_dashboard'   => 'GudangPro | Dashboard',
+    'title_data_barang' => 'GudangPro | Data Barang',
+    'title_kategori'    => 'GudangPro | Kategori',
+    'title_supplier'    => 'GudangPro | Supplier',
+    'title_barang_masuk'=> 'GudangPro | Barang Masuk',
+    'title_barang_keluar'=> 'GudangPro | Barang Keluar',
+    'title_laporan'     => 'GudangPro | Laporan',
+    'title_profil'      => 'GudangPro | Profil',
+    'title_detail_barang'=> 'GudangPro | Detail Barang',
 
     // AUTH NAVBAR
     'kembali_beranda'   => 'Kembali ke Beranda',
@@ -48,7 +59,7 @@ return [
     'mulai_sekarang'    => 'Mulai Sekarang',
     'spare_part'        => 'Spare Part',
     'akurasi'           => 'Akurasi',
-    'keunggulan_title' => 'Fitur Sistem GudangPro',
+    'keunggulan_title'  => 'Fitur Sistem GudangPro',
     'keunggulan_sub'    => 'Platform Stok Gudang Terpercaya',
     'keunggulan_desc'   => 'Dirancang untuk membantu pengelolaan stok spare part kendaraan menjadi lebih cepat, akurat, efisien, dan modern.',
     'monitoring_stok'   => 'Monitoring Stok',
@@ -59,6 +70,7 @@ return [
     'laporan_desc'      => 'Data penjualan, stok, supplier, dan transaksi tersusun otomatis.',
     'multi_user'        => 'Multi User',
     'multi_user_desc'   => 'Bisa digunakan Admin Gudang dan Manajer bersamaan.',
+    'total_transaksi'   => 'Total Transaksi',
 
     // FOOTER
     'pusat_bantuan'     => 'Pusat Bantuan',

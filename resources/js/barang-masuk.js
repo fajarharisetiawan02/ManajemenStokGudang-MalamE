@@ -20,6 +20,7 @@ if (document.getElementById('cekBarang') && document.getElementById('inputSuppli
         trigger.style.fontSize = '14px';
         trigger.style.height = '42px';
         trigger.style.fontWeight = '400';
+        trigger.style.marginTop = '8px'; // fix: tambah mt-2 agar konsisten
         trigger.className = 'w-full px-4 border border-slate-300 rounded-lg outline-none bg-white text-left flex items-center justify-between focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition';
         trigger.innerHTML = `<span id="inputSupplier_label" style="color:#94a3b8;">Pilih Supplier</span><svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>`;
         wrapper.appendChild(trigger);
@@ -163,7 +164,7 @@ if (document.getElementById('cekBarang') && document.getElementById('inputSuppli
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
         this.disabled  = true;
 
-        fetch('/admin/barang-masuk/cek-barang/' + kode)
+        fetch(document.getElementById('cekBarang').dataset.cekUrl + kode)
             .then(res => res.json())
             .then(result => {
                 this.innerHTML = '<i class="fas fa-search"></i> Cek Barang';
@@ -227,7 +228,7 @@ if (document.getElementById('cekBarang') && document.getElementById('inputSuppli
     }
 
     window.setEditModeMasuk = function (id, tanggal, jumlah, harga, supplierId, kode, nama, kategori, brand, stok, tipe) {
-        document.getElementById('mainForm').action = `/admin/barang-masuk/${id}`;
+        document.getElementById('mainForm').action = document.getElementById('mainForm').dataset.storeUrl.replace('/store', '') + '/' + id;
         document.getElementById('methodContainer').innerHTML = '<input type="hidden" name="_method" value="PUT">';
         document.getElementById('inputTanggal').value = tanggal;
         document.getElementById('inputJumlah').value  = jumlah;

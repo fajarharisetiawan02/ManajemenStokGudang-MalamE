@@ -47,13 +47,19 @@ Route::controller(LoginController::class)->group(function () {
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 
 
-/* === PROFIL & NOTIFIKASI (Admin & Manager) === */
+/* === PROFIL & NOTIFIKASI & PING SESSION (Admin & Manager) === */
 Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profil/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     Route::post('/notifikasi/read', [NotifikasiController::class, 'markRead'])->name('notifikasi.read');
+
+    /* === PING SESSION === */
+    Route::post('/ping-session', function () {
+        session()->put('last_activity', now());
+        return response()->json(['status' => 'ok']);
+    })->name('ping.session');
 });
 
 

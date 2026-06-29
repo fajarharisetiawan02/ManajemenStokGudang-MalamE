@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.toggleDropdown = function () {
         const menu    = document.getElementById('dropdownProfile');
         const chevron = document.getElementById('dropdownChevron');
-        const notif   = document.getElementById('dropdownNotif');
+        const notif   = document.getElementById('dropdownNotifBox');
         if (!menu) return;
         const isHidden = menu.classList.contains('hidden');
         menu.classList.toggle('hidden', !isHidden);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // === DROPDOWN NOTIFIKASI === //
     window.toggleNotif = function () {
-        const notif   = document.getElementById('dropdownNotif');
+        const notif   = document.getElementById('dropdownNotifBox');
         const menu    = document.getElementById('dropdownProfile');
         const chevron = document.getElementById('dropdownChevron');
         if (!notif) return;
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (chevron) chevron.style.transform = 'rotate(0deg)';
         }
         const notifWrapper = document.getElementById('notifWrapper');
-        const notifMenu    = document.getElementById('dropdownNotif');
+        const notifMenu    = document.getElementById('dropdownNotifBox');
         if (notifWrapper && notifMenu && !notifWrapper.contains(e.target)) {
             notifMenu.classList.add('hidden');
         }

@@ -38,8 +38,6 @@ class ManagerBarangController extends Controller
                 $query->where('stok', '>', 0)->where('stok', '<=', 10);
             } elseif ($request->stok === 'habis') {
                 $query->where('stok', '<=', 0);
-            } elseif ($request->stok === 'kritis') {
-                $query->where('stok', '>', 0)->where('stok', '<=', 5);
             }
         }
 
@@ -59,7 +57,6 @@ class ManagerBarangController extends Controller
     {
         $barang = Barang::with(['kategori', 'brand', 'gambarBarang'])->findOrFail($id);
 
-        // Ambil data supplier & harga beli dari barang masuk terakhir
         $masukTerakhir = BarangMasuk::with('supplier')
             ->where('barang_id', $id)
             ->latest('tanggal')

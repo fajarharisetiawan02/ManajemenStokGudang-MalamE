@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.data_barang'))
+@section('title', __('app.title_data_barang'))
+@section('page_title', __('app.data_barang'))
 
 @section('content')
 
@@ -17,7 +18,7 @@
 
             <div class="p-4">
                 <button type="button" onclick="openModal()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                     <i class="fas fa-plus mr-1"></i> Tambah Barang
                 </button>
             </div>
@@ -26,9 +27,9 @@
             <form method="GET" action="{{ url('/admin/data-barang') }}">
                 <div class="px-4 pb-4 flex flex-wrap items-center gap-3">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari barang..."
-                        class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
-                    <select name="brand"
-                        class="border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                        class="w-full md:w-64 border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                    <select name="brand" id="filter_brand"
+                        class="border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500">
                         <option value="">Semua Merek</option>
                         @foreach ($brandOptions as $brand)
                             <option value="{{ $brand->nama_brand }}"
@@ -38,11 +39,11 @@
                         @endforeach
                     </select>
                     <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                         <i class="fas fa-filter mr-1"></i> Filter
                     </button>
                     <a href="{{ url('/admin/data-barang') }}"
-                        class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+                        class="border border-slate-300 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition">
                         Reset
                     </a>
                 </div>
@@ -94,10 +95,10 @@
                             <tr class="hover:bg-slate-50 transition-colors duration-150">
                                 <td class="px-4 py-4 border text-center text-black">{{ $barangs->firstItem() + $loop->index }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->kode }}</td>
-                                <td class="px-4 py-4 border text-black">{{ $item->nama_barang }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->nama_barang }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->brand->nama_brand ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->tipe ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-black">{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-center">
                                     <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
                                         <span>{{ $item->stok }}</span>
@@ -135,7 +136,10 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="py-10 text-center text-gray-500">Belum ada data barang</td>
+                                <td colspan="9" class="py-10 text-center text-slate-400">
+                                    <i class="fas fa-box text-3xl mb-3 block text-slate-300"></i>
+                                    Belum ada data barang
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -153,7 +157,7 @@
                     data barang
                 </div>
                 <div class="flex items-center gap-2">
-                    <a href="{{ $barangs->previousPageUrl() }}"
+                    <a href="{{ $barangs->currentPage() > 1 ? $barangs->url($barangs->currentPage() - 1) : '#' }}"
                         class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                         text-slate-600 hover:bg-slate-100 text-sm transition
                         {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
@@ -162,7 +166,7 @@
                     <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangs->currentPage() }}
                     </span>
-                    <a href="{{ $barangs->nextPageUrl() }}"
+                    <a href="{{ $barangs->hasMorePages() ? $barangs->url($barangs->currentPage() + 1) : '#' }}"
                         class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                         text-slate-600 hover:bg-slate-100 text-sm transition
                         {{ !$barangs->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
@@ -192,7 +196,7 @@
 
                 <!-- FORM -->
                 <form id="formBarang" action="{{ route('admin.data-barang.store') }}" method="POST"
-                    enctype="multipart/form-data" class="p-6">
+                    enctype="multipart/form-data" class="p-6" autocomplete="off">
                     @csrf
                     <div id="methodContainer"></div>
 
@@ -201,19 +205,19 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Kode Part</label>
                             <input type="text" name="kode" id="input_kode" required placeholder="Contoh: BRG-001"
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-blue-50 text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Nama Barang</label>
                             <input type="text" name="nama_barang" id="input_nama" required placeholder="Nama Barang"
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-blue-50 text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Kategori</label>
                             <select name="kategori_id" id="input_kategori" required
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-50">
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($kategori as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
@@ -224,7 +228,7 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Merek</label>
                             <select name="brand_id" id="input_brand" required
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-50">
                                 <option value="">Pilih Merek</option>
                                 @foreach ($brandOptions as $brand)
                                     <option value="{{ $brand->id }}">{{ $brand->nama_brand }}</option>
@@ -235,7 +239,7 @@
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-slate-700">Tipe Kendaraan</label>
                             <select name="tipe" id="input_tipe" required
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-50">
                                 <option value="">Pilih Tipe Kendaraan</option>
                                 @foreach ($tipeOptions as $tipe)
                                     <option value="{{ $tipe->nama_tipe }}">{{ $tipe->nama_tipe }}</option>
@@ -247,7 +251,7 @@
                             <label class="block text-sm font-medium text-slate-700">Harga Jual</label>
                             <input type="number" name="harga_jual" id="input_harga" required min="0"
                                 placeholder="Contoh: 100000"
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-blue-50 text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                         </div>
 
                         <div class="md:col-span-2">
@@ -255,15 +259,19 @@
                                 Deskripsi <span class="text-slate-400">(Opsional)</span>
                             </label>
                             <textarea name="deskripsi" id="input_deskripsi" rows="2" placeholder="Masukkan deskripsi barang..."
-                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-white text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm"></textarea>
+                                class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg outline-none bg-blue-50 text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm"></textarea>
                         </div>
 
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-slate-700 mb-2">Gambar Produk</label>
-                            <div class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-4 text-center hover:border-blue-400 transition">
-                                <input type="file" name="gambar[]" multiple accept="image/*"
-                                    class="w-full text-sm text-slate-700">
-                                <p class="mt-2 text-xs text-slate-500">Maksimal 4 gambar (JPG, JPEG, PNG • 2MB per gambar)</p>
+                            <div id="uploadArea" onclick="document.getElementById('input_gambar').click()"
+                                class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-5 text-center hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer">
+                                <input type="file" name="gambar[]" id="input_gambar" multiple accept="image/*" class="hidden"
+                                    onclick="event.stopPropagation()">
+                                <i class="fas fa-cloud-upload-alt text-2xl text-slate-400 mb-2 block"></i>
+                                <p class="text-sm text-slate-500 font-medium">Klik untuk upload gambar</p>
+                                <p class="mt-1 text-xs text-slate-400">Maksimal 4 gambar (JPG, JPEG, PNG • 2MB per gambar)</p>
+                                <p id="gambar_label" class="mt-2 text-xs text-blue-600 font-medium"></p>
                             </div>
                         </div>
 

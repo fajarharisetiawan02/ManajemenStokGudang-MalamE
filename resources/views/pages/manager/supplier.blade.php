@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.supplier'))
+@section('title', __('app.title_supplier'))
+@section('page_title', __('app.supplier'))
 
 @section('content')
 <div class="w-full space-y-4">
@@ -11,14 +12,14 @@
         <form method="GET" action="{{ url('/manager/supplier') }}">
             <div class="px-4 pb-4 pt-4 flex flex-wrap items-center gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari supplier..."
-                    class="w-64 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                    class="w-full md:w-64 border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                     placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg shadow-sm transition">
                     <i class="fas fa-filter mr-1"></i> Filter
                 </button>
                 <a href="{{ url('/manager/supplier') }}"
-                    class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition">
+                    class="border border-slate-300 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition">
                     Reset
                 </a>
             </div>
@@ -53,14 +54,17 @@
                     @forelse($suppliers as $item)
                     <tr class="hover:bg-slate-50 transition-colors duration-150">
                         <td class="px-4 py-4 border text-center text-black">{{ $suppliers->firstItem() + $loop->index }}</td>
-                        <td class="px-4 py-4 border text-black">{{ $item->nama_supplier }}</td>
+                        <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->nama_supplier }}</td>
                         <td class="px-4 py-4 border text-black">{{ $item->telepon }}</td>
                         <td class="px-4 py-4 border text-black">{{ $item->email ?? '-' }}</td>
-                        <td class="px-4 py-4 border text-black">{{ $item->alamat }}</td>
+                        <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->alamat }}</td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="py-10 text-center text-gray-500">Belum ada data supplier</td>
+                        <td colspan="5" class="py-10 text-center text-slate-400">
+                            <i class="fas fa-truck text-3xl mb-3 block text-slate-300"></i>
+                            Belum ada data supplier
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -78,7 +82,7 @@
                 data supplier
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ $suppliers->previousPageUrl() }}"
+                <a href="{{ $suppliers->currentPage() > 1 ? $suppliers->url($suppliers->currentPage() - 1) : '#' }}"
                     class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                     text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ $suppliers->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
@@ -87,7 +91,7 @@
                 <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                     {{ $suppliers->currentPage() }}
                 </span>
-                <a href="{{ $suppliers->nextPageUrl() }}"
+                <a href="{{ $suppliers->hasMorePages() ? $suppliers->url($suppliers->currentPage() + 1) : '#' }}"
                     class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                     text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ !$suppliers->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">

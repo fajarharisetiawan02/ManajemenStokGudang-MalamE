@@ -31,7 +31,7 @@ class ManagerLaporanController extends Controller
                 'tipe'       => $item->barang?->tipe ?? '-',
                 'jenis'      => 'Masuk',
                 'jumlah'     => $item->jumlah,
-                'keterangan' => 'Pembelian',
+                'keterangan' => $item->supplier?->nama_supplier ?? '-',
             ]);
         }
 
@@ -50,7 +50,7 @@ class ManagerLaporanController extends Controller
                 'tipe'       => $item->barang?->tipe ?? '-',
                 'jenis'      => 'Keluar',
                 'jumlah'     => $item->jumlah,
-                'keterangan' => 'Penjualan',
+                'keterangan' => $item->tujuan ?? '-',
             ]);
         }
 
@@ -59,14 +59,14 @@ class ManagerLaporanController extends Controller
 
     public function index(Request $request)
     {
-        $dari   = $request->dari   ?? null;
-        $sampai = $request->sampai ?? null;
+        $dari   = $request->filled('dari')   ? $request->dari   : null;
+        $sampai = $request->filled('sampai') ? $request->sampai : null;
         $jenis  = $request->jenis  ?? 'semua';
 
         $semua = $this->getData($dari, $sampai, $jenis);
 
-        $totalMasuk  = ($dari && $sampai) ? BarangMasuk::whereBetween('tanggal', [$dari, $sampai])->sum('jumlah') : BarangMasuk::sum('jumlah');
-        $totalKeluar = ($dari && $sampai) ? BarangKeluar::whereBetween('tanggal', [$dari, $sampai])->sum('jumlah') : BarangKeluar::sum('jumlah');
+        $totalMasuk  = ($jenis === 'keluar') ? 0 : (($dari && $sampai) ? BarangMasuk::whereBetween('tanggal', [$dari, $sampai])->sum('jumlah') : BarangMasuk::sum('jumlah'));
+        $totalKeluar = ($jenis === 'masuk') ? 0 : (($dari && $sampai) ? BarangKeluar::whereBetween('tanggal', [$dari, $sampai])->sum('jumlah') : BarangKeluar::sum('jumlah'));
         $stokAkhir   = Barang::sum('stok');
 
         $perPage     = 10;

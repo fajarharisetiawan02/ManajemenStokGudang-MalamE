@@ -11,15 +11,27 @@ use Carbon\Carbon;
 
 class AdminBarangMasukController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $barangMasuks = BarangMasuk::with([
+        $query = BarangMasuk::with([
             'barang.kategori',
             'barang.brand',
             'supplier'
-        ])
-        ->latest()
-        ->paginate(10);
+        ])->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('barang', function ($q2) use ($search) {
+                    $q2->where('kode', 'like', "%{$search}%")
+                       ->orWhere('nama_barang', 'like', "%{$search}%");
+                })->orWhereHas('supplier', function ($q2) use ($search) {
+                    $q2->where('nama_supplier', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $barangMasuks = $query->paginate(10)->withQueryString();
 
         $barangs   = Barang::all();
         $suppliers = Supplier::all();

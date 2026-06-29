@@ -4,15 +4,15 @@
 
 @section('content')
 
-<section class="flex-1 px-6 py-10 flex items-center">
+<section class="flex-1 px-4 md:px-6 py-6 md:py-10 flex items-center">
 
-    <div class="max-w-7xl mx-auto w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid lg:grid-cols-2 min-h-[650px]">
+    <div class="max-w-7xl mx-auto w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid lg:grid-cols-2 min-h-[auto] md:min-h-[650px]">
 
         <!-- FORM -->
         <div class="p-8 lg:p-12 flex flex-col justify-center">
 
             <div class="mb-8">
-                <h2 class="text-5xl font-extrabold text-slate-800 mb-3">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-slate-800 mb-3">
                     {{ __('app.selamat_datang') }}
                 </h2>
                 <p class="text-gray-500 text-lg">

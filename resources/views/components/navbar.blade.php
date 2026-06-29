@@ -19,7 +19,7 @@ $notifCount = $stokMenipis->count();
             <i class="fas fa-bars"></i>
         </button>
         <h2 class="text-xl md:text-2xl font-bold text-slate-800 truncate">
-            @yield('title', 'Dashboard')
+            @yield('page_title', 'Dashboard')
         </h2>
     </div>
 
@@ -40,8 +40,8 @@ $notifCount = $stokMenipis->count();
             </button>
 
             <div id="dropdownNotif"
-                class="hidden absolute right-0 mt-2 w-[380px] bg-white rounded-xl shadow-lg
-                border border-slate-100 z-50 overflow-hidden">
+                id="dropdownNotifBox" class="hidden mt-2 bg-white rounded-xl shadow-lg border border-slate-100 z-[9999] overflow-hidden"
+                style="position: fixed; right: 8px; width: min(380px, calc(100vw - 16px));">
 
                 {{-- HEADER --}}
                 <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
@@ -51,7 +51,7 @@ $notifCount = $stokMenipis->count();
                     </div>
                     @if($stokMenipis->count() > 0)
                     <span class="text-xs font-semibold bg-red-50 text-red-700 px-3 py-1 rounded-full">
-                        {{ $stokMenipis->count() }} {{ __('app.stok_menipis') }}
+                        {{ $stokMenipis->count() }} produk perlu restock
                     </span>
                     @endif
                 </div>
@@ -66,10 +66,6 @@ $notifCount = $stokMenipis->count();
                         <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <i class="fas fa-exclamation-triangle text-red-600"></i>
                         </div>
-                        @elseif($barang->stok <= 5)
-                        <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fas fa-exclamation-circle text-orange-500"></i>
-                        </div>
                         @else
                         <div class="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <i class="fas fa-box text-yellow-500"></i>
@@ -81,16 +77,15 @@ $notifCount = $stokMenipis->count();
                                 <p class="text-sm font-semibold text-slate-700 truncate">{{ $barang->nama_barang }}</p>
                                 @if($barang->stok <= 0)
                                 <span class="text-xs font-semibold bg-red-50 text-red-700 px-2 py-0.5 rounded flex-shrink-0">{{ __('app.habis') }}</span>
-                                @elseif($barang->stok <= 5)
-                                <span class="text-xs font-semibold bg-orange-50 text-orange-700 px-2 py-0.5 rounded flex-shrink-0">{{ __('app.kritis') }}</span>
                                 @else
                                 <span class="text-xs font-semibold bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded flex-shrink-0">{{ __('app.menipis') }}</span>
                                 @endif
                             </div>
+                            <p class="text-xs text-slate-400 mt-0.5">{{ $barang->kode }}</p>
                             <p class="text-sm text-slate-400 mt-1">
                                 {{ __('app.stok_tersisa') }}:
-                                <span class="font-semibold {{ $barang->stok <= 0 ? 'text-red-600' : ($barang->stok <= 5 ? 'text-orange-500' : 'text-yellow-600') }}">
-                                    {{ $barang->stok }} unit
+                                <span class="font-semibold {{ $barang->stok <= 0 ? 'text-red-600' : 'text-yellow-600' }}">
+                                    {{ $barang->stok }}
                                 </span>
                             </p>
                         </div>
@@ -162,3 +157,17 @@ $notifCount = $stokMenipis->count();
 
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const origToggleNotif = window.toggleNotif;
+    window.toggleNotif = function() {
+        origToggleNotif && origToggleNotif();
+        const btn = document.querySelector('#notifWrapper button');
+        const box = document.getElementById('dropdownNotifBox');
+        if (btn && box && !box.classList.contains('hidden')) {
+            const rect = btn.getBoundingClientRect();
+            box.style.top = (rect.bottom + 4) + 'px';
+        }
+    }
+});
+</script>

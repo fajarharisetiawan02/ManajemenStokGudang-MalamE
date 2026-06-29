@@ -1,5 +1,5 @@
 <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
-    <div class="container mx-auto px-8 h-20 flex justify-between items-center">
+    <div class="container mx-auto px-4 md:px-8 h-20 flex justify-between items-center">
 
         <!-- LOGO -->
         <a href="/" class="flex items-center">
@@ -32,7 +32,7 @@
     </div>
 
     <!-- MOBILE MENU -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-200 px-8 py-4 space-y-3">
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-200 px-4 md:px-8 py-4 space-y-3">
         <a href="/home" class="block font-medium text-gray-700 hover:text-blue-700 transition
             {{ request()->is('/') || request()->is('home') ? 'text-blue-700 font-semibold' : '' }}">
             {{ __('app.beranda') }}

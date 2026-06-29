@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.laporan'))
+@section('title', __('app.title_laporan'))
+@section('page_title', __('app.laporan'))
 
 @section('content')
 
@@ -126,7 +127,7 @@
                         <th class="px-4 py-4 text-left text-sm font-bold border">Nama Barang</th>
                         <th class="px-4 py-4 text-center text-sm font-bold border">Jenis</th>
                         <th class="px-4 py-4 text-center text-sm font-bold border">Qty</th>
-                        <th class="px-4 py-4 text-left text-sm font-bold border">Keterangan</th>
+                        <th class="px-4 py-4 text-left text-sm font-bold border">Supplier / Tujuan</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -136,7 +137,7 @@
                         <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                         <td class="px-4 py-4 border text-black">{{ $item->no }}</td>
                         <td class="px-4 py-4 border text-black">{{ $item->kode ?? '-' }}</td>
-                        <td class="px-4 py-4 border text-black">
+                        <td class="px-4 py-4 border text-black max-w-xs break-words">
                             <p class="font-medium text-black">{{ $item->barang }}</p>
                             @if(!empty($item->brand) && $item->brand !== '-' || !empty($item->tipe) && $item->tipe !== '-')
                                 <p class="text-xs text-slate-400 mt-0.5">{{ $item->brand !== '-' ? $item->brand : '' }} {{ $item->tipe !== '-' ? $item->tipe : '' }}</p>
@@ -157,7 +158,7 @@
                             {{ $item->jenis === 'Masuk' ? 'text-green-600' : 'text-red-600' }}">
                             {{ $item->jenis === 'Masuk' ? '+' : '-' }}{{ $item->jumlah }}
                         </td>
-                        <td class="px-4 py-4 border text-black">{{ $item->keterangan }}</td>
+                        <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->keterangan }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -183,7 +184,7 @@
                 data transaksi
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ $laporan->previousPageUrl() }}"
+                <a href="{{ $laporan->currentPage() > 1 ? $laporan->url($laporan->currentPage() - 1) : '#' }}"
                     class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                     text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ $laporan->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
@@ -192,7 +193,7 @@
                 <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                     {{ $laporan->currentPage() }}
                 </span>
-                <a href="{{ $laporan->nextPageUrl() }}"
+                <a href="{{ $laporan->hasMorePages() ? $laporan->url($laporan->currentPage() + 1) : '#' }}"
                     class="flex items-center h-8 px-4 rounded-lg border border-slate-200 bg-white
                     text-slate-600 hover:bg-slate-100 text-sm transition
                     {{ !$laporan->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
@@ -207,26 +208,34 @@
 
 @section('script')
 <script>
-if (!sessionStorage.getItem('laporan_filtered')) {
-    document.getElementById('input_dari').value   = '';
-    document.getElementById('input_sampai').value = '';
-}
-sessionStorage.removeItem('laporan_filtered');
-
-document.getElementById('formFilter').addEventListener('submit', function () {
-    sessionStorage.setItem('laporan_filtered', '1');
-});
-
 function exportLaporan(type) {
     const dari   = document.getElementById('input_dari').value;
     const sampai = document.getElementById('input_sampai').value;
     const jenis  = document.getElementById('input_jenis').value;
+
+    // Harus klik Filter dulu sebelum export
+    const urlParams = new URLSearchParams(window.location.search);
+    const dariUrl   = urlParams.get('dari');
+    const sampaiUrl = urlParams.get('sampai');
 
     if (!dari || !sampai) {
         Swal.fire({
             icon: 'warning',
             title: 'Periode Belum Dipilih!',
             text: 'Silakan isi tanggal "Dari" dan "Sampai" terlebih dahulu sebelum mengekspor laporan.',
+            confirmButtonColor: '#2563eb',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            backdrop: 'rgba(15, 23, 42, 0.4) left top no-repeat',
+        });
+        return;
+    }
+
+    if (!dariUrl || !sampaiUrl) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Filter Belum Diterapkan!',
+            text: 'Silakan klik tombol Filter terlebih dahulu sebelum mengekspor laporan.',
             confirmButtonColor: '#2563eb',
             confirmButtonText: 'OK',
             allowOutsideClick: false,

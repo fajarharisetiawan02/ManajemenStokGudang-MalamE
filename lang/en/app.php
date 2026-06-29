@@ -1,6 +1,6 @@
 <?php
 return [
-    // NAVBAR & SIDEBAR
+    // NAVBAR & SIDEBAR LABEL
     'dashboard'         => 'Dashboard',
     'data_barang'       => 'Product Data',
     'kategori'          => 'Category',
@@ -23,6 +23,17 @@ return [
     'kritis'            => 'Critical',
     'menipis'           => 'Low',
     'stok_tersisa'      => 'Stock remaining',
+
+    // PAGE TITLES (untuk @section('title'))
+    'title_dashboard'   => 'GudangPro | Dashboard',
+    'title_data_barang' => 'GudangPro | Product Data',
+    'title_kategori'    => 'GudangPro | Category',
+    'title_supplier'    => 'GudangPro | Supplier',
+    'title_barang_masuk'=> 'GudangPro | Stock In',
+    'title_barang_keluar'=> 'GudangPro | Stock Out',
+    'title_laporan'     => 'GudangPro | Report',
+    'title_profil'      => 'GudangPro | Profile',
+    'title_detail_barang'=> 'GudangPro | Product Detail',
 
     // AUTH NAVBAR
     'kembali_beranda'   => 'Back to Home',
@@ -48,7 +59,7 @@ return [
     'mulai_sekarang'    => 'Get Started',
     'spare_part'        => 'Spare Parts',
     'akurasi'           => 'Accuracy',
-    'keunggulan_title' => 'GudangPro System Features',
+    'keunggulan_title'  => 'GudangPro System Features',
     'keunggulan_sub'    => 'Trusted Warehouse Stock Platform',
     'keunggulan_desc'   => 'Designed to help manage vehicle spare part stock faster, more accurate, efficient, and modern.',
     'monitoring_stok'   => 'Stock Monitoring',
@@ -59,6 +70,7 @@ return [
     'laporan_desc'      => 'Sales, stock, supplier, and transaction data arranged automatically.',
     'multi_user'        => 'Multi User',
     'multi_user_desc'   => 'Can be used by Warehouse Admin and Manager simultaneously.',
+    'total_transaksi'   => 'Total Transactions',
 
     // FOOTER
     'pusat_bantuan'     => 'Help Center',

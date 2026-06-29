@@ -11,6 +11,10 @@ if (document.getElementById('modalKategori')) {
         document.getElementById('formKategori').action = storeUrl;
         document.getElementById('methodContainerKategori').innerHTML = '';
         document.getElementById('kategoriNama').value = '';
+        const inputFotoReset = document.getElementById('input_foto');
+        if (inputFotoReset) inputFotoReset.value = '';
+        const fotoLabelReset = document.getElementById('foto_label');
+        if (fotoLabelReset) fotoLabelReset.textContent = '';
         showKategoriModal();
     }
 
@@ -24,6 +28,10 @@ if (document.getElementById('modalKategori')) {
         document.getElementById('formKategori').action = '/admin/kategori/' + id;
         document.getElementById('methodContainerKategori').innerHTML =
             '<input type="hidden" name="_method" value="PUT">';
+        const inputFoto = document.getElementById('input_foto');
+        if (inputFoto) inputFoto.value = '';
+        const fotoLabel = document.getElementById('foto_label');
+        if (fotoLabel) fotoLabel.textContent = '';
         showKategoriModal();
     }
 
@@ -40,6 +48,96 @@ if (document.getElementById('modalKategori')) {
         modal.classList.remove('flex');
         document.body.classList.remove('overflow-hidden');
     }
+
+    // ==== VALIDASI FILE FOTO ==== //
+    function validasiFoto(file) {
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        if (!allowedTypes.includes(file.type)) {
+            return 'Format file tidak didukung. Hanya JPG, JPEG, dan PNG yang diperbolehkan.';
+        }
+        if (file.size > maxSize) {
+            return 'Ukuran file melebihi batas maksimal 2MB.';
+        }
+        return null;
+    }
+
+    // Listener nama file foto
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 'input_foto') {
+            const label = document.getElementById('foto_label');
+            if (!label) return;
+            label.textContent = e.target.files.length > 0 ? e.target.files[0].name : '';
+        }
+    });
+
+    // Validasi saat file dipilih
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.name === 'foto') {
+            const file = e.target.files[0];
+            if (!file) return;
+            const error = validasiFoto(file);
+            if (error) {
+                e.target.value = '';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Format File Tidak Didukung!',
+                    text: error,
+                    confirmButtonColor: '#2563eb',
+                    confirmButtonText: 'OK',
+                    backdrop: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        const swalContainer = document.querySelector('.swal2-container');
+                        if (swalContainer) {
+                            swalContainer.style.zIndex = '999999';
+                            swalContainer.style.pointerEvents = 'all';
+                        }
+                        const modal = document.getElementById('modalKategori');
+                        if (modal) modal.style.pointerEvents = 'none';
+                    },
+                    didClose: () => {
+                        const modal = document.getElementById('modalKategori');
+                        if (modal) modal.style.pointerEvents = '';
+                    },
+                });
+            }
+        }
+    });
+
+    // Validasi saat submit
+    document.getElementById('formKategori').addEventListener('submit', function (e) {
+        const inputFile = this.querySelector('input[name="foto"]');
+        if (inputFile && inputFile.files.length > 0) {
+            const error = validasiFoto(inputFile.files[0]);
+            if (error) {
+                e.preventDefault();
+                inputFile.value = '';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Format File Tidak Didukung!',
+                    text: error,
+                    confirmButtonColor: '#2563eb',
+                    confirmButtonText: 'OK',
+                    backdrop: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        const swalContainer = document.querySelector('.swal2-container');
+                        if (swalContainer) {
+                            swalContainer.style.zIndex = '999999';
+                            swalContainer.style.pointerEvents = 'all';
+                        }
+                        const modal = document.getElementById('modalKategori');
+                        if (modal) modal.style.pointerEvents = 'none';
+                    },
+                    didClose: () => {
+                        const modal = document.getElementById('modalKategori');
+                        if (modal) modal.style.pointerEvents = '';
+                    },
+                });
+            }
+        }
+    });
 
 }
 

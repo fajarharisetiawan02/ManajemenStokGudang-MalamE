@@ -40,8 +40,6 @@ class AdminBarangController extends Controller
                 $query->where('stok', '>', 0)->where('stok', '<=', 10);
             } elseif ($request->stok === 'habis') {
                 $query->where('stok', '<=', 0);
-            } elseif ($request->stok === 'kritis') {
-                $query->where('stok', '>', 0)->where('stok', '<=', 5);
             }
         }
 
@@ -86,7 +84,28 @@ class AdminBarangController extends Controller
             'tipe'        => 'required|string',
             'harga_jual'  => 'required|numeric',
             'gambar.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'gambar.*.image'  => 'File yang diupload harus berupa gambar.',
+            'gambar.*.mimes'  => 'Format file tidak didukung. Hanya JPG, JPEG, dan PNG yang diperbolehkan.',
+            'gambar.*.max'    => 'Ukuran file tidak boleh melebihi 2MB.',
         ]);
+
+        // Validasi manual tipe file untuk antisipasi bypass
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $file) {
+                $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png'];
+                if (!in_array($file->getMimeType(), $allowedMimes)) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->with('error', 'File "' . $file->getClientOriginalName() . '" bukan format yang diizinkan. Hanya JPG, JPEG, dan PNG yang diperbolehkan.');
+                }
+                if ($file->getSize() > 2048 * 1024) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->with('error', 'File "' . $file->getClientOriginalName() . '" melebihi batas maksimal 2MB.');
+                }
+            }
+        }
 
         $barang = Barang::create([
             'kode'        => $request->kode,
@@ -126,7 +145,28 @@ class AdminBarangController extends Controller
             'tipe'        => 'required|string',
             'harga_jual'  => 'required|numeric',
             'gambar.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'gambar.*.image'  => 'File yang diupload harus berupa gambar.',
+            'gambar.*.mimes'  => 'Format file tidak didukung. Hanya JPG, JPEG, dan PNG yang diperbolehkan.',
+            'gambar.*.max'    => 'Ukuran file tidak boleh melebihi 2MB.',
         ]);
+
+        // Validasi manual tipe file untuk antisipasi bypass
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $file) {
+                $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png'];
+                if (!in_array($file->getMimeType(), $allowedMimes)) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->with('error', 'File "' . $file->getClientOriginalName() . '" bukan format yang diizinkan. Hanya JPG, JPEG, dan PNG yang diperbolehkan.');
+                }
+                if ($file->getSize() > 2048 * 1024) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->with('error', 'File "' . $file->getClientOriginalName() . '" melebihi batas maksimal 2MB.');
+                }
+            }
+        }
 
         $barang->update([
             'kode'        => $request->kode,

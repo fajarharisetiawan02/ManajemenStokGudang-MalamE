@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Data Barang')
+@section('title', __('app.title_detail_barang'))
+@section('page_title', __('app.data_barang'))
 
 @section('content')
 
@@ -15,26 +16,20 @@
         </a>
     </div>
 
-    <!-- TITLE -->
-    <div class="px-6 pt-6">
-        <h2 class="text-2xl font-bold text-slate-800">Detail Barang</h2>
-        <p class="text-sm text-slate-500 mt-1">Informasi lengkap barang yang tersimpan di sistem.</p>
-    </div>
-
     <!-- CONTENT -->
     <div class="p-6">
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
 
             <!-- GAMBAR -->
-            <div class="flex flex-col h-full">
+            <div class="flex flex-col">
                 @php $gambarUtama = $barang->gambarBarang->first(); @endphp
 
-                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden flex-1 flex items-center justify-center">
+                <div id="fotoContainer" class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
                     @if($gambarUtama)
                         <img id="mainImage" src="{{ asset('uploads/barang/' . $gambarUtama->gambar) }}"
-                            alt="{{ $barang->nama_barang }}" class="w-full h-full object-contain p-4" style="min-height: 300px;">
+                            alt="{{ $barang->nama_barang }}" class="w-full h-full object-contain p-4">
                     @else
-                        <div class="py-24 flex items-center justify-center text-slate-400 w-full">
+                        <div class="flex items-center justify-center text-slate-400 w-full h-full">
                             <div class="text-center">
                                 <i class="fas fa-image text-5xl mb-3"></i>
                                 <p>Tidak ada gambar</p>
@@ -62,7 +57,7 @@
             </div>
 
             <!-- DETAIL -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6">
+            <div id="detailKanan" class="bg-slate-50 border border-slate-200 rounded-xl p-6">
                 <table class="w-full">
                     <tbody>
 

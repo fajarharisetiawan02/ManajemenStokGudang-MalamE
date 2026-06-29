@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('app.profil'))
+@section('title', __('app.title_profil'))
+@section('page_title', __('app.profil'))
 
 @section('content')
 
@@ -82,21 +83,16 @@
 
                 {{-- FORM INFO PROFIL --}}
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-
-                    {{-- HEADER --}}
                     <div class="px-6 py-5 bg-slate-50 border-b border-slate-200">
                         <h3 class="text-xl font-semibold text-slate-800">Informasi Profil</h3>
                         <p class="text-sm text-slate-500 mt-1">Perbarui nama dan email akun Anda.</p>
                     </div>
 
-                    <form action="{{ route('profile.update') }}" method="POST">
+                    <form action="{{ route('profile.update') }}" method="POST" autocomplete="off">
                         @csrf
                         @method('PUT')
-
                         <div class="p-6">
                             <div class="grid md:grid-cols-2 gap-5">
-
-                                {{-- NAMA --}}
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Lengkap</label>
                                     <input type="text" name="name" value="{{ old('name', $user->name) }}" required
@@ -104,15 +100,13 @@
                                         class="w-full px-4 py-3 border rounded-lg text-sm outline-none
                                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
-                                        {{ $errors->has('name') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                        {{ $errors->has('name') ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white' }}">
                                     @error('name')
                                         <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
                                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
                                         </p>
                                     @enderror
                                 </div>
-
-                                {{-- USERNAME --}}
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Username</label>
                                     <input type="text" name="username" value="{{ old('username', $user->username) }}"
@@ -120,15 +114,13 @@
                                         class="w-full px-4 py-3 border rounded-lg text-sm outline-none
                                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
-                                        {{ $errors->has('username') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                        {{ $errors->has('username') ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white' }}">
                                     @error('username')
                                         <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
                                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
                                         </p>
                                     @enderror
                                 </div>
-
-                                {{-- EMAIL --}}
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Alamat Email</label>
                                     <input type="email" name="email" value="{{ old('email', $user->email) }}" required
@@ -136,15 +128,13 @@
                                         class="w-full px-4 py-3 border rounded-lg text-sm outline-none
                                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
                                         placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
-                                        {{ $errors->has('email') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
+                                        {{ $errors->has('email') ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white' }}">
                                     @error('email')
                                         <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
                                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
                                         </p>
                                     @enderror
                                 </div>
-
-                                {{-- ROLE (readonly) --}}
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">
                                         Role
@@ -156,10 +146,7 @@
                                         {{ ucfirst($user->role) }}
                                     </div>
                                 </div>
-
                             </div>
-
-                            {{-- FOOTER --}}
                             <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
                                 <button type="submit"
                                     class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium
@@ -168,33 +155,28 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                 </div>
 
                 {{-- FORM GANTI PASSWORD --}}
                 <div id="password" class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                    {{-- HEADER --}}
                     <div class="px-6 py-5 bg-slate-50 border-b border-slate-200">
                         <h3 class="text-xl font-semibold text-slate-800">Ganti Password</h3>
                         <p class="text-sm text-slate-500 mt-1">Pastikan password baru minimal 8 karakter.</p>
                     </div>
 
-                    <form action="{{ route('profile.password') }}" method="POST">
+                    <form action="{{ route('profile.password') }}" method="POST" autocomplete="off">
                         @csrf
                         @method('PUT')
-
                         <div class="p-6">
                             <div class="grid md:grid-cols-2 gap-5">
-
-                                {{-- PASSWORD LAMA --}}
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Password Saat Ini</label>
                                     <div class="relative">
-                                        <input type="password" name="password_lama" id="passwordLama" required
+                                        <input type="password" name="password_lama" id="passwordLama" required autocomplete="new-password"
                                             placeholder="Masukkan password saat ini"
                                             class="w-full px-4 pr-12 py-3 border rounded-lg text-sm outline-none
-                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white
                                             placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
                                             {{ $errors->has('password_lama') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                         <button type="button" onclick="togglePassword('passwordLama','eyeLama')"
@@ -208,15 +190,13 @@
                                         </p>
                                     @enderror
                                 </div>
-
-                                {{-- PASSWORD BARU --}}
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Password Baru</label>
                                     <div class="relative">
-                                        <input type="password" name="password_baru" id="passwordBaru" required
+                                        <input type="password" name="password_baru" id="passwordBaru" required autocomplete="new-password"
                                             placeholder="Minimal 8 karakter"
                                             class="w-full px-4 pr-12 py-3 border rounded-lg text-sm outline-none
-                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white
                                             placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm
                                             {{ $errors->has('password_baru') ? 'border-red-400 bg-red-50' : 'border-slate-300' }}">
                                         <button type="button" onclick="togglePassword('passwordBaru','eyeBaru')"
@@ -224,7 +204,6 @@
                                             <i id="eyeBaru" class="fas fa-eye text-sm"></i>
                                         </button>
                                     </div>
-                                    {{-- Strength bar --}}
                                     <div id="strengthBar" class="hidden mt-2">
                                         <div class="flex items-center gap-2">
                                             <div class="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
@@ -240,15 +219,13 @@
                                         </p>
                                     @enderror
                                 </div>
-
-                                {{-- KONFIRMASI --}}
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Konfirmasi Password Baru</label>
                                     <div class="relative">
                                         <input type="password" name="password_baru_confirmation" id="passwordKonfirm"
-                                            required placeholder="Ulangi password baru"
+                                            required autocomplete="new-password" placeholder="Ulangi password baru"
                                             class="w-full px-4 pr-12 py-3 border border-slate-300 rounded-lg text-sm
-                                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                                            outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white
                                             placeholder:text-slate-400 placeholder:font-normal placeholder:text-sm">
                                         <button type="button" onclick="togglePassword('passwordKonfirm','eyeKonfirm')"
                                             class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
@@ -256,10 +233,7 @@
                                         </button>
                                     </div>
                                 </div>
-
                             </div>
-
-                            {{-- FOOTER --}}
                             <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
                                 <button type="submit"
                                     class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium
@@ -268,7 +242,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                 </div>
 

@@ -1,6 +1,6 @@
 <footer class="bg-white border-t border-gray-200">
 
-    <div class="container mx-auto px-8 py-10">
+    <div class="container mx-auto px-4 md:px-8 py-10">
 
         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
 

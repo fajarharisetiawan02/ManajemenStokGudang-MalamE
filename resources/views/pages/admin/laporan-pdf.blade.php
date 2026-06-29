@@ -82,6 +82,7 @@
 
         .nama-barang { font-weight: bold; }
         .tipe-barang { font-size: 9px; color: #94a3b8; margin-top: 2px; }
+        .col-text { color: #1e293b; font-weight: normal; }
 
         .badge {
             display: inline-block;
@@ -157,32 +158,33 @@
         <thead>
             <tr>
                 <th class="center" style="width:28px">No</th>
-                <th style="width:75px">Tanggal</th>
+                <th style="width:65px">Tanggal</th>
                 <th style="width:70px; white-space:nowrap">No Transaksi</th>
-                <th style="width:70px">Kode Part</th>
-                <th style="width:200px">Nama Barang</th>
-                <th class="center" style="width:55px">Jenis</th>
-                <th class="center" style="width:40px">Qty</th>
-                <th style="width:80px">Keterangan</th>
+                <th style="width:60px">Kode Part</th>
+                <th style="width:130px">Nama Barang</th>
+                <th style="width:100px">Merek & Tipe</th>
+                <th class="center" style="width:45px">Jenis</th>
+                <th class="center" style="width:30px">Qty</th>
+                <th style="width:70px">Supplier / Tujuan</th>
             </tr>
         </thead>
         <tbody>
             @forelse($laporan as $i => $item)
             <tr>
-                <td class="center">{{ $i + 1 }}</td>
-                <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                <td>{{ $item->no }}</td>
-                <td>{{ $item->kode ?? '-' }}</td>
+                <td class="center col-text">{{ $i + 1 }}</td>
+                <td class="col-text">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                <td class="col-text">{{ $item->no }}</td>
+                <td class="col-text">{{ $item->kode ?? '-' }}</td>
                 <td>
                     <div class="nama-barang">{{ $item->barang }}</div>
+                </td>
+                <td class="col-text">
                     @php
                         $brand = $item->brand ?? '-';
                         $tipe  = $item->tipe ?? '-';
                         $sub   = trim(($brand !== '-' ? $brand : '') . ' ' . ($tipe !== '-' ? $tipe : ''));
                     @endphp
-                    @if($sub)
-                        <div class="tipe-barang">{{ $sub }}</div>
-                    @endif
+                    {{ $sub ?: '-' }}
                 </td>
                 <td class="center">
                     <span class="badge {{ $item->jenis === 'Masuk' ? 'badge-masuk' : 'badge-keluar' }}">
@@ -192,11 +194,11 @@
                 <td class="center {{ $item->jenis === 'Masuk' ? 'qty-masuk' : 'qty-keluar' }}">
                     {{ $item->jenis === 'Masuk' ? '+' : '-' }}{{ $item->jumlah }}
                 </td>
-                <td>{{ $item->keterangan }}</td>
+                <td class="col-text">{{ $item->keterangan }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="8" style="text-align:center; padding:20px; color:#94a3b8;">
+                <td colspan="9" style="text-align:center; padding:20px; color:#94a3b8;">
                     Tidak ada data untuk periode ini
                 </td>
             </tr>

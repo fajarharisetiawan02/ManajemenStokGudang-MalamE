@@ -9,10 +9,10 @@ import './auth';
 import './barang-masuk';
 import './barang-keluar';
 import './supplier';
-import './kategori';
 import './layout';
 import './profil.js';
 import './home.js';
+import './session-timeout';
 
 import Chart from 'chart.js/auto';
 window.Chart = Chart;

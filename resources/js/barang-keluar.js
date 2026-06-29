@@ -38,7 +38,7 @@ if (document.getElementById('inputTujuan')) {
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
         this.disabled  = true;
 
-        fetch('/admin/barang-keluar/cek-barang/' + kode)
+        fetch(document.getElementById('cekBarang').dataset.cekUrl + kode)
             .then(res => res.json())
             .then(result => {
                 this.innerHTML = '<i class="fas fa-search"></i> Cek Barang';
@@ -102,7 +102,7 @@ if (document.getElementById('inputTujuan')) {
     }
 
     window.setEditMode = function (id, tanggal, jumlah, harga, kode, nama, kategori, brand, stok, tujuan, tipe) {
-        document.getElementById('mainForm').action = `/admin/barang-keluar/${id}`;
+        document.getElementById('mainForm').action = document.getElementById('mainForm').dataset.storeUrl.replace('/store', '') + '/' + id;
         document.getElementById('methodContainer').innerHTML = '<input type="hidden" name="_method" value="PUT">';
         document.getElementById('inputTanggal').value  = tanggal;
         document.getElementById('inputJumlah').value   = jumlah;
