@@ -38,8 +38,7 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-700">Tanggal Masuk</label>
                             <input type="date" name="tanggal" id="inputTanggal" required
-                                min="{{ date('Y-m-d', strtotime('-3 days')) }}"
-                                max="{{ date('Y-m-d') }}"
+                                min="{{ date('Y-m-d', strtotime('-3 days')) }}" max="{{ date('Y-m-d') }}"
                                 class="w-full mt-2 px-4 py-2.5 border border-slate-300 rounded-lg text-sm
                                 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition">
                         </div>
@@ -74,22 +73,31 @@
                         <div class="grid md:grid-cols-2 gap-3 mb-3">
                             <div>
                                 <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Nama Barang</p>
-                                <div id="showNama" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                                <div id="showNama"
+                                    class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
+                                </div>
                             </div>
                             <div>
                                 <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Kategori</p>
-                                <div id="showKategori" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                                <div id="showKategori"
+                                    class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
+                                </div>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-3">
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
                                     <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Merek</p>
-                                    <div id="showBrand" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                                    <div id="showBrand"
+                                        class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
+                                    </div>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Tipe Kendaraan</p>
-                                    <div id="showTipe" class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm"></div>
+                                    <p class="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide">Tipe
+                                        Kendaraan</p>
+                                    <div id="showTipe"
+                                        class="px-4 py-2.5 bg-white rounded-lg border border-slate-200 text-sm font-medium text-slate-800 shadow-sm">
+                                    </div>
                                 </div>
                             </div>
                             <div>
@@ -196,23 +204,30 @@
                     </thead>
                     <tbody class="bg-white">
                         @forelse($barangMasuks as $item)
-                        <tr class="hover:bg-slate-50 transition-colors duration-150">
-                            <td class="px-4 py-4 border text-center text-black">{{ $barangMasuks->firstItem() + $loop->index }}</td>
-                            <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-4 py-4 border text-black">{{ $item->barang?->kode ?? '-' }}</td>
-                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->barang?->nama_barang ?? '-' }}</td>
-                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->supplier->nama_supplier ?? '-' }}</td>
-                            <td class="px-4 py-4 border text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                    +{{ $item->jumlah }}
-                                </span>
-                            </td>
-                            <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
-                            <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
-                            <td class="px-4 py-4 border">
-                                <div class="flex justify-center items-center gap-2 flex-nowrap">
-                                    <button type="button"
-                                        onclick="setEditModeMasuk(
+                            <tr class="hover:bg-slate-50 transition-colors duration-150">
+                                <td class="px-4 py-4 border text-center text-black">
+                                    {{ $barangMasuks->firstItem() + $loop->index }}</td>
+                                <td class="px-4 py-4 border text-black">
+                                    {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                                <td class="px-4 py-4 border text-black">{{ $item->barang?->kode ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">
+                                    {{ $item->barang?->nama_barang ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">
+                                    {{ $item->supplier->nama_supplier ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-center">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                        +{{ $item->jumlah }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp
+                                    {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                                <td class="px-4 py-4 border text-right font-semibold text-slate-700">Rp
+                                    {{ number_format($item->total, 0, ',', '.') }}</td>
+                                <td class="px-4 py-4 border">
+                                    <div class="flex justify-center items-center gap-2 flex-nowrap">
+                                        <button type="button"
+                                            onclick="setEditModeMasuk(
                                             {{ $item->id }},
                                             '{{ $item->tanggal }}',
                                             {{ $item->jumlah }},
@@ -225,27 +240,30 @@
                                             {{ $item->barang?->stok ?? 0 }},
                                             '{{ addslashes($item->barang?->tipe ?? '-') }}'
                                         )"
-                                        class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                        <i class="fas fa-pen mr-1"></i> Edit
-                                    </button>
-                                    <form action="{{ route('admin.barang-masuk.destroy', $item->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" onclick="confirmDelete(this.form)"
-                                            class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
-                                            <i class="fas fa-trash mr-1"></i> Hapus
+                                            class="inline-flex items-center px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-lg transition whitespace-nowrap">
+                                            <i class="fas fa-pen mr-1"></i> Edit
                                         </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                                        <form action="{{ route('admin.barang-masuk.destroy', $item->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="confirmDelete(this.form)"
+                                                class="inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition whitespace-nowrap">
+                                                <i class="fas fa-trash mr-1"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="9" class="py-10 text-center text-slate-400">
-                                <i class="fas fa-arrow-down text-3xl mb-3 block text-slate-300"></i>
-                                Belum ada data barang masuk
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="8" class="border">
+                                    <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                                        <i class="fas fa-arrow-down text-4xl mb-3 text-slate-300"></i>
+                                        <p>Belum ada data barang masuk</p>
+                                    </div>
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -269,7 +287,8 @@
                         {{ $barangMasuks->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
-                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
+                    <span
+                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangMasuks->currentPage() }}
                     </span>
                     <a href="{{ $barangMasuks->hasMorePages() ? $barangMasuks->url($barangMasuks->currentPage() + 1) : '#' }}"

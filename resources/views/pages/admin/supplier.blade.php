@@ -89,9 +89,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-10 text-center text-slate-400">
-                                    <i class="fas fa-truck text-3xl mb-3 block text-slate-300"></i>
-                                    Belum ada data supplier
+                                <td colspan="6" class="border">
+                                    <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                                        <i class="fas fa-truck text-4xl mb-3 text-slate-300"></i>
+                                        <p>Belum ada data supplier</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse

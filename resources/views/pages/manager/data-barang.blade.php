@@ -86,14 +86,17 @@
                                 }
                             @endphp
                             <tr class="hover:bg-slate-50 transition-colors duration-150">
-                                <td class="px-4 py-4 border text-center text-black">{{ $barangs->firstItem() + $loop->index }}</td>
+                                <td class="px-4 py-4 border text-center text-black">
+                                    {{ $barangs->firstItem() + $loop->index }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->kode }}</td>
                                 <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->nama_barang }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->brand->nama_brand ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->tipe ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">
+                                    {{ $item->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-center">
-                                    <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
+                                    <span
+                                        class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
                                         <span>{{ $item->stok }}</span>
                                         <span>|</span>
                                         <span>{{ $stokText }}</span>
@@ -111,9 +114,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="py-10 text-center text-slate-400">
-                                    <i class="fas fa-box text-3xl mb-3 block text-slate-300"></i>
-                                    Belum ada data barang
+                                <td colspan="9" class="border">
+                                    <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                                        <i class="fas fa-box text-4xl mb-3 text-slate-300"></i>
+                                        <p>Belum ada data barang</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -138,7 +143,8 @@
                         {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
-                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
+                    <span
+                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangs->currentPage() }}
                     </span>
                     <a href="{{ $barangs->hasMorePages() ? $barangs->url($barangs->currentPage() + 1) : '#' }}"

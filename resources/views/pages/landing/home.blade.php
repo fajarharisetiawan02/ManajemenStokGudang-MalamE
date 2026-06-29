@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 
-@section('title', 'GudangPro | Home')
+@section('title', 'GudangPro')
 
 @section('content')
 

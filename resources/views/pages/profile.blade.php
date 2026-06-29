@@ -19,7 +19,7 @@
         $color = $colors[ord($user->name[0]) % count($colors)];
     @endphp
 
-    <div class="w-full">
+    <div class="w-full max-w-full overflow-hidden">
         <div class="flex flex-col md:flex-row gap-5 items-start">
 
             {{-- === KIRI (sticky) === --}}
@@ -79,7 +79,7 @@
             </div>
 
             {{-- === KANAN === --}}
-            <div class="flex-1 space-y-4">
+            <div class="w-full flex-1 space-y-4">
 
                 {{-- FORM INFO PROFIL --}}
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">

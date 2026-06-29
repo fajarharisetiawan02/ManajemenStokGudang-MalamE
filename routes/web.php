@@ -30,8 +30,6 @@ use App\Http\Controllers\Manager\ManagerLaporanController;
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/home', 'index');
-    Route::get('/about', 'about');
-    Route::get('/contact', 'contact');
 });
 
 
@@ -47,16 +45,15 @@ Route::controller(LoginController::class)->group(function () {
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 
 
-/* === PROFIL & NOTIFIKASI & PING SESSION (Admin & Manager) === */
+/* === PROFIL & NOTIFIKASI & PING SESSION === */
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profil', [ProfileController::class, 'index'])->name('profile.index');
-    Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profil/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::get('/gp/profil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/gp/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/gp/profil/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
-    Route::post('/notifikasi/read', [NotifikasiController::class, 'markRead'])->name('notifikasi.read');
+    Route::post('/gp/notifikasi/read', [NotifikasiController::class, 'markRead'])->name('notifikasi.read');
 
-    /* === PING SESSION === */
-    Route::post('/ping-session', function () {
+    Route::post('/gp/ping-session', function () {
         session()->put('last_activity', now());
         return response()->json(['status' => 'ok']);
     })->name('ping.session');
@@ -64,50 +61,37 @@ Route::middleware(['auth'])->group(function () {
 
 
 /* === ADMIN === */
-Route::prefix('admin')
+Route::prefix('gp/dashboard')
     ->name('admin.')
     ->middleware(['auth'])
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        Route::get('/', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
-        /* === KATEGORI === */
         Route::resource('kategori', AdminKategoriController::class);
-
-        /* === DATA BARANG === */
         Route::resource('data-barang', AdminBarangController::class);
-
-        /* === SUPPLIER === */
         Route::resource('supplier', AdminSupplierController::class);
 
-        /* === BARANG MASUK === */
         Route::get('/barang-masuk/cek-barang/{kode}', [AdminBarangMasukController::class, 'cekBarang'])
             ->name('barang-masuk.cek');
-
         Route::resource('barang-masuk', AdminBarangMasukController::class);
 
-        /* === BARANG KELUAR === */
         Route::get('/barang-keluar/cek-barang/{kode}', [AdminBarangKeluarController::class, 'cekBarang'])
             ->name('barang-keluar.cek');
-
         Route::resource('barang-keluar', AdminBarangKeluarController::class);
 
-        /* === LAPORAN === */
         Route::get('/laporan', [AdminLaporanController::class, 'index'])
             ->name('laporan.index');
-
         Route::get('/laporan/export-excel', [AdminLaporanController::class, 'exportExcel'])
             ->name('laporan.export-excel');
-
         Route::get('/laporan/export-pdf', [AdminLaporanController::class, 'exportPdf'])
             ->name('laporan.export-pdf');
-
     });
 
 
 /* === MANAGER === */
-Route::prefix('manager')
+Route::prefix('gp/workspace')
     ->name('manager.')
     ->middleware(['auth'])
     ->group(function () {
@@ -115,37 +99,27 @@ Route::prefix('manager')
         Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
             ->name('dashboard');
 
-        /* === KATEGORI === */
         Route::get('/kategori', [ManagerKategoriController::class, 'index'])
             ->name('kategori.index');
 
-        /* === DATA BARANG === */
         Route::get('/data-barang', [ManagerBarangController::class, 'index'])
             ->name('data-barang.index');
-
         Route::get('/data-barang/{id}', [ManagerBarangController::class, 'show'])
             ->name('data-barang.show');
 
-        /* === SUPPLIER === */
         Route::get('/supplier', [ManagerSupplierController::class, 'index'])
             ->name('supplier.index');
 
-        /* === BARANG MASUK === */
         Route::get('/barang-masuk', [ManagerBarangMasukController::class, 'index'])
             ->name('barang-masuk.index');
 
-        /* === BARANG KELUAR === */
         Route::get('/barang-keluar', [ManagerBarangKeluarController::class, 'index'])
             ->name('barang-keluar.index');
 
-        /* === LAPORAN === */
         Route::get('/laporan', [ManagerLaporanController::class, 'index'])
             ->name('laporan.index');
-
         Route::get('/laporan/export-excel', [ManagerLaporanController::class, 'exportExcel'])
             ->name('laporan.export-excel');
-
         Route::get('/laporan/export-pdf', [ManagerLaporanController::class, 'exportPdf'])
             ->name('laporan.export-pdf');
-
     });

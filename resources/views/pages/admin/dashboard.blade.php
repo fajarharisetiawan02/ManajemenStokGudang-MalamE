@@ -35,7 +35,9 @@
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Total Barang</p>
                     <h3 class="text-4xl font-bold text-slate-800 mt-3">{{ number_format($totalBarang) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold">Semua Barang</span>
+                    <span
+                        class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold">Semua
+                        Barang</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
                     <i class="fas fa-box text-blue-600 text-xl"></i>
@@ -49,7 +51,9 @@
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Barang Masuk</p>
                     <h3 class="text-4xl font-bold text-green-600 mt-3">{{ number_format($barangMasuk) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-green-100 text-green-600 text-xs font-semibold">7 Hari Terakhir</span>
+                    <span
+                        class="inline-flex mt-3 px-3 py-1 rounded-full bg-green-100 text-green-600 text-xs font-semibold">7
+                        Hari Terakhir</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
                     <i class="fas fa-arrow-down text-green-600 text-xl"></i>
@@ -63,7 +67,8 @@
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Barang Keluar</p>
                     <h3 class="text-4xl font-bold text-red-600 mt-3">{{ number_format($barangKeluar) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-semibold">7 Hari Terakhir</span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-semibold">7
+                        Hari Terakhir</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center">
                     <i class="fas fa-arrow-up text-red-600 text-xl"></i>
@@ -77,7 +82,8 @@
                 <div>
                     <p class="text-sm text-slate-500 font-medium">Supplier</p>
                     <h3 class="text-4xl font-bold text-purple-600 mt-3">{{ number_format($supplier) }}</h3>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-purple-100 text-purple-600 text-xs font-semibold">Aktif</span>
+                    <span
+                        class="inline-flex mt-3 px-3 py-1 rounded-full bg-purple-100 text-purple-600 text-xs font-semibold">Aktif</span>
                 </div>
                 <div class="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center">
                     <i class="fas fa-truck text-purple-600 text-xl"></i>
@@ -100,7 +106,8 @@
                             <p class="text-sm text-slate-500">Barang masuk dan keluar dalam periode tertentu</p>
                         </div>
                     </div>
-                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">12 Bulan Terakhir</span>
+                    <span class="inline-flex mt-3 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">12
+                        Bulan Terakhir</span>
                 </div>
             </div>
             <div class="flex-1">
@@ -158,30 +165,37 @@
                     @forelse($transaksi as $i => $item)
                         <tr class="hover:bg-slate-50 transition-colors duration-150">
                             <td class="px-4 py-4 border text-center text-black">{{ $i + 1 }}</td>
-                            <td class="px-4 py-4 border text-black">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                            <td class="px-4 py-4 border text-black">
+                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                             <td class="px-4 py-4 border text-black">{{ $item->kode ?? '-' }}</td>
                             <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->barang }}</td>
                             <td class="px-4 py-4 border text-center">
                                 @if ($item->status === 'Masuk')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
                                         <i class="fas fa-arrow-down mr-1"></i> Masuk
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
                                         <i class="fas fa-arrow-up mr-1"></i> Keluar
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-4 py-4 border text-center font-semibold {{ $item->status === 'Masuk' ? 'text-green-600' : 'text-red-600' }}">
+                            <td
+                                class="px-4 py-4 border text-center font-semibold {{ $item->status === 'Masuk' ? 'text-green-600' : 'text-red-600' }}">
                                 {{ $item->status === 'Masuk' ? '+' : '-' }}{{ $item->qty }}
                             </td>
-                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->keterangan ?? '-' }}</td>
+                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->keterangan ?? '-' }}
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-10 text-center text-slate-400">
-                                <i class="fas fa-clock-rotate-left text-3xl mb-3 block text-slate-300"></i>
-                                Belum ada transaksi
+                            <td colspan="7" class="border">
+                                <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                                    <i class="fas fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i>
+                                    <p>Belum ada transaksi</p>
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -227,16 +241,20 @@
                             <td class="px-4 py-4 border text-center text-black">{{ $i + 1 }}</td>
                             <td class="px-4 py-4 border text-black">{{ $barang->kode }}</td>
                             <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $barang->nama_barang }}</td>
-                            <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $barang->kategori->nama_kategori ?? '-' }}</td>
-                            <td class="px-4 py-4 border text-center font-semibold
+                            <td class="px-4 py-4 border text-black max-w-xs break-words">
+                                {{ $barang->kategori->nama_kategori ?? '-' }}</td>
+                            <td
+                                class="px-4 py-4 border text-center font-semibold
                                 {{ $barang->stok <= 0 ? 'text-red-600' : 'text-yellow-600' }}">
                                 {{ $barang->stok }}
                             </td>
                             <td class="px-4 py-4 border text-center">
                                 @if ($barang->stok <= 0)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">Habis</span>
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">Habis</span>
                                 @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">Menipis</span>
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">Menipis</span>
                                 @endif
                             </td>
                             <td class="px-4 py-4 border text-center">
@@ -248,9 +266,11 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-10 text-center text-green-600 font-semibold">
-                                <i class="fas fa-check-circle text-3xl mb-3 block text-green-400"></i>
-                                Semua stok dalam kondisi aman
+                            <td colspan="7" class="border">
+                                <div class="flex flex-col items-center justify-center py-10 text-green-500">
+                                    <i class="fas fa-check-circle text-4xl mb-3 text-green-400"></i>
+                                    <p class="font-semibold">Semua stok dalam kondisi aman</p>
+                                </div>
                             </td>
                         </tr>
                     @endforelse

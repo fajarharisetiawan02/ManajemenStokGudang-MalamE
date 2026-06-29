@@ -93,14 +93,17 @@
                                 }
                             @endphp
                             <tr class="hover:bg-slate-50 transition-colors duration-150">
-                                <td class="px-4 py-4 border text-center text-black">{{ $barangs->firstItem() + $loop->index }}</td>
+                                <td class="px-4 py-4 border text-center text-black">
+                                    {{ $barangs->firstItem() + $loop->index }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->kode }}</td>
                                 <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->nama_barang }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->brand->nama_brand ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-black">{{ $item->tipe ?? '-' }}</td>
-                                <td class="px-4 py-4 border text-black max-w-xs break-words">{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                                <td class="px-4 py-4 border text-black max-w-xs break-words">
+                                    {{ $item->kategori->nama_kategori ?? '-' }}</td>
                                 <td class="px-4 py-4 border text-center">
-                                    <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
+                                    <span
+                                        class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold {{ $stokClass }}">
                                         <span>{{ $item->stok }}</span>
                                         <span>|</span>
                                         <span>{{ $stokText }}</span>
@@ -136,9 +139,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="py-10 text-center text-slate-400">
-                                    <i class="fas fa-box text-3xl mb-3 block text-slate-300"></i>
-                                    Belum ada data barang
+                                <td colspan="9" class="border">
+                                    <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                                        <i class="fas fa-box text-4xl mb-3 text-slate-300"></i>
+                                        <p>Belum ada data barang</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -163,7 +168,8 @@
                         {{ $barangs->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
                         Sebelumnya
                     </a>
-                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
+                    <span
+                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold text-xs">
                         {{ $barangs->currentPage() }}
                     </span>
                     <a href="{{ $barangs->hasMorePages() ? $barangs->url($barangs->currentPage() + 1) : '#' }}"
@@ -177,7 +183,8 @@
         </div>
 
         <!-- MODAL BARANG -->
-        <div id="modalBarang" class="fixed z-[9999] hidden items-start justify-center overflow-y-auto backdrop-blur-sm bg-black/40"
+        <div id="modalBarang"
+            class="fixed z-[9999] hidden items-start justify-center overflow-y-auto backdrop-blur-sm bg-black/40"
             style="top:0;left:0;right:0;bottom:0;margin:0;padding:1.5rem 1rem;">
             <div class="bg-white w-full max-w-3xl rounded-xl shadow-2xl border border-slate-200 flex flex-col my-auto"
                 onclick="event.stopPropagation()">
@@ -186,7 +193,8 @@
                 <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between rounded-t-xl">
                     <div>
                         <h2 id="modalTitle" class="text-xl font-bold text-slate-800">Tambah Barang</h2>
-                        <p id="modalSubtitle" class="text-sm text-slate-500 mt-1">Lengkapi data barang baru di bawah ini.</p>
+                        <p id="modalSubtitle" class="text-sm text-slate-500 mt-1">Lengkapi data barang baru di bawah ini.
+                        </p>
                     </div>
                     <button type="button" onclick="closeModal()"
                         class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-500 transition">
@@ -266,11 +274,12 @@
                             <label class="block text-sm font-medium text-slate-700 mb-2">Gambar Produk</label>
                             <div id="uploadArea" onclick="document.getElementById('input_gambar').click()"
                                 class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-5 text-center hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer">
-                                <input type="file" name="gambar[]" id="input_gambar" multiple accept="image/*" class="hidden"
-                                    onclick="event.stopPropagation()">
+                                <input type="file" name="gambar[]" id="input_gambar" multiple accept="image/*"
+                                    class="hidden" onclick="event.stopPropagation()">
                                 <i class="fas fa-cloud-upload-alt text-2xl text-slate-400 mb-2 block"></i>
                                 <p class="text-sm text-slate-500 font-medium">Klik untuk upload gambar</p>
-                                <p class="mt-1 text-xs text-slate-400">Maksimal 4 gambar (JPG, JPEG, PNG • 2MB per gambar)</p>
+                                <p class="mt-1 text-xs text-slate-400">Maksimal 4 gambar (JPG, JPEG, PNG • 2MB per gambar)
+                                </p>
                                 <p id="gambar_label" class="mt-2 text-xs text-blue-600 font-medium"></p>
                             </div>
                         </div>

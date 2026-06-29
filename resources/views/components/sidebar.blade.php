@@ -2,6 +2,7 @@
 $user = auth()->user();
 $role = $user?->role ?? 'admin';
 $prefix = $role === 'admin' ? 'admin' : 'manager';
+$urlPrefix = $role === 'admin' ? 'gp/dashboard' : 'gp/workspace';
 @endphp
 
 <aside id="sidebar" class="w-72 bg-gradient-to-b from-slate-900 to-slate-950 text-white p-6 shadow-xl
@@ -26,14 +27,14 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
 
             <a href="{{ route($prefix.'.dashboard') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/dashboard') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix) ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-home w-6"></i>
                 <span>{{ __('app.dashboard') }}</span>
             </a>
 
             <a href="{{ route($prefix.'.data-barang.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/data-barang*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix.'/data-barang*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-box w-6"></i>
                 <span>{{ __('app.data_barang') }}</span>
             </a>
@@ -42,14 +43,14 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
 
             <a href="{{ route($prefix.'.kategori.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/kategori*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix.'/kategori*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-tags w-6"></i>
                 <span>{{ __('app.kategori') }}</span>
             </a>
 
             <a href="{{ route($prefix.'.supplier.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/supplier') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix.'/supplier*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-truck w-6"></i>
                 <span>{{ __('app.supplier') }}</span>
             </a>
@@ -58,14 +59,14 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
 
             <a href="{{ route($prefix.'.barang-masuk.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/barang-masuk') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix.'/barang-masuk*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-arrow-down w-6"></i>
                 <span>{{ __('app.barang_masuk') }}</span>
             </a>
 
             <a href="{{ route($prefix.'.barang-keluar.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/barang-keluar') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix.'/barang-keluar*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-arrow-up w-6"></i>
                 <span>{{ __('app.barang_keluar') }}</span>
             </a>
@@ -74,7 +75,7 @@ $prefix = $role === 'admin' ? 'admin' : 'manager';
 
             <a href="{{ route($prefix.'.laporan.index') }}"
                 class="flex items-center gap-4 px-5 py-3 rounded-lg transition
-                {{ request()->is($prefix.'/laporan') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
+                {{ request()->is($urlPrefix.'/laporan*') ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-800 text-slate-300' }}">
                 <i class="fas fa-file-alt w-6"></i>
                 <span>{{ __('app.laporan') }}</span>
             </a>

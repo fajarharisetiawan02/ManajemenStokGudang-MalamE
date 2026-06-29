@@ -1,5 +1,7 @@
 @php
 $user = auth()->user();
+$role = $user?->role ?? 'admin';
+$prefix = $role === 'admin' ? 'admin' : 'manager';
 
 $stokMenipis = \App\Models\Barang::with('kategori')
     ->where('stok', '<=', 10)
@@ -39,8 +41,7 @@ $notifCount = $stokMenipis->count();
                 @endif
             </button>
 
-            <div id="dropdownNotif"
-                id="dropdownNotifBox" class="hidden mt-2 bg-white rounded-xl shadow-lg border border-slate-100 z-[9999] overflow-hidden"
+            <div id="dropdownNotifBox" class="hidden mt-2 bg-white rounded-xl shadow-lg border border-slate-100 z-[9999] overflow-hidden"
                 style="position: fixed; right: 8px; width: min(380px, calc(100vw - 16px));">
 
                 {{-- HEADER --}}
@@ -59,7 +60,7 @@ $notifCount = $stokMenipis->count();
                 @if($stokMenipis->count() > 0)
                 <div class="divide-y divide-slate-50 max-h-80 overflow-y-auto py-1">
                     @foreach($stokMenipis as $barang)
-                    <a href="{{ route('admin.data-barang.show', $barang->id) }}"
+                    <a href="{{ route($prefix.'.data-barang.show', $barang->id) }}"
                         class="flex items-start gap-4 px-5 py-4 hover:bg-slate-50 transition">
 
                         @if($barang->stok <= 0)
@@ -94,7 +95,7 @@ $notifCount = $stokMenipis->count();
                 </div>
 
                 <div class="px-5 py-3 border-t border-slate-100 bg-slate-50">
-                    <a href="{{ route('admin.data-barang.index') }}?stok=menipis"
+                    <a href="{{ route($prefix.'.data-barang.index') }}?stok=menipis"
                         class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center justify-center gap-1.5">
                         {{ __('app.lihat_semua_produk') }} <i class="fas fa-arrow-right text-xs"></i>
                     </a>
@@ -157,17 +158,26 @@ $notifCount = $stokMenipis->count();
 
     </div>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const origToggleNotif = window.toggleNotif;
     window.toggleNotif = function() {
-        origToggleNotif && origToggleNotif();
-        const btn = document.querySelector('#notifWrapper button');
         const box = document.getElementById('dropdownNotifBox');
-        if (btn && box && !box.classList.contains('hidden')) {
+        const btn = document.querySelector('#notifWrapper button');
+        if (!box) return;
+        box.classList.toggle('hidden');
+        if (!box.classList.contains('hidden') && btn) {
             const rect = btn.getBoundingClientRect();
             box.style.top = (rect.bottom + 4) + 'px';
         }
     }
+
+    document.addEventListener('click', function(e) {
+        const wrapper = document.getElementById('notifWrapper');
+        const box = document.getElementById('dropdownNotifBox');
+        if (box && wrapper && !wrapper.contains(e.target)) {
+            box.classList.add('hidden');
+        }
+    });
 });
 </script>
